@@ -165,11 +165,15 @@ information.
 
 This repository and content is maintained by the Google AI Ready Data Cloud Solution Architect team.
 
-| # | Author  | Role |
+| # | Contributor  | Role |
 | -- | :-- |  :--- |
-| 1. | Anagha Khanolkar | Primary |
+| 1. | Anagha Khanolkar | Primary author|
+| 2. | Ashwin Sridhar | Industry subject matter expertise - Supply Chain |
+| 3. | Ryan Price | Industry subject matter expertise - Retail |
 
 <hr>
+
+
 
 ## License
 
