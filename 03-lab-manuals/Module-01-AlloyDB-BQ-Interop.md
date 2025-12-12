@@ -28,11 +28,7 @@ This module should take no more than 15 minutes.
 
 ## Private Documentation as of Dec 1, 2025:
 
-[Access BigQuery data from AlloyDB](https://cloud.google.com/alloydb/docs/access-bigquery-data-from-alloydb) <br>
-[BigQuery views in AlloyDB for Postgresql](https://cloud.google.com/alloydb/docs/bigquery-view-alloydb-overview) <br>
-[Import Iceberg into AlloyDB](https://cloud.google.com/alloydb/docs/import-bigquery-iceberg-data) <br>
-[BigQuery and PostgreSQL column mappings](https://cloud.google.com/alloydb/docs/reference/supported-bigquery-data-types-column-mappings) <br>
-
+Redacted 
 <hr>
 
 ## Prerequisites:
