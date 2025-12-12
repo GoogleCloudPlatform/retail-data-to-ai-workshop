@@ -1,4 +1,4 @@
-# Demystifying Google Cloud Products for Retail & Supply Chain, Data & AI applications
+# Demystifying Google Cloud Products for Retail & Supply Chain - Data & AI applications
 
 This repository hosts `tutorials for LLM powered data & AI products` that can be leveraged in a Data-to-AI estate on Google Cloud. 
 
