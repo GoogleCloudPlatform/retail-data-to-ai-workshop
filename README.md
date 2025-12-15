@@ -167,7 +167,7 @@ This repository and content is maintained by the Google AI Ready Data Cloud Solu
 
 | # | Contributor  | Role |
 | -- | :-- |  :--- |
-| 1. | Anagha Khanolkar | Primary author|
+| 1. | Anagha Khanolkar | Primary author & technical architect |
 | 2. | Ashwin Sridhar | Industry subject matter expertise - Supply Chain |
 | 3. | Ryan Price | Industry subject matter expertise - Retail |
 
