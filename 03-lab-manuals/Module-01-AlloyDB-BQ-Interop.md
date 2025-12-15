@@ -757,13 +757,13 @@ bq mk \
     "connector_id": "google-alloydb",
     "asset": {
       "database": "rscw_db",
-      "google_cloud_resource": "//alloydb.googleapis.com/projects/data-insights-quickstart/locations/us-central1/clusters/rscw-cluster/instances/rscw-instance"
+      "google_cloud_resource": "//alloydb.googleapis.com/projects/YOUR_PROJECT_ID/locations/us-central1/clusters/rscw-cluster/instances/rscw-instance"
     },
     "authentication": {
       "username_password": {
         "username": "rscw_admin",
         "password": {
-          "plaintext": "G0j1M@k1#"
+          "plaintext": "YOUR_PASSWORD"
         }
       }
     }

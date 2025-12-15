@@ -622,11 +622,14 @@ gcloud compute routers nats create rscw-internet-egress-nat \
 ## 7. Create an AlloyDB cluster, instance and database, table 
 
 ### 7.1. Create cluster
+
+Create a password and make a note of it, and use it where specified.
+
 ```
 gcloud alloydb clusters create $ALLOYDB_CLUSTER \
     --region=$LOCATION \
     --project=$PROJECT_ID \
-    --password="G0j1M@k1#" \
+    --password="YOUR_PASSWORD" \
     --enable-private-service-connect \
     --impersonate-service-account=$UMSA_FQN
 ```
