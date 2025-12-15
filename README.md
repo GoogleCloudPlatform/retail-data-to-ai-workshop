@@ -53,7 +53,7 @@ Expect to spend ~12 hours to fully understand, read product documentation and ex
 1. A Google Cloud project
 2. IAM permissions to provision services, and grant IAM permissions
 3. Basic knowledge of Google Cloud is useful, as is knowledge of comparabale platforms and techical stacks, but not required as comprehensive instructions are included
-4. If a feature showcased is not accesiible by you, it is likely a private preview feature and needs explicit allow-listing by the responsible product team. Reach out to your Google Cloud account team for help with allow-listing.
+4. If a feature showcased is not accessible by you, it is likely a private preview feature and needs explicit allow-listing by the responsible product team. Reach out to your Google Cloud account team for help with allow-listing.
 
 <hr>
 
@@ -104,7 +104,7 @@ L200 - L300
 |   0. | [**Provisioning**](03-lab-manuals/Module-00-Provisioning.md) <br>gcloud commands<br>Terraform - coming soon | 
 |   1. | [**BigQuery and AlloyDB interoperability**](03-lab-manuals/Module-01-AlloyDB-BQ-Interop.md) <br>BigQuery federation into AlloyDB<br>AlloyDB foriegn Data Wrapper for BigQuery  | 
 |  2a. | [**Data profiling with Dataplex**](03-lab-manuals/Module-02a-Data-Insights-API.md) <br> Summary statistics generation and persistence| 
-|  2b. | [**Data Insights at a table level for agentic grounding**](03-lab-manuals/Module-02b-Data-Insights-API.md) <br> LLM-powered table description generation<br> LLM-powered t column description generation <br> LLM-powered golden query generation (question and SQL pairs) | 
+|  2b. | [**Data Insights at a table level for agentic grounding**](03-lab-manuals/Module-02b-Data-Insights-API.md) <br> LLM-powered table description generation<br> LLM-powered table column description generation <br> LLM-powered golden query generation (question and SQL pairs) | 
 |  2c. | [**Data Insights at a dataset level for agentic grounding**](03-lab-manuals/Module-02c-Data-Insights-API.md) <br> LLM-powered dataset description generation<br> LLM-powered table relationships inference <br> LLM-powered cross table golden query generation (question and SQL pairs) | 
 |   3. | [**(No code) Data Warehouse star schema code generation with BigQuery Data Engineering Agent**](03-lab-manuals/Module-03-Data-Engineering-Agent-For-Warehousing.md)   |
 |   4. | [**(No code) Reporting Data Mart code generation with BigQuery Data Engineering Agent**](03-lab-manuals/Module-04-Data-Engineering-Agent-For-Reporting.md)   | 
