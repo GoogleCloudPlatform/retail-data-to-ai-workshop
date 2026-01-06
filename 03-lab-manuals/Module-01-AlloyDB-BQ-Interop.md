@@ -544,7 +544,7 @@ In Cloud Shell, paste the below commands.<br>
 
 1. Navigate to the repo<br>
 ```
-cd retail-supply-chain-workshop
+cd retail-data-to-ai-workshop
 cd 01-data-assets/3nf_ingest
 ```
 
