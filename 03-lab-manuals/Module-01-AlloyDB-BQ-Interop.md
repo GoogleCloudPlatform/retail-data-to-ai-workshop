@@ -37,7 +37,7 @@ Redacted
 2. Cloning of the lab git repo if not completed already
 
 ```
-git clone https://github.com/anagha-google/retail-supply-chain-workshop.git
+git clone https://github.com/anagha-google/retail-data-to-ai-workshop.git
 ```
 
 <hr>
@@ -439,7 +439,7 @@ In Cloud Shell, paste the below commands.
 
 1. Navigate to the repo
 ```
-cd retail-supply-chain-workshop
+cd retail-data-to-ai-workshop
 cd 01-data-assets/3nf_ingest
 ```
 
