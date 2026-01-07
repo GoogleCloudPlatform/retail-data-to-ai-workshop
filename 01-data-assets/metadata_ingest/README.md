@@ -4,26 +4,42 @@ The Dataplex Data Insights Dataset Docunentation scan is a feature in private pr
 
 ## Commands
 
-1. Load the Dataset description after replacing project ID in the command below
+0. Variables
+
+```
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
+METADATA_BUCKET_GCS_URI=gs://rscw-oltp-stg-$PROJECT_NBR
+```
+
+
+2. Upload the metadata files to GCS
+
+```
+cd retail-data-to-ai-workshop/01-data-assets/metadata_ingest/
+gsutil cp *.csv $METADATA_BUCKET_GCS_URI/metadata
+
+```
+
+
+2. Load the Dataset description after replacing project ID in the command below
 
 ```
 bq query --nouse_legacy_sql \
-'CREATE OR REPLACE TABLE `data-insights-quickstart.rscw_oltp_metadata_ds.dataset_description` (dataset_description STRING);'
+'CREATE OR REPLACE TABLE `rscw_oltp_metadata_ds.dataset_description` (dataset_description STRING);'
 
-bq load --source_format=CSV --skip_leading_rows=1  data-insights-quickstart:rscw_oltp_metadata_ds.dataset_description  gs://rscw-oltp-stg-606804615020/metadata/dataset_description.csv 
-
-
-
+bq load --source_format=CSV --skip_leading_rows=1  $PROJECT_ID:rscw_oltp_metadata_ds.dataset_description  gs://rscw-oltp-stg-$PROJECT_NBR/metadata/dataset_description.csv 
 
 ```
    
-2. Load the Dataset tables relationships after replacing project ID in the command below
+3. Load the Dataset tables relationships after replacing project ID in the command below
 
 ```
 bq query --nouse_legacy_sql \
-'CREATE TABLE `data-insights-quickstart.rscw_oltp_metadata_ds.dataset_table_relationships` (table_1 STRING,table_1_column STRING,table_2 STRING,table_2_column STRING,join_type STRING);'
+'CREATE TABLE `rscw_oltp_metadata_ds.dataset_table_relationships` (table_1 STRING,table_1_column STRING,table_2 STRING,table_2_column STRING,join_type STRING);'
 
-bq load  --source_format=CSV --skip_leading_rows=1  data-insights-quickstart:rscw_oltp_metadata_ds.dataset_table_relationships  gs://rscw-oltp-stg-606804615020/metadata/dataset_table_relationships.csv 
+bq load  --source_format=CSV --skip_leading_rows=1  $PROJECT_ID:rscw_oltp_metadata_ds.dataset_table_relationships  gs://rscw-oltp-stg-$PROJECT_NBR/metadata/dataset_table_relationships.csv 
 
 ```
+
 
