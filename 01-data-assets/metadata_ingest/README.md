@@ -43,7 +43,7 @@ bq load --source_format=CSV --skip_leading_rows=1  $PROJECT_ID:rscw_oltp_metadat
 
 ```
 bq query --nouse_legacy_sql \
-'CREATE TABLE `rscw_oltp_metadata_ds.dataset_table_relationships` (table_1 STRING,table_1_column STRING,table_2 STRING,table_2_column STRING,join_type STRING);'
+'CREATE OR REPLACE TABLE `rscw_oltp_metadata_ds.dataset_table_relationships` (table_1 STRING,table_1_column STRING,table_2 STRING,table_2_column STRING,join_type STRING);'
 
 bq load  --source_format=CSV --skip_leading_rows=1  $PROJECT_ID:rscw_oltp_metadata_ds.dataset_table_relationships  gs://rscw-oltp-stg-$PROJECT_NBR/metadata/dataset_table_relationships.csv 
 
@@ -54,7 +54,7 @@ bq load  --source_format=CSV --skip_leading_rows=1  $PROJECT_ID:rscw_oltp_metada
 5. Load the table_descriptions 
 ```
 bq query --nouse_legacy_sql \
-'CREATE TABLE `rscw_oltp_metadata_ds.table_descriptions`(name STRING,description STRING);'
+'CREATE OR REPLACE TABLE `rscw_oltp_metadata_ds.table_descriptions`(name STRING,description STRING);'
 
 bq load  --source_format=CSV --skip_leading_rows=1  $PROJECT_ID:rscw_oltp_metadata_ds.table_descriptions  gs://rscw-oltp-stg-$PROJECT_NBR/metadata/table_descriptions.csv 
 ```
@@ -64,10 +64,11 @@ bq load  --source_format=CSV --skip_leading_rows=1  $PROJECT_ID:rscw_oltp_metada
 6. Load the table_column_descriptions 
 ```
 bq query --nouse_legacy_sql \
-'CREATE TABLE `rscw_oltp_metadata_ds.table_column_descriptions`(table_name STRING,column_name STRING, column_description STRING);'
+'CREATE OR REPLACE TABLE `rscw_oltp_metadata_ds.table_column_descriptions`(table_name STRING,column_name STRING, column_description STRING);'
 
 bq load  --source_format=CSV --skip_leading_rows=1  $PROJECT_ID:rscw_oltp_metadata_ds.table_column_descriptions  gs://rscw-oltp-stg-$PROJECT_NBR/metadata/table_column_descriptions.csv 
 ```
 
 <hr>
+
 
