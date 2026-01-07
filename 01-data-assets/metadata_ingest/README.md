@@ -6,7 +6,7 @@ The Dataplex Data Insights Dataset Docunentation scan is a feature in private pr
 
 ## Commands
 
-0. Variables
+1. Variables
 
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
@@ -27,7 +27,7 @@ gsutil cp *.csv $METADATA_BUCKET_GCS_URI/metadata
 <hr>
 
 
-2. Load the Dataset description 
+3. Load the Dataset description 
 
 ```
 bq query --nouse_legacy_sql \
@@ -39,7 +39,7 @@ bq load --source_format=CSV --skip_leading_rows=1  $PROJECT_ID:rscw_oltp_metadat
 
 <hr>
    
-3. Load the Dataset tables relationships 
+4. Load the Dataset tables relationships 
 
 ```
 bq query --nouse_legacy_sql \
@@ -51,7 +51,7 @@ bq load  --source_format=CSV --skip_leading_rows=1  $PROJECT_ID:rscw_oltp_metada
 
 <hr>
 
-4. Load the table_descriptions 
+5. Load the table_descriptions 
 ```
 bq query --nouse_legacy_sql \
 'CREATE TABLE `rscw_oltp_metadata_ds.table_descriptions`(name STRING,description STRING);'
@@ -61,7 +61,7 @@ bq load  --source_format=CSV --skip_leading_rows=1  $PROJECT_ID:rscw_oltp_metada
 
 <hr>
 
-5. Load the table_column_descriptions 
+6. Load the table_column_descriptions 
 ```
 bq query --nouse_legacy_sql \
 'CREATE TABLE `rscw_oltp_metadata_ds.table_column_descriptions`(table_name STRING,column_name STRING, column_description STRING);'
@@ -70,3 +70,4 @@ bq load  --source_format=CSV --skip_leading_rows=1  $PROJECT_ID:rscw_oltp_metada
 ```
 
 <hr>
+
