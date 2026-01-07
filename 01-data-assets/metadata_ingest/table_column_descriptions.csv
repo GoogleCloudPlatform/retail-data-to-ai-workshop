@@ -1,108 +1,108 @@
 table_name,column_name,column_description
-customer_master,zip_cd,Zip code of the customer's location.
-customer_master,city,City where the customer is located.
-customer_master,country_cd,Country code of the customer's location.
-customer_master,email,Email address of the customer.
-customer_master,last_nm,Last name of the customer.
-customer_master,address,Physical address of the customer.
-customer_master,customer_id,Unique identifier for each customer.
-customer_master,first_nm,First name of the customer.
-customer_master,phone_nbr,Phone number of the customer.
-customer_master,state_cd,State code of the customer's location.
-driver_master,driver_id,Unique identifier for each driver.
-driver_master,employee_id,Unique identifier for the employee associated with the driver.
-fleet_master,status,The current status of the vehicle.
-fleet_master,vehicle_id,A unique identifier for each vehicle.
-fleet_master,vin,The Vehicle Identification Number of the vehicle.
-fleet_master,license_plate,The license plate number of the vehicle.
-fleet_master,model,The model of the vehicle.
-location_master,city,City where the location is situated.
-location_master,country_cd,Country code of the location.
-location_master,location_id,Unique identifier for the location.
-location_master,location_nm,Name of the location.
-location_master,location_type,Type of the location.
-location_master,phone_nbr,Phone number of the location.
-location_master,address,Physical address of the location.
-location_master,state_cd,State code of the location.
-location_master,zip_cd,Zip code of the location.
-pos_transaction_items,supplier_id,Unique identifier for the supplier of the product.
-pos_transaction_items,transaction_id,Unique identifier for the transaction.
-pos_transaction_items,transaction_item_id,Unique identifier for the item within the transaction.
-pos_transaction_items,line_item_total,Total value of the line item in the transaction.
-pos_transaction_items,price,Price of the individual item.
-pos_transaction_items,product_id,Unique identifier for the product.
-pos_transaction_items,quantity,Number of units of the item sold in the transaction.
-pos_transactions,transaction_dt,The date and time when the transaction occurred.
-pos_transactions,transaction_id,Unique identifier for the transaction.
-pos_transactions,transaction_status,The current status of the transaction.
-pos_transactions,customer_id,Unique identifier for the customer involved in the transaction.
-pos_transactions,location_id,Identifier for the store or location where the transaction took place.
-pos_transactions,payment_total_dollar,The total dollar amount of the payment for the transaction.
-pos_transactions,payment_type,The method of payment used for the transaction.
-product_master,height_cm,Height of the product in centimeters.
-product_master,price_dollar,Price of the product in dollars.
-product_master,product_nm,Name of the product.
-product_master,safety_qty,Safety stock quantity for the product.
-product_master,weight_g,Weight of the product in grams.
-product_master,width_cm,Width of the product in centimeters.
-product_master,category_id,Unique identifier for the product category.
-product_master,category_nm,Name of the product category.
-product_master,length_cm,Length of the product in centimeters.
-product_master,product_id,Unique identifier for the product.
-product_suppliers,product_id,Unique identifier for a product.
-product_suppliers,supplier_id,Unique identifier for a supplier.
-product_suppliers,supplier_type,Categorization of the supplier, indicating its role.
-sales_forecast,forecast_dt,Timestamp indicating the date and time of the sales forecast.
-sales_forecast,location_id,Unique identifier for the location associated with the sales forecast.
-sales_forecast,product_id,Unique identifier for the product associated with the sales forecast.
-sales_forecast,total_qty_on_hand,Integer representing the total quantity of the product on hand at the time of the forecast.
-stock_allocation_master,product_id,Unique identifier for the product.
-stock_allocation_master,allocation_dt,Timestamp indicating when the stock allocation was recorded.
-stock_allocation_master,location_id,Unique identifier for the location where the stock is allocated.
-stock_allocation_master,location_type,Type of location where the stock is allocated.
-stock_allocation_master,total_qty_on_hand,Total quantity of the product available at the location.
-stock_master,product_id,Unique identifier for the product.
-stock_master,qty_on_hand,The quantity of the product currently in stock.
-stock_master,reorder_point_for_loc,The minimum quantity of the product that should be in stock at the location.
-stock_master,stock_updt_dt,The date and time when the stock level was last updated.
-stock_master,location_id,Unique identifier for the location.
-stock_movement,product_id,Identifier for the product involved in the stock movement.
-stock_movement,qty_change,The change in quantity of the product due to the movement.
-stock_movement,stock_purchase_order_id,Identifier for the stock purchase order associated with the movement.
-stock_movement,transaction_id,Identifier for the transaction associated with the stock movement.
-stock_movement,event_time,Timestamp of the stock movement event.
-stock_movement,location_id,Identifier for the location where the stock movement occurred.
-stock_movement,movement_type,Type of stock movement, such as sale or replenishment.
-stock_purchase_orders,product_id,Unique identifier for the product being ordered.
-stock_purchase_orders,qty_received,Quantity of the product received in the purchase order.
-stock_purchase_orders,received_dt,Timestamp indicating when the stock purchase order was received.
-stock_purchase_orders,ordered_dt,Timestamp indicating when the stock purchase order was placed.
-stock_purchase_orders,qty_ordered,Quantity of the product ordered in the purchase order.
-stock_purchase_orders,stock_purchase_order_id,Unique identifier for each stock purchase order.
-stock_purchase_orders,supplier_id,Unique identifier for the supplier providing the product.
-stock_thresholds,lead_time_days,The typical number of days required for a supplier to deliver a product.
-stock_thresholds,reorder_point,The inventory level at which a new order should be placed to replenish stock.
-stock_thresholds,supplier_id,Unique identifier for a supplier.
-stock_thresholds,product_id,Unique identifier for a product.
-stock_transfer_items,product_id,Unique identifier for the product being transferred.
-stock_transfer_items,qty,The quantity of the product being transferred.
-stock_transfer_items,stock_transfer_id,Unique identifier for the stock transfer event.
-stock_transfers,origin_loc_id,Unique identifier for the origin location of the stock transfer.
-stock_transfers,stock_transfer_type,Type of stock transfer.
-stock_transfers,arrival_timestamp,Timestamp indicating when the stock transfer arrived at the destination location.
-stock_transfers,destination_loc_id,Unique identifier for the destination location of the stock transfer.
-stock_transfers,driver_id,Unique identifier for the driver associated with the stock transfer.
-stock_transfers,status,Current status of the stock transfer.
-stock_transfers,stock_transfer_id,Unique identifier for the stock transfer.
-stock_transfers,departure_timestamp,Timestamp indicating when the stock transfer departed from the origin location.
-stock_transfers,vehicle_id,Unique identifier for the vehicle used for the stock transfer.
-supplier_master,phone_nbr,Phone number of the supplier.
-supplier_master,contact_nm,Name of the supplier's contact person.
-supplier_master,state_cd,State code of the supplier's location.
-supplier_master,supplier_id,Unique identifier for the supplier.
-supplier_master,supplier_nm,Name of the supplier.
-supplier_master,address,Physical address of the supplier.
-supplier_master,city,City where the supplier is located.
-supplier_master,country_cd,Country code of the supplier's location.
-supplier_master,zip_cd,Zip code of the supplier's location.
-supplier_master,contact_email,Email address of the supplier's contact person.
+customer_master,zip_cd,"Zip code of the customer's location."
+customer_master,city,"City where the customer is located."
+customer_master,country_cd,"Country code of the customer's location."
+customer_master,email,"Email address of the customer."
+customer_master,last_nm,"Last name of the customer."
+customer_master,address,"Physical address of the customer."
+customer_master,customer_id,"Unique identifier for each customer."
+customer_master,first_nm,"First name of the customer."
+customer_master,phone_nbr,"Phone number of the customer."
+customer_master,state_cd,"State code of the customer's location."
+driver_master,driver_id,"Unique identifier for each driver."
+driver_master,employee_id,"Unique identifier for the employee associated with the driver."
+fleet_master,status,"The current status of the vehicle."
+fleet_master,vehicle_id,"A unique identifier for each vehicle."
+fleet_master,vin,"The Vehicle Identification Number of the vehicle."
+fleet_master,license_plate,"The license plate number of the vehicle."
+fleet_master,model,"The model of the vehicle."
+location_master,city,"City where the location is situated."
+location_master,country_cd,"Country code of the location."
+location_master,location_id,"Unique identifier for the location."
+location_master,location_nm,"Name of the location."
+location_master,location_type,"Type of the location."
+location_master,phone_nbr,"Phone number of the location."
+location_master,address,"Physical address of the location."
+location_master,state_cd,"State code of the location."
+location_master,zip_cd,"Zip code of the location."
+pos_transaction_items,supplier_id,"Unique identifier for the supplier of the product."
+pos_transaction_items,transaction_id,"Unique identifier for the transaction."
+pos_transaction_items,transaction_item_id,"Unique identifier for the item within the transaction."
+pos_transaction_items,line_item_total,"Total value of the line item in the transaction."
+pos_transaction_items,price,"Price of the individual item."
+pos_transaction_items,product_id,"Unique identifier for the product."
+pos_transaction_items,quantity,"Number of units of the item sold in the transaction."
+pos_transactions,transaction_dt,"The date and time when the transaction occurred."
+pos_transactions,transaction_id,"Unique identifier for the transaction."
+pos_transactions,transaction_status,"The current status of the transaction."
+pos_transactions,customer_id,"Unique identifier for the customer involved in the transaction."
+pos_transactions,location_id,"Identifier for the store or location where the transaction took place."
+pos_transactions,payment_total_dollar,"The total dollar amount of the payment for the transaction."
+pos_transactions,payment_type,"The method of payment used for the transaction."
+product_master,height_cm,"Height of the product in centimeters."
+product_master,price_dollar,"Price of the product in dollars."
+product_master,product_nm,"Name of the product."
+product_master,safety_qty,"Safety stock quantity for the product."
+product_master,weight_g,"Weight of the product in grams."
+product_master,width_cm,"Width of the product in centimeters."
+product_master,category_id,"Unique identifier for the product category."
+product_master,category_nm,"Name of the product category."
+product_master,length_cm,"Length of the product in centimeters."
+product_master,product_id,"Unique identifier for the product."
+product_suppliers,product_id,"Unique identifier for a product."
+product_suppliers,supplier_id,"Unique identifier for a supplier."
+product_suppliers,supplier_type,"Categorization of the supplier," indicating its role."
+sales_forecast,forecast_dt,"Timestamp indicating the date and time of the sales forecast."
+sales_forecast,location_id,"Unique identifier for the location associated with the sales forecast."
+sales_forecast,product_id,"Unique identifier for the product associated with the sales forecast."
+sales_forecast,total_qty_on_hand,"Integer representing the total quantity of the product on hand at the time of the forecast."
+stock_allocation_master,product_id,"Unique identifier for the product."
+stock_allocation_master,allocation_dt,"Timestamp indicating when the stock allocation was recorded."
+stock_allocation_master,location_id,"Unique identifier for the location where the stock is allocated."
+stock_allocation_master,location_type,"Type of location where the stock is allocated."
+stock_allocation_master,total_qty_on_hand,"Total quantity of the product available at the location."
+stock_master,product_id,Unique identifier for the product."
+stock_master,qty_on_hand,"The quantity of the product currently in stock."
+stock_master,reorder_point_for_loc,"The minimum quantity of the product that should be in stock at the location."
+stock_master,stock_updt_dt,"The date and time when the stock level was last updated."
+stock_master,location_id,"Unique identifier for the location."
+stock_movement,product_id,"Identifier for the product involved in the stock movement."
+stock_movement,qty_change,"The change in quantity of the product due to the movement."
+stock_movement,stock_purchase_order_id,"Identifier for the stock purchase order associated with the movement."
+stock_movement,transaction_id,"Identifier for the transaction associated with the stock movement."
+stock_movement,event_time,"Timestamp of the stock movement event."
+stock_movement,location_id,"Identifier for the location where the stock movement occurred."
+stock_movement,movement_type,"Type of stock movement," such as sale or replenishment."
+stock_purchase_orders,product_id,"Unique identifier for the product being ordered."
+stock_purchase_orders,qty_received,"Quantity of the product received in the purchase order."
+stock_purchase_orders,received_dt,"Timestamp indicating when the stock purchase order was received."
+stock_purchase_orders,ordered_dt,"Timestamp indicating when the stock purchase order was placed."
+stock_purchase_orders,qty_ordered,"Quantity of the product ordered in the purchase order."
+stock_purchase_orders,stock_purchase_order_id,"Unique identifier for each stock purchase order."
+stock_purchase_orders,supplier_id,"Unique identifier for the supplier providing the product."
+stock_thresholds,lead_time_days,"The typical number of days required for a supplier to deliver a product."
+stock_thresholds,reorder_point,"The inventory level at which a new order should be placed to replenish stock."
+stock_thresholds,supplier_id,"Unique identifier for a supplier."
+stock_thresholds,product_id,"Unique identifier for a product."
+stock_transfer_items,product_id,"Unique identifier for the product being transferred."
+stock_transfer_items,qty,"The quantity of the product being transferred."
+stock_transfer_items,stock_transfer_id,"Unique identifier for the stock transfer event."
+stock_transfers,origin_loc_id,"Unique identifier for the origin location of the stock transfer."
+stock_transfers,stock_transfer_type,"Type of stock transfer."
+stock_transfers,arrival_timestamp,"Timestamp indicating when the stock transfer arrived at the destination location."
+stock_transfers,destination_loc_id,"Unique identifier for the destination location of the stock transfer."
+stock_transfers,driver_id,"Unique identifier for the driver associated with the stock transfer."
+stock_transfers,status,"Current status of the stock transfer."
+stock_transfers,stock_transfer_id,"Unique identifier for the stock transfer."
+stock_transfers,departure_timestamp,"Timestamp indicating when the stock transfer departed from the origin location."
+stock_transfers,vehicle_id,"Unique identifier for the vehicle used for the stock transfer."
+supplier_master,phone_nbr,"Phone number of the supplier."
+supplier_master,contact_nm,"Name of the supplier's contact person."
+supplier_master,state_cd,"State code of the supplier's location."
+supplier_master,supplier_id,"Unique identifier for the supplier."
+supplier_master,supplier_nm,"Name of the supplier."
+supplier_master,address,"Physical address of the supplier."
+supplier_master,city,"City where the supplier is located."
+supplier_master,country_cd,"Country code of the supplier's location."
+supplier_master,zip_cd,"Zip code of the supplier's location."
+supplier_master,contact_email,"Email address of the supplier's contact person."
