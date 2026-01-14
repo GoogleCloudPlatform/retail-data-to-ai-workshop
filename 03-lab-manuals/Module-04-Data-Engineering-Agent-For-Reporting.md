@@ -188,25 +188,17 @@ b5) Include quantity movement
 b6) Delete any existing report table
 b7) Run the query and save its contents into a new table in the rscw_rpt_ds dataset.
 
-c) Generate actual avergage daily order value report-
-c1) Create a report query that computes the daily average order value for each full day that exists in the sales records.
-c2) If there are no orders in a day, the average should be zero. The null values should count as zero.
-c3) If product ID is in the report, ensure you include product name 
-c4) Delete any existing report table
-c5) Run the query and save its contents into a new report table in the rscw_rpt_ds dataset.
+c) Generate a report on best selling product by category
+c1) Create a report query to calculate the most frequently sold product for each product category.
+c2) Include product name 
+c3) Delete any existing report table
+c4) Run the query and save its contents into a new report table in the rscw_rpt_ds dataset.
 
-d) Generate a report on best selling product by category
-d1) Create a report query to calculate the most frequently sold product for each product category.
+d) Generate a report on best selling product
+d1) Create a report query to calculate the most frequently sold product for the last 90, 180, and 365 days.
 d2) Include product name 
 d3) Delete any existing report table
 d4) Run the query and save its contents into a new report table in the rscw_rpt_ds dataset.
-
-e) Generate a report on best selling product
-e1) Create a report query to calculate the most frequently sold product for the last 90, 180, and 365 days.
-e2) Include product name 
-e3) Delete any existing report table
-e4) Run the query and save its contents into a new report table in the rscw_rpt_ds dataset.
-
 ```
 
 ### 5.2. Launch the Agent UI in the Dataform workspace & paste the prompt
