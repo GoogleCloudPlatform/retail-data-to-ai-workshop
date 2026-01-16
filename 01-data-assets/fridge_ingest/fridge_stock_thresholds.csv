@@ -1,4 +1,4 @@
-item_number,omni_item_id,stock_on_hand_across_stores,stock_at_each_store,total_stock_at_stores,total_stock_at_warehouse,average_sold_per_day_per_store,avg_sold_per_day_total,safety_stock_per_store,safe_stock_total,reorder_point_per_store,reorder_point_total,last_updated_date,is_current
+item_number,omni_item_id,stock_on_hand_across_stores,stock_at_each_store,total_stock_at_stores,total_stock_at_warehouse,average_sold_per_day_per_store,avg_sold_per_day_total,safety_stock_per_store,safety_stock_total,reorder_point_per_store,reorder_point_total,last_updated_date,is_current
 RS65DG54R3S9,RS65DG54R3S9-EF,600,40,120,480,9,27,14,42,77,231,2024-12-31,Y
 RS65DG54R3S9,RS65DG54R3S9-EU,600,40,120,480,10,30,15,45,85,255,2024-12-31,Y
 RS66DG813CS9EU,RS66DG813CS9EU,600,40,120,480,8,24,12,36,68,204,2024-12-31,Y
