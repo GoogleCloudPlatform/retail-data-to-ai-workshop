@@ -4,17 +4,88 @@
 
 ### 1.1. Authenticate to Google Cloud from CLI
 
-
 ### 1.2. Ingest the refrigerator dataset from CLI
 
 
 ### 1.3. Run the notebook that executes the Data Insights documentation scans & persists metadata to GCS
 
 
-### 1.4. Set up VS code or use any IDE on your machine
+### 1.4. Create a user managed service account for deployments
+
+From your terminal, run the below:
+```
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
+LOCATION="us-central1"
+DEPLOYMENT_UMSA="rscw-devops-umsa"
+DEPLOYMENT_UMSA_FQN="rscw-devops-umsa@$PROJECT_ID.iam.gserviceaccount.com"
+
+gcloud iam service-accounts create $DEPLOYMENT_UMSA \
+  --description="User Managed Service Account" \
+  --display-name="RSCW DevOps UMSA"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
+  --role="roles/serviceusage.serviceUsageConsumer"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
+  --role="roles/aiplatform.user"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
+  --role="roles/storage.objectCreator"
+```
+
+### 1.6. Grant yourself permissions to impersonate the deployment UMSA
+
+```
+YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="user:$YOUR_UPN_FQN" \
+  --role="roles/iam.serviceAccountTokenCreator"
+
+gcloud iam service-accounts add-iam-policy-binding \
+    ${DEPLOYMENT_UMSA_FQN} \
+    --member="user:${YOUR_UPN_FQN}" \
+    --role="roles/iam.serviceAccountUser"
+
+gcloud iam service-accounts add-iam-policy-binding \
+    ${DEPLOYMENT_UMSA_FQN} \
+    --member="user:${YOUR_UPN_FQN}" \
+    --role="roles/iam.serviceAccountTokenCreator"
+```
 
 
-### 1.5. Clone this repo if you have not already done so
+### 1.5. Create a bucket for agent deployment
+
+From your terminal, run the below:
+```
+AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-$PROJECT_NBR"
+gcloud storage buckets create "gs://$AGENT_DEPLOYMENT_BUCKET" --location=$LOCATION  --impersonate-service-account=$DEPLOYMENT_UMSA_FQN
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
+  --role="roles/serviceusage.serviceUsageConsumer"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
+  --role="roles/aiplatform.user"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
+  --role="roles/storage.objectCreator"
+
+
+
+```
+
+
+### 1.5. Set up VS code or use any IDE on your machine
+
+
+### 1.6. Clone this repo if you have not already done so
 
 
 <hr>
@@ -61,9 +132,27 @@ Modify the env file to reflect your GCP project ID
 
 ### 4.1. Requisite API enabling
 
+```
+gcloud services enable discoveryengine.googleapis.com
+```
+
 ### 4.2. Create a user managed service account (UMSA) for the Data Analyst Agent
 
-### 4.3. Grant the UMSA, requisite incremental IAM permissions 
+```
+DATA_ANALYST_UMSA="data-analyst-umsa"
+DATA_ANALYST_UMSA_FQN="$DATA_ANALYST_UMSA@$PROJECT_ID.iam.gserviceaccount.com"
+
+gcloud iam service-accounts create $DATA_ANALYST_UMSA \
+  --description="User Managed Service Account" \
+  --display-name="Data Analyst Service Account"
+```
+
+### 4.3. Grant the UMSA, requisite IAM permissions 
+
+```
+
+
+```
 
 ### 4.4. Lock down the BigQuery datasets the Data Analyst Agent UMSA has access to
 
