@@ -76,9 +76,6 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
   --role="roles/storage.objectCreator"
-
-
-
 ```
 
 
@@ -215,6 +212,12 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 
 ### 4.4. Lock down the BigQuery datasets the Data Analyst Agent UMSA has access to
+
+```
+
+bq query --use_legacy_sql=false < GRANT `roles/bigquery.dataViewer` ON SCHEMA rscw_fridge_ds FROM "serviceAccount:${DATA_ANALYST_UMSA_FQN}"
+
+```
 
 <hr>
 
