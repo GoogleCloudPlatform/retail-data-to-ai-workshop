@@ -149,13 +149,17 @@ gcloud iam service-accounts create $DATA_ANALYST_UMSA \
 ### 4.3. Grant the UMSA, requisite IAM permissions 
 
 ```
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/bigquery.user"
+BQ_DATASET_IN_SCOPE_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_ds"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/bigquery.dataViewer"
+--member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+--role="roles/bigquery.dataViewer" \
+--condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+--role="roles/bigquery.user" \
+--condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
@@ -215,8 +219,17 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 ```
 
-bq query --use_legacy_sql=false < GRANT `roles/bigquery.dataViewer` ON SCHEMA rscw_fridge_ds FROM "serviceAccount:${DATA_ANALYST_UMSA_FQN}"
 
+
+
+cmd = f"""
+gcloud projects add-iam-policy-binding {GCP_PROJECT_ID} \
+--member="serviceAccount:maskedreader-sa@{GCP_PROJECT_ID}.iam.gserviceaccount.com" \
+--role="roles/bigquery.dataViewer" \
+--condition='expression=resource.name.startsWith("projects/{GCP_PROJECT_ID}/datasets/{DATAPRODUCT_DATASET_NAME}"),title=AccessToSpecificDataset'
+"""
+!{cmd}
+print(cmd)
 ```
 
 <hr>
