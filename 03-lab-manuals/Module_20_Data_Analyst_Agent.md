@@ -31,7 +31,14 @@
 
 ## 3. Run the agent locally
 
-### 3.1. Install the Python dependencies
+### 3.1. Set up a Python virtual environment
+
+```
+python -m venv .venv
+source .venv/bin/activate
+```
+
+### 3.2. Install the Python dependencies
 
 Navigate to the Data_Analytics_Agent folder that has the requirements.txt and run the install from VS code terminal-
 `pip install -r requirements.txt`
