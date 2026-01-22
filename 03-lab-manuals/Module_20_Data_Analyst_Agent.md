@@ -2,16 +2,20 @@
 
 ## 1. Setup
 
-### 1.1. Ingest the refrigerator dataset
+### 1.1. Authenticate to Google Cloud from CLI
 
 
-### 1.2. Run the Data Insights documentation scans & persist metadata to GCS
+### 1.2. Ingest the refrigerator dataset from CLI
 
 
-### 1.3. Set up VS code
+### 1.3. Run the notebook that executes the Data Insights documentation scans & persists metadata to GCS
 
 
-### 1.4. Clone this repo if you have not already done so
+### 1.4. Set up VS code or use any IDE on your machine
+
+
+### 1.5. Clone this repo if you have not already done so
+
 
 <hr>
 
@@ -27,13 +31,19 @@
 
 ## 3. Run the agent locally
 
-### 3.1. Update the env file 
+### 3.1. Install the Python dependencies
+
+Navigate to the Data_Analytics_Agent folder that has the requirements.txt and run the install from VS code terminal-
+`pip install -r requirements.txt`
+
+### 3.2. Update the env file 
+
+Modify the env file to reflect your GCP project ID
 
 
-### 3.2. Lauch a terminal in VS Code/your IDE and authenticate
+### 3.3. Lauch a terminal in VS Code/your IDE and authenticate
 
-
-### 3.3. Run adk web
+### 3.4. Run adk web
 
 
 ### 3.4. Try out a few prompts
@@ -56,12 +66,16 @@
 
 ### 5.1. Deploy the agent to Agent Engine
 
-### 5.2. Test the Data Analyst Agent agent on Agent Engine
+### 5.2. Capture the identifier of the agent deployed
+
+### 5.3. Test the remote Data Analyst Agent on Agent Engine programmatically from your IDE
 
 <hr>
 
 
 ## 6. Register the Data Analyst Agent with Agentspace on Gemini Enterprise
+
+
 
 <hr>
 
