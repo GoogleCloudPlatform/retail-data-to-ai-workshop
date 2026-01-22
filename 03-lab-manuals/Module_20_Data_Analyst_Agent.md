@@ -145,14 +145,74 @@ DATA_ANALYST_UMSA_FQN="$DATA_ANALYST_UMSA@$PROJECT_ID.iam.gserviceaccount.com"
 gcloud iam service-accounts create $DATA_ANALYST_UMSA \
   --description="User Managed Service Account" \
   --display-name="Data Analyst Service Account"
+
+
 ```
 
 ### 4.3. Grant the UMSA, requisite IAM permissions 
 
 ```
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+  --role="roles/bigquery.user"
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+  --role="roles/bigquery.dataViewer"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+  --role="roles/mcp.toolUser"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+  --role="roles/serviceusage.serviceUsageAdmin"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+  --role="roles/iam.oauthClientViewer"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+  --role="roles/iam.serviceAccountViewer"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+  --role="roles/oauthconfig.editor"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+  --role="roles/aiplatform.user"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+  --role="roles/storage.objectCreator"
 
 ```
+
+### 4.4. Grant yourself permissions to impersonate the Data Analyst UMSA
+
+```
+YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="user:$YOUR_UPN_FQN" \
+  --role="roles/iam.serviceAccountTokenCreator"
+
+gcloud iam service-accounts add-iam-policy-binding \
+    ${DATA_ANALYST_UMSA_FQN} \
+    --member="user:${YOUR_UPN_FQN}" \
+    --role="roles/iam.serviceAccountUser"
+
+gcloud iam service-accounts add-iam-policy-binding \
+    ${DATA_ANALYST_UMSA_FQN} \
+    --member="user:${YOUR_UPN_FQN}" \
+    --role="roles/iam.serviceAccountTokenCreator"
+
+```
+
+
+
 
 ### 4.4. Lock down the BigQuery datasets the Data Analyst Agent UMSA has access to
 
