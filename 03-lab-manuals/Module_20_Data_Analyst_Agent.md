@@ -65,17 +65,6 @@ From your terminal, run the below:
 AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-$PROJECT_NBR"
 gcloud storage buckets create "gs://$AGENT_DEPLOYMENT_BUCKET" --location=$LOCATION  --impersonate-service-account=$DEPLOYMENT_UMSA_FQN
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
-  --role="roles/serviceusage.serviceUsageConsumer"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
-  --role="roles/aiplatform.user"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
-  --role="roles/storage.objectCreator"
 ```
 
 
@@ -136,14 +125,12 @@ gcloud services enable discoveryengine.googleapis.com
 ### 4.2. Create a user managed service account (UMSA) for the Data Analyst Agent
 
 ```
-DATA_ANALYST_UMSA="data-analyst-umsa"
+DATA_ANALYST_UMSA="data-analyst-agent"
 DATA_ANALYST_UMSA_FQN="$DATA_ANALYST_UMSA@$PROJECT_ID.iam.gserviceaccount.com"
 
 gcloud iam service-accounts create $DATA_ANALYST_UMSA \
   --description="User Managed Service Account" \
-  --display-name="Data Analyst Service Account"
-
-
+  --display-name="Data Analyst Agent Service Account"
 ```
 
 ### 4.3. Grant the UMSA, requisite IAM permissions 
@@ -161,30 +148,33 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 --role="roles/bigquery.user" \
 --condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
 
+# Select 3 - None in the prompt
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/mcp.toolUser"
+  --role="roles/mcp.toolUser" \
+  --condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/serviceusage.serviceUsageAdmin"
-
+# Select 3 - None in the prompt
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
   --role="roles/iam.oauthClientViewer"
 
+# Select 3 - None in the prompt
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
   --role="roles/iam.serviceAccountViewer"
 
+# Select 3 - None in the prompt
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
   --role="roles/oauthconfig.editor"
 
+# Select 3 - None in the prompt
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
   --role="roles/aiplatform.user"
 
+# Select 3 - None in the prompt
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
   --role="roles/storage.objectCreator"
@@ -213,30 +203,13 @@ gcloud iam service-accounts add-iam-policy-binding \
 ```
 
 
-
-
-### 4.4. Lock down the BigQuery datasets the Data Analyst Agent UMSA has access to
-
-```
-
-
-
-
-cmd = f"""
-gcloud projects add-iam-policy-binding {GCP_PROJECT_ID} \
---member="serviceAccount:maskedreader-sa@{GCP_PROJECT_ID}.iam.gserviceaccount.com" \
---role="roles/bigquery.dataViewer" \
---condition='expression=resource.name.startsWith("projects/{GCP_PROJECT_ID}/datasets/{DATAPRODUCT_DATASET_NAME}"),title=AccessToSpecificDataset'
-"""
-!{cmd}
-print(cmd)
-```
-
 <hr>
 
 ## 5. Deploy the Data Analyst Agent to Agent Engine
 
 ### 5.1. Deploy the agent to Agent Engine
+
+
 
 ### 5.2. Capture the identifier of the agent deployed
 
