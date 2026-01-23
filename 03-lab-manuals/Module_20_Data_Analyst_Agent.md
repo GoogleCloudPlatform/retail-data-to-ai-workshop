@@ -186,7 +186,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/bigquery.jobUser"
+  --role="roles/bigquery.jobUser" 
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
@@ -195,8 +195,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/bigquery.user" \
---condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
+--role="roles/bigquery.user" 
 
 
  
