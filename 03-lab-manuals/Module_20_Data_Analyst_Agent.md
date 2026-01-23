@@ -225,18 +225,6 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 ```
 
-### 4.5. Allow the Agent Engine Service Agent to impersonate the Data Analyst UMSA
-
-
-```
-AGENT_ENGINE_SERVICE_AGENT_FQN="service-$PROJECT_NBR@gcp-sa-aiplatform-re.iam.gserviceaccount.com"
-
-gcloud iam service-accounts add-iam-policy-binding \
-  ${DATA_ANALYST_UMSA_FQN} \
-  --member="serviceAccount:$AGENT_ENGINE_SERVICE_AGENT_FQN" \
-  --role="roles/iam.serviceAccountTokenCreator"
-```
-
 
 <hr>
 
@@ -255,27 +243,33 @@ PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d'
 LOCATION="us-central1"
 
 adk deploy agent_engine \
-  --project=$PROJECT_ID \
-  --region=$LOCATION \
-  --display_name="Data Analyst Agent" \
-  --staging_bucket=gs://agent-deployment-bucket-$PROJECT_NBR \
-  --env_file="./data_analyst_agent/.env" \
-  --trace_to_cloud \
-  ./data_analyst_agent
-
-
+--project=$PROJECT_ID   \
+--region=$LOCATION   \
+--display_name="Data Analyst Agent"   \
+--description="An agent that can answer natural language questions about data in the BQ dataset rscw_fridge_ds" \
+--staging_bucket=gs://agent-deployment-bucket-$PROJECT_NBR   \
+--env_file="./data_analyst_agent/.env"   \
+--trace_to_cloud   \
+./data_analyst_agent
 ```
 
 
-### 5.2. Capture the identifier of the agent deployed
+### 5.2. Test the  Data Analyst Agent on Agent Engine in the "Playground"
 
-### 5.3. Test the remote Data Analyst Agent on Agent Engine programmatically from your IDE
+
 
 <hr>
 
 
 ## 6. Register the Data Analyst Agent with Agentspace on Gemini Enterprise
 
+### 6.1. Retrieve the Data Analyst Agent ID from the Agent Engine deployment
+
+```
+LOCATION=us-central1
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+DATA_ANALYST_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://us-central1-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$LOCATION/reasoningEngines" | grep -2 "Data Analyst Agent" | grep name | grep reasoningEngines | cut -d '/' -f2`
+```
 
 
 <hr>
