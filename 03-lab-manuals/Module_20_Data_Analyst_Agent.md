@@ -154,6 +154,11 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/mcp.toolUser" \
   --condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
 
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+  --role="roles/aiplatform.reasoningEngineServiceAgent"
+
 # Select 3 - None in the prompt
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
@@ -202,13 +207,46 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 ```
 
+### 4.5. Allow the Agent Engine Service Agent to impersonate the Data Analyst UMSA
+
+
+```
+AGENT_ENGINE_SERVICE_AGENT_FQN="service-$PROJECT_NBR@gcp-sa-aiplatform-re.iam.gserviceaccount.com"
+
+gcloud iam service-accounts add-iam-policy-binding \
+  ${DATA_ANALYST_UMSA_FQN} \
+  --member="serviceAccount:$AGENT_ENGINE_SERVICE_AGENT_FQN" \
+  --role="roles/iam.serviceAccountTokenCreator"
+```
+
 
 <hr>
 
 ## 5. Deploy the Data Analyst Agent to Agent Engine
 
+### 5.1. Create the agent_engine_config.json
+
+
+
 ### 5.1. Deploy the agent to Agent Engine
 
+Run this from within the top level data_analyst_agent folder, from CLI
+```
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
+LOCATION="us-central1"
+
+adk deploy agent_engine \
+  --project=$PROJECT_ID \
+  --region=$LOCATION \
+  --display_name="Data Analyst Agent" \
+  --staging_bucket=gs://agent-deployment-bucket-$PROJECT_NBR \
+  --env_file="./data_analyst_agent/.env" \
+  --trace_to_cloud \
+  ./data_analyst_agent
+
+
+```
 
 
 ### 5.2. Capture the identifier of the agent deployed
