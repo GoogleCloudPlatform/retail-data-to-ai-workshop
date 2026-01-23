@@ -197,11 +197,6 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
 --role="roles/bigquery.user" 
 
-
- 
-
-
-
 ```
 
 ### 4.4. Grant yourself permissions to impersonate the Data Analyst UMSA
@@ -222,7 +217,6 @@ gcloud iam service-accounts add-iam-policy-binding \
     ${DATA_ANALYST_UMSA_FQN} \
     --member="user:${YOUR_UPN_FQN}" \
     --role="roles/iam.serviceAccountTokenCreator"
-
 ```
 
 
@@ -271,7 +265,16 @@ PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 DATA_ANALYST_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://us-central1-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$LOCATION/reasoningEngines" | grep -2 "Data Analyst Agent" | grep name | grep reasoningEngines | cut -d '/' -f2`
 ```
 
+### 6.2. Grant the deployer (yourself), incremental IAM permissions
 
+```
+YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="user:$YOUR_UPN_FQN" \
+  --role="roles/discoveryengine.admin"
+
+```
 <hr>
 
 
