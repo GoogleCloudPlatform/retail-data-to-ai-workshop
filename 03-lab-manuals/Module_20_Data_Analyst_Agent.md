@@ -185,6 +185,10 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/storage.objectCreator"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+  --role="roles/bigquery.jobUser"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
 --role="roles/bigquery.dataViewer" \
 --condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
