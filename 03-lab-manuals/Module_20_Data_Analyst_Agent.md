@@ -67,11 +67,19 @@ gcloud storage buckets create "gs://$AGENT_DEPLOYMENT_BUCKET" --location=$LOCATI
 
 ```
 
+### 1.6. Enable APIs
 
-### 1.5. Set up VS code or use any IDE on your machine
+Only incremental APIs are listed below-
+```
+gcloud services enable telemetry.googleapis.com
+gcloud services enable logging.googleapis.com
+```
 
 
-### 1.6. Clone this repo if you have not already done so
+### 1.7. Set up VS code or use any IDE on your machine
+
+
+### 1.8. Clone this repo if you have not already done so
 
 
 <hr>
@@ -102,8 +110,13 @@ Navigate to the Data_Analytics_Agent folder that has the requirements.txt and ru
 
 ### 3.2. Update the env file 
 
-Modify the env file to reflect your GCP project ID
+Modify the env file to reflect your GCP project ID, project number and location by updating the following with your details and saving the file-
 
+```
+GOOGLE_CLOUD_PROJECT="YOUR_PROJECT_ID"
+GOOGLE_CLOUD_LOCATION="YOUR_GCP_LOCATION"
+GOOGLE_CLOUD_PROJECT_NUMBER="YOUR_PROJECT_NUMBER"
+```
 
 ### 3.3. Lauch a terminal in VS Code/your IDE and authenticate
 
@@ -139,21 +152,8 @@ gcloud iam service-accounts create $DATA_ANALYST_UMSA \
 BQ_DATASET_IN_SCOPE_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_ds"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/bigquery.dataViewer" \
---condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/bigquery.user" \
---condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
-
-# Select 3 - None in the prompt
-gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/mcp.toolUser" \
-  --condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
-
+  --role="roles/mcp.toolUser"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
@@ -183,6 +183,21 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
   --role="roles/storage.objectCreator"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+--role="roles/bigquery.dataViewer" \
+--condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+--role="roles/bigquery.user" \
+--condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
+
+
+ 
+
+
 
 ```
 
