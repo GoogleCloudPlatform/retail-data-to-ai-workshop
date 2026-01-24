@@ -318,11 +318,11 @@ Author's output:
 ```
 THIS IS JUST FOR AWARENESS
 {
-  "name": "projects/606XXX020/locations/global/collections/default_collection/operations/create-engine-11917709259978913064",
+  "name": "projects/606804615020/locations/global/collections/default_collection/operations/create-engine-8371403560808029638",
   "done": true,
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Engine",
-    "name": "projects/606XXX020/locations/global/collections/default_collection/engines/shoonya-retail-agentverse",
+    "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-retail-agentverse",
     "displayName": "Shoonya Retail Agentverse",
     "solutionType": "SOLUTION_TYPE_SEARCH",
     "searchEngineConfig": {
@@ -415,6 +415,20 @@ PAYLOAD="{
 }
 }"
 
+PAYLOAD="{
+     \"displayName\": \"Data Analyst Agent\",
+     \"description\": \"An agent who can analyze data on your behalf with just natural language questions as input\",
+     \"icon\": {
+        \"uri\": \"ICON_URI\"
+  },
+  \"adk_agent_definition\": {
+     \"provisioned_reasoning_engine\": {
+        \"reasoning_engine\":
+        \"projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines/$DATA_ANALYST_AGENT_ID\"
+     }
+  }
+}"
+
 curl -X POST \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \
@@ -427,24 +441,19 @@ curl -X POST \
 Author's output:
 ```
 {
-  "name": "projects/60XXX0/locations/global/collections/default_collection/engines/shoonya-retail-agentverse/assistants/default_assistant/agents/15XXX634691",
+  "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-retail-agentverse/assistants/default_assistant/agents/8401779179432481891",
   "displayName": "Data Analyst Agent",
   "description": "An agent who can analyze data on your behalf with just natural language questions as input",
   "icon": {
     "uri": "ICON_URI"
   },
-  "createTime": "2026-01-24T19:07:05.056511256Z",
+  "createTime": "2026-01-24T21:57:11.752273556Z",
   "adkAgentDefinition": {
     "provisionedReasoningEngine": {
-      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/606XXXX20"
+      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/606804615020"
     }
   },
-  "state": "ENABLED",
-  "authorizationConfig": {
-    "toolAuthorizations": [
-      "projects/606XXXX20/locations/global/authorizations/shoonya_oauth_client"
-    ]
-  }
+  "state": "ENABLED"
 }
 ```
 
