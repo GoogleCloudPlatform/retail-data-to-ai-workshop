@@ -218,6 +218,11 @@ gcloud iam service-accounts add-iam-policy-binding \
     --member="user:${YOUR_UPN_FQN}" \
     --role="roles/iam.serviceAccountTokenCreator"
 ```
+<hr>
+
+### 4.5. Grant yourself permissions to impersonate the Data Analyst UMSA
+
+
 
 
 <hr>
@@ -278,20 +283,8 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 <hr>
 
 
-## 6. Create an oauth client from the Cloud Console for use in Gemini Enterprise
 
-Docs: https://docs.cloud.google.com/gemini/enterprise/docs/register-and-manage-an-adk-agent <br>
-
-Follow the steps as detailed in the screenshot below to create your oauth client.
-
-
-# INSERT SCREENSHOT HERE
-
-
-
-<hr>
-
-## 7. Create the Agentspace App (Shoonya Retail Agentverse) on Gemini Enterprise
+## 6. Create the Agentspace App (Shoonya Retail Agentverse) on Gemini Enterprise
 
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
@@ -318,11 +311,11 @@ Author's output:
 ```
 THIS IS JUST FOR AWARENESS
 {
-  "name": "projects/606804615020/locations/global/collections/default_collection/operations/create-engine-8371403560808029638",
+  "name": "projects/606asdfasdfasdf20/locations/global/collections/default_collection/operations/create-engine-8371403560808029638",
   "done": true,
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Engine",
-    "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-retail-agentverse",
+    "name": "projects/606asdfsdfasdf0/locations/global/collections/default_collection/engines/shoonya-retail-agentverse",
     "displayName": "Shoonya Retail Agentverse",
     "solutionType": "SOLUTION_TYPE_SEARCH",
     "searchEngineConfig": {
@@ -338,50 +331,9 @@ THIS IS JUST FOR AWARENESS
 }
 ```
 
-
-
-## 8. Register an authorization resource with Gemini Enterprise
-
-### 8.1. Variables
-
-```
-PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
-AGENTSPACE_APP_ID="shoonya-retail-agentverse"
-AGENTSPACE_LOCATION="global"
-```
-
-### 8.2. Generate the curl command
-  
-Go to this URL and paste in your oauth details, grab the command and run it on the terminal...
-
-
-# INSERT SCREENSHOT HERE
-
-
-### 8.3. Run the curl command on your terminal
-
-
-# INSERT SCREENSHOT HERE
-
-```
-THIS IS AUTHOR'S SAMPLE - THIS WONT WORK FOR YOU
-curl -X POST \
-   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-   -H "Content-Type: application/json" \
-   -H "X-Goog-User-Project: data-insights-quickstart" \
-   "https://global-discoveryengine.googleapis.com/v1alpha/projects/data-insights-quickstart/locations/global/authorizations?authorizationId=shoonya_oauth_client" \
-   -d '{
-      "name": "projects/data-insights-quickstart/locations/global/authorizations/shoonya_oauth_client",
-      "serverSideOauth2": {
-         "clientId": "6068BLAHgrd.apps.googleusercontent.com",
-         "clientSecret": "GBLAHrxsaqgG",
-         "authorizationUri": "https://accounts.google.com/o/oauth2/auth",
-         "tokenUri": "https://oauth2.googleapis.com/token"
-      }
-   }'
-```
-
 <hr>
+
+
 
 ## 9. Register the Data Analyst Agent with Agentspace on Gemini Enterprise
 
@@ -395,25 +347,6 @@ AGENTSPACE_APP_ID="shoonya-retail-agentverse"
 AGENTSPACE_LOCATION="global"
 AGENT_ENGINE_LOCATION="us-central1"
 DATA_ANALYST_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines" | grep -2 "Data Analyst Agent" | grep name | grep reasoningEngines | cut -d '/' -f2`
-
-PAYLOAD="{
-     \"displayName\": \"Data Analyst Agent\",
-     \"description\": \"An agent who can analyze data on your behalf with just natural language questions as input\",
-     \"icon\": {
-        \"uri\": \"ICON_URI\"
-  },
-  \"adk_agent_definition\": {
-     \"provisioned_reasoning_engine\": {
-        \"reasoning_engine\":
-        \"projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines/$DATA_ANALYST_AGENT_ID\"
-     }
-  },
-\"authorization_config\": {
-\"tool_authorizations\": [
-\"projects/$PROJECT_NBR/locations/global/authorizations/shoonya_oauth_client\"
-]
-}
-}"
 
 PAYLOAD="{
      \"displayName\": \"Data Analyst Agent\",
@@ -441,7 +374,7 @@ curl -X POST \
 Author's output:
 ```
 {
-  "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-retail-agentverse/assistants/default_assistant/agents/8401779179432481891",
+  "name": "projects/6068dsdfsdf5020/locations/global/collections/default_collection/engines/shoonya-retail-agentverse/assistants/default_assistant/agents/84017asdfasdfafd1891",
   "displayName": "Data Analyst Agent",
   "description": "An agent who can analyze data on your behalf with just natural language questions as input",
   "icon": {
@@ -450,7 +383,7 @@ Author's output:
   "createTime": "2026-01-24T21:57:11.752273556Z",
   "adkAgentDefinition": {
     "provisionedReasoningEngine": {
-      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/606804615020"
+      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/6068asdfasdfa20"
     }
   },
   "state": "ENABLED"
