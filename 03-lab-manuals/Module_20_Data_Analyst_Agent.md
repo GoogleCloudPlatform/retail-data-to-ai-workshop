@@ -129,6 +129,8 @@ GOOGLE_CLOUD_PROJECT_NUMBER="YOUR_PROJECT_NUMBER"
 
 ## 4. Preparing for deployment to Agent Engine
 
+Our goal is to deploy the agent to agent engine to run as custom service account. Per the documentation this is supported. If it does not work, we will grant the Agent Engine default Service Agent the permissions needed for access. This is however not a best practice. 
+
 ### 4.1. Requisite API enabling
 
 ```
