@@ -427,7 +427,7 @@ curl -X POST \
 Author's output:
 ```
 {
-  "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-retail-agentverse/assistants/default_assistant/agents/1579437240504634691",
+  "name": "projects/60XXX0/locations/global/collections/default_collection/engines/shoonya-retail-agentverse/assistants/default_assistant/agents/15XXX634691",
   "displayName": "Data Analyst Agent",
   "description": "An agent who can analyze data on your behalf with just natural language questions as input",
   "icon": {
@@ -436,13 +436,13 @@ Author's output:
   "createTime": "2026-01-24T19:07:05.056511256Z",
   "adkAgentDefinition": {
     "provisionedReasoningEngine": {
-      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/606804615020"
+      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/606XXXX20"
     }
   },
   "state": "ENABLED",
   "authorizationConfig": {
     "toolAuthorizations": [
-      "projects/606804615020/locations/global/authorizations/shoonya_oauth_client"
+      "projects/606XXXX20/locations/global/authorizations/shoonya_oauth_client"
     ]
   }
 }
