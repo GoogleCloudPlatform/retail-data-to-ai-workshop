@@ -220,19 +220,59 @@ gcloud iam service-accounts add-iam-policy-binding \
 ```
 <hr>
 
-### 4.5. Grant the Agent Engine Default Service Agent permissions to impersonate the Data Analyst UMSA
+### 4.5. Grant the Agent Engine Default Service Agent permissions as the IAM permissiosn to the Data Analyst UMSA did not take
 
 ```
-
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
 AE_GMSA_FQN=service-$PROJECT_NBR@gcp-sa-aiplatform-re.iam.gserviceaccount.com
 
 
-gcloud iam service-accounts add-iam-policy-binding \
-    ${DATA_ANALYST_UMSA_FQN} \
-    --member="serviceAccount:${AE_GMSA_FQN}" \
-    --role="roles/iam.serviceAccountTokenCreator"
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$AE_GMSA_FQN" \
+  --role="roles/mcp.toolUser"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$AE_GMSA_FQN" \
+  --role="roles/aiplatform.reasoningEngineServiceAgent"
+
+# Select 3 - None in the prompt
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$AE_GMSA_FQN" \
+  --role="roles/iam.oauthClientViewer"
+
+# Select 3 - None in the prompt
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$AE_GMSA_FQN" \
+  --role="roles/iam.serviceAccountViewer"
+
+# Select 3 - None in the prompt
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$AE_GMSA_FQN" \
+  --role="roles/oauthconfig.editor"
+
+# Select 3 - None in the prompt
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$AE_GMSA_FQN" \
+  --role="roles/aiplatform.user"
+
+# Select 3 - None in the prompt
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$AE_GMSA_FQN" \
+  --role="roles/storage.objectCreator"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$AE_GMSA_FQN" \
+  --role="roles/bigquery.jobUser" 
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$AE_GMSA_FQN" \
+--role="roles/bigquery.dataViewer" \
+--condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$AE_GMSA_FQN" \
+--role="roles/bigquery.user" 
 ```
 
 
