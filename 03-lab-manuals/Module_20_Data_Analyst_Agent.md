@@ -220,7 +220,20 @@ gcloud iam service-accounts add-iam-policy-binding \
 ```
 <hr>
 
-### 4.5. Grant yourself permissions to impersonate the Data Analyst UMSA
+### 4.5. Grant the Agent Engine Default Service Agent permissions to impersonate the Data Analyst UMSA
+
+```
+
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
+AE_GMSA_FQN=service-$PROJECT_NBR@gcp-sa-aiplatform-re.iam.gserviceaccount.com
+
+
+gcloud iam service-accounts add-iam-policy-binding \
+    ${DATA_ANALYST_UMSA_FQN} \
+    --member="serviceAccount:${AE_GMSA_FQN}" \
+    --role="roles/iam.serviceAccountTokenCreator"
+```
 
 
 
