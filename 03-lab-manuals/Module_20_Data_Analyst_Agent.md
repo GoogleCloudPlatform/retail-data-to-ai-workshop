@@ -255,14 +255,37 @@ adk deploy agent_engine \
 <hr>
 
 
+## 6. Create the Agentspace App on Gemini Enterprise
+
+```
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+AGENTSPACE_APP_ID="shoonya-retail-agentverse"
+AGENTSPACE_LOCATION="global"
+
+
+curl -X POST \
+-H "Authorization: Bearer $(gcloud auth print-access-token)" \
+-H "Content-Type: application/json" \
+-H "X-Goog-User-Project: $PROJECT_ID" \
+"https://discoveryengine.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENTSPACE_LOCATION/collections/default_collection/engines?engineId=$AGENTSPACE_APP_ID" \
+-d '{
+  "displayName": "Shoonya Retail Agentverse",
+  "dataStoreIds": [],
+  "solutionType": "SOLUTION_TYPE_SEARCH",
+  "industryVertical": "GENERIC",
+  "appType": "APP_TYPE_INTRANET"
+}'
+
+```
+
 ## 6. Register the Data Analyst Agent with Agentspace on Gemini Enterprise
 
 ### 6.1. Retrieve the Data Analyst Agent ID from the Agent Engine deployment
 
 ```
-LOCATION=us-central1
+AGENT_ENGINE_LOCATION="us-central1"
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
-DATA_ANALYST_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://us-central1-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$LOCATION/reasoningEngines" | grep -2 "Data Analyst Agent" | grep name | grep reasoningEngines | cut -d '/' -f2`
+DATA_ANALYST_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines" | grep -2 "Data Analyst Agent" | grep name | grep reasoningEngines | cut -d '/' -f2`
 ```
 
 ### 6.2. Grant the deployer (yourself), incremental IAM permissions
@@ -274,6 +297,37 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="user:$YOUR_UPN_FQN" \
   --role="roles/discoveryengine.admin"
 
+```
+
+
+### 6.3. Register the agent
+
+```
+   curl -X POST \
+      -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+      -H "Content-Type: application/json" \
+      -H "X-Goog-User-Project: $PROJECT_ID" \
+      "https://global-discoveryengine.googleapis.com/v1alpha/projects/$PROJECT_ID/locations/global/collections/default_collection/engines/$AGENTSPACE_APP_ID/assistants/default_assistant/agents" \
+      -d '{
+         "displayName": "Data Analyst Agent",
+         "description": "An agent who can analyze data on your behalf with just natural language questions as input",
+         "icon": {
+            "uri": "ICON_URI"
+      },
+      "adk_agent_definition": {
+         "provisioned_reasoning_engine": {
+            "reasoning_engine":
+            "projects/$PROJECT_ID/locations/us-central1/reasoningEngines/1514595958959112192"
+         }
+      },
+   "authorization_config": {
+
+
+   "tool_authorizations": [
+   "projects/$PROJECT_ID/locations/us-central1/authorizations/SHOONYA_AUTH_ID"
+   ]
+   }
+   }'
 ```
 <hr>
 
