@@ -127,8 +127,9 @@ Open each of the files and review the code.
 
 ## 3. Run the agent locally
 
-### 3.1. Set up a Python virtual environment
+### 3.1. Set up a Python virtual environment in VS code / your IDE's terminal
 
+Run the below in your terminal-
 ```
 python -m venv .venv
 source .venv/bin/activate
@@ -149,12 +150,35 @@ GOOGLE_CLOUD_LOCATION="YOUR_GCP_LOCATION"
 GOOGLE_CLOUD_PROJECT_NUMBER="YOUR_PROJECT_NUMBER"
 ```
 
-### 3.3. Lauch a terminal in VS Code/your IDE and authenticate
+![README](../04-images/M20-10.png)   
+<br><br>
+
+
+### 3.3. Launch a terminal in VS Code/your IDE and authenticate
+
+Follow instructions in section 1.
 
 ### 3.4. Run adk web
 
+In the terminal navigate to the top level data_analyst_agent directory and run the command below.<br>
+(e.g. from author - `/Users/akhanolkar/github/rscw-agent-solution/data_analyst_agent`)
+
+```
+adk web
+```
+
 
 ### 3.4. Try out a few prompts
+
+The code base includes sample prompts, you can grab a few and try out like below.
+
+![README](../04-images/M20-11.png)   
+<br><br>
+
+![README](../04-images/M20-12.png)   
+<br><br>
+
+We now know our agent is able to access data from BigQuery via the managed MCP server for BigQuery and we did no need to create any custom tools.
 
 <hr>
 
@@ -164,11 +188,18 @@ Our goal is to deploy the agent to agent engine to run as custom service account
 
 ### 4.1. Requisite API enabling
 
+Run the below in the terminal.
 ```
 gcloud services enable discoveryengine.googleapis.com
 ```
 
+This should ideally create the P4SA  - the agent engine default service agent account that has the following construct- `service-YOUR_PROJECT_NUMBER@gcp-sa-aiplatform-re.iam.gserviceaccount.com`
+
+
+
 ### 4.2. Create a user managed service account (UMSA) for the Data Analyst Agent
+
+We will first try to create a custom service account which we will refer to as Data Analyst Agent UMSA from this point on and try to provision the Agent on Agent Engine with this service account. Run the below in the terminal.
 
 ```
 DATA_ANALYST_UMSA="data-analyst-agent"
@@ -181,6 +212,7 @@ gcloud iam service-accounts create $DATA_ANALYST_UMSA \
 
 ### 4.3. Grant the UMSA, requisite IAM permissions 
 
+We will need to grant the requisite UMSA IAM permissions. Run the below in the terminal.
 ```
 BQ_DATASET_IN_SCOPE_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_ds"
 
@@ -234,6 +266,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 ### 4.4. Grant yourself permissions to impersonate the Data Analyst UMSA
 
+Run the below in the terminal.
 ```
 YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
 
@@ -253,9 +286,9 @@ gcloud iam service-accounts add-iam-policy-binding \
 ```
 <hr>
 
-### 4.5. Grant the Agent Engine Default Service Agent permissions [as the IAM permissions] to the Data Analyst UMSA did not work
+### 4.5. Grant the Agent Engine Default Service Agent permissions [as the IAM permissionsto the Data Analyst UMSA did not work from the author's trials]
 
-The custom / user managed service account did not consistently work in terms of data access. So, lets grant the Agent Engine Default Service Agent permissions for data access. For product workloads, follow principle of least privilege.
+The custom / user managed service account did not consistently work in terms of data access. So, lets grant the Agent Engine Default Service Agent permissions for data access. For product workloads, follow principle of least privilege. Run the below in the terminal.
 
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
@@ -313,14 +346,10 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 <hr>
 
-## 5. Deploy & test the Data Analyst Agent to Agent Engine
-
-### 5.1. Create the agent_engine_config.json
-
-# INSERT SCREENSHOT HERE
+## 5. Deploy & test the Data Analyst Agent on Agent Engine
 
 
-### 5.2. Grant the deployer (yourself), incremental IAM permissions
+### 5.1. Grant the deployer (yourself), incremental IAM permissions
 
 ```
 YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
@@ -331,7 +360,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 ```
 
-### 5.3. Deploy the agent to Agent Engine
+### 5.2. Deploy the agent to Agent Engine
 
 Run this from within the top level data_analyst_agent folder, from CLI. This will automatically read in any configs in agent_engine_config.json
 ```
@@ -350,19 +379,21 @@ adk deploy agent_engine \
 ./data_analyst_agent
 ```
 
-# INSERT SCREENSHOT HERE
+![README](../04-images/M20-13.png)   
+<br><br>
 
-### 5.4. Retrieve the Data Analyst Agent ID from the Agent Engine deployment
 
+### 5.3. Retrieve the Data Analyst Agent ID from the Agent Engine deployment
+
+We will need to register with Gemini Enterprise.
 ```
 AGENT_ENGINE_LOCATION="us-central1"
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 DATA_ANALYST_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines" | grep -2 "Data Analyst Agent" | grep name | grep reasoningEngines | cut -d '/' -f2`
-
 ```
 
 
-### 5.5. Test the  Data Analyst Agent on Agent Engine in the "Playground"
+### 5.4. Test the  Data Analyst Agent on Agent Engine in the "Playground"
 
 
 # INSERT SCREENSHOT HERE
