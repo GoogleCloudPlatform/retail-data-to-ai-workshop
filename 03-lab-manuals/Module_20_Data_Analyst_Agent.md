@@ -222,7 +222,9 @@ gcloud iam service-accounts add-iam-policy-binding \
 ```
 <hr>
 
-### 4.5. Grant the Agent Engine Default Service Agent permissions as the IAM permissiosn to the Data Analyst UMSA did not take
+### 4.5. Grant the Agent Engine Default Service Agent permissions [as the IAM permissions] to the Data Analyst UMSA did not work
+
+The custom / user managed service account did not consistently work in terms of data access. So, lets grant the Agent Engine Default Service Agent permissions for data access. For product workloads, follow principle of least privilege.
 
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
@@ -278,8 +280,6 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 ```
 
 
-
-
 <hr>
 
 ## 5. Deploy & test the Data Analyst Agent to Agent Engine
@@ -289,10 +289,20 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 # INSERT SCREENSHOT HERE
 
 
+### 5.2. Grant the deployer (yourself), incremental IAM permissions
 
-### 5.1. Deploy the agent to Agent Engine
+```
+YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
 
-Run this from within the top level data_analyst_agent folder, from CLI
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="user:$YOUR_UPN_FQN" \
+  --role="roles/discoveryengine.admin"
+
+```
+
+### 5.3. Deploy the agent to Agent Engine
+
+Run this from within the top level data_analyst_agent folder, from CLI. This will automatically read in any configs in agent_engine_config.json
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
@@ -311,26 +321,17 @@ adk deploy agent_engine \
 
 # INSERT SCREENSHOT HERE
 
-### 5.2. Retrieve the Data Analyst Agent ID from the Agent Engine deployment
+### 5.4. Retrieve the Data Analyst Agent ID from the Agent Engine deployment
 
 ```
 AGENT_ENGINE_LOCATION="us-central1"
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 DATA_ANALYST_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines" | grep -2 "Data Analyst Agent" | grep name | grep reasoningEngines | cut -d '/' -f2`
-```
-
-### 5.3. Grant the deployer (yourself), incremental IAM permissions
-
-```
-YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="user:$YOUR_UPN_FQN" \
-  --role="roles/discoveryengine.admin"
 
 ```
 
-### 5.4. Test the  Data Analyst Agent on Agent Engine in the "Playground"
+
+### 5.5. Test the  Data Analyst Agent on Agent Engine in the "Playground"
 
 
 # INSERT SCREENSHOT HERE
@@ -341,6 +342,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 ## 6. Create the Agentspace App (Shoonya Retail Agentverse) on Gemini Enterprise
 
+### 6.1. Create the application
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 AGENTSPACE_APP_ID="shoonya-retail-agentverse"
@@ -366,11 +368,11 @@ Author's output:
 ```
 THIS IS JUST FOR AWARENESS
 {
-  "name": "projects/606asdfasdfasdf20/locations/global/collections/default_collection/operations/create-engine-8371403560808029638",
+  "name": "projects/606asdasd5020/locations/global/collections/default_collection/operations/create-engine-192268asdasdas42799",
   "done": true,
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Engine",
-    "name": "projects/606asdfsdfasdf0/locations/global/collections/default_collection/engines/shoonya-retail-agentverse",
+    "name": "projects/60asdasd0/locations/global/collections/default_collection/engines/shoonya-retail-agentverse",
     "displayName": "Shoonya Retail Agentverse",
     "solutionType": "SOLUTION_TYPE_SEARCH",
     "searchEngineConfig": {
@@ -386,14 +388,46 @@ THIS IS JUST FOR AWARENESS
 }
 ```
 
+### 6.2. Check agents registered with the app you just created
+
+```
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+AGENTSPACE_APP_ID="shoonya-retail-agentverse"
+AGENTSPACE_LOCATION="global"
+
+curl -X GET \
+-H "Authorization: Bearer $(gcloud auth print-access-token)" \
+"https://$AGENTSPACE_LOCATION-discoveryengine.googleapis.com/v1alpha/projects/$PROJECT_ID/locations/$AGENTSPACE_LOCATION/collections/default_collection/engines/$AGENTSPACE_APP_ID/assistants/default_assistant/agents"
+```
+
+You should see the "Deep Research" agent automatically registered:
+```
+{
+  "agents": [
+    {
+      "name": "projects/sdads/locations/global/collections/default_collection/engines/shoonya-retail-agentverse/assistants/default_assistant/agents/deep_research",
+      "displayName": "Deep Research",
+      "description": "This agent is a specialized agent that gathers, analyzes, and understands information from internal and external sources. It generates a plan, an in-depth report, and a summary.",
+      "createTime": "2026-01-24T22:59:28.608545129Z",
+      "updateTime": "2026-01-24T22:59:28.754573Z",
+      "managedAgentDefinition": {},
+      "state": "ENABLED",
+      "sharingConfig": {
+        "scope": "ALL_USERS"
+      }
+    }
+  ]
+}
+```
+
 <hr>
 
 
 
-## 9. Register the Data Analyst Agent with Agentspace on Gemini Enterprise
+## 7. Register the Data Analyst Agent with Agentspace on Gemini Enterprise
 
 
-### 9.1. Register the agent
+### 7.1. Register the agent on Agent Engine with Gemini Enterprise for the Agent UI experience
 
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
@@ -429,22 +463,84 @@ curl -X POST \
 Author's output:
 ```
 {
-  "name": "projects/6068dsdfsdf5020/locations/global/collections/default_collection/engines/shoonya-retail-agentverse/assistants/default_assistant/agents/84017asdfasdfafd1891",
+  "name": "projects/606asdasdad20/locations/global/collections/default_collection/engines/shoonya-retail-agentverse/assistants/default_assistant/agents/3653339957651564590",
   "displayName": "Data Analyst Agent",
   "description": "An agent who can analyze data on your behalf with just natural language questions as input",
   "icon": {
     "uri": "ICON_URI"
   },
-  "createTime": "2026-01-24T21:57:11.752273556Z",
+  "createTime": "2026-01-24T23:06:00.197769472Z",
   "adkAgentDefinition": {
     "provisionedReasoningEngine": {
-      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/6068asdfasdfa20"
+      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/606804615020"
     }
   },
   "state": "ENABLED"
 }
 ```
 
+Make note of the IDs here-
+1. Agent ID on Gemini Enterprise is `3653339957651564590` in
+`projects/606asdasdad20/locations/global/collections/default_collection/engines/shoonya-retail-agentverse/assistants/default_assistant/agents/3653339957651564590`
+2. Agent name on Gemini Enterprise is `Data Analyst Agent`
+3. Agent Engine (reasoning engine) ID is `606804615020` from `projects/data-insights-quickstart/locations/us-central1/reasoningEngines/60680461502`
+
+
+### 7.2. Check agents registered with the app we created on Gemini enterprise
+
+```
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+AGENTSPACE_APP_ID="shoonya-retail-agentverse"
+AGENTSPACE_LOCATION="global"
+
+curl -X GET \
+-H "Authorization: Bearer $(gcloud auth print-access-token)" \
+"https://$AGENTSPACE_LOCATION-discoveryengine.googleapis.com/v1alpha/projects/$PROJECT_ID/locations/$AGENTSPACE_LOCATION/collections/default_collection/engines/$AGENTSPACE_APP_ID/assistants/default_assistant/agents"
+```
+Here is what the author got back:
+```
+THIS IS INFORMATIONAL
+
+{
+  "agents": [
+    {
+      "name": "projects/606sdfsdfg20/locations/global/collections/default_collection/engines/shoonya-retail-agentverse/assistants/default_assistant/agents/3653339957651564590",
+      "displayName": "Data Analyst Agent",
+      ..
+     ...
+      "adkAgentDefinition": {
+        "provisionedReasoningEngine": {
+          "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/606804615020"
+        }
+      },
+      "state": "ENABLED"
+    },
+    {
+      "name": "projects/60sdfsdfg020/locations/global/collections/default_collection/engines/shoonya-retail-agentverse/assistants/default_assistant/agents/deep_research",
+      "displayName": "Deep Research",
+     ...
+      }
+    }
+  ]
+}
+```
+
+Ensure the reasoning ending ID is the same as the value returned from running the below-
+```
+echo $DATA_ANALYST_AGENT_ID
+```
+
+
+
+### 7.3. In case of discrepancies - update the Gemini Enterprise agent with the right Agent Engine agent ID ID 
+
+Here is how you update the Agent Engine deployed Agent ID.<br>
+SKIP THIS IF YOU HAVE THE RIGHT ID <br>
+Documentation link: https://docs.cloud.google.com/gemini/enterprise/docs/register-and-manage-an-adk-agent#update_an_adk_agent
+
+
+
+```
 
 
 <hr>
