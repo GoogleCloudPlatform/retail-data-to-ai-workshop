@@ -2,15 +2,26 @@
 
 ## 1. Setup
 
-### 1.1. Authenticate to Google Cloud from CLI
+### 1.1. Authenticate to Google Cloud from CLI & generate Application Default Credentials
+
+Run each of these in cloud shell / terminal:
+```
+gcloud init
+```
+
+```
+gcloud auth application-default login
+```
 
 ### 1.2. Ingest the refrigerator dataset from CLI
 
+# INSERT INSTRUCTIONS
 
 ### 1.3. Run the notebook that executes the Data Insights documentation scans & persists metadata to GCS
 
+# INSERT INSTRUCTIONS
 
-### 1.4. Create a user managed service account for deployments
+### 1.4. Create a user managed service account for provisioning services
 
 From your terminal, run the below:
 ```
@@ -37,7 +48,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/storage.objectCreator"
 ```
 
-### 1.6. Grant yourself permissions to impersonate the deployment UMSA
+### 1.6. Grant yourself permissions to impersonate the provisioning UMSA
 
 ```
 YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
@@ -58,7 +69,7 @@ gcloud iam service-accounts add-iam-policy-binding \
 ```
 
 
-### 1.5. Create a bucket for agent deployment
+### 1.7. Create a bucket for agent deployment
 
 From your terminal, run the below:
 ```
@@ -67,7 +78,7 @@ gcloud storage buckets create "gs://$AGENT_DEPLOYMENT_BUCKET" --location=$LOCATI
 
 ```
 
-### 1.6. Enable APIs
+### 1.8. Enable APIs
 
 Only incremental APIs are listed below-
 ```
@@ -76,21 +87,41 @@ gcloud services enable logging.googleapis.com
 ```
 
 
-### 1.7. Set up VS code or use any IDE on your machine
+### 1.9. Set up VS code or use any IDE on your machine
+
+Install VS code from https://code.visualstudio.com/download and configure it for Python and Google Cloud.
 
 
-### 1.8. Clone this repo if you have not already done so
 
+### 1.8. Clone the repo
+
+You should have cloned the repo at the onset of this workshop, pull the latest code.
 
 <hr>
 
 
 ## 2. Review the Data Analyst Agent code 
 
-### 2.1. Review the code layout in VS code
+### 2.1. Review the code layout in VS code/your IDE
 
+Navigate to the `rscw-agent-solution` in vs code/your IDE <br>
+
+Here is what the layout should look like:
+```
+.
+└── data_analyst_agent
+    ├── data_analyst_agent
+    │   ├── __init__.py
+    │   ├── agent.py
+    │   ├── constants.py
+    │   └── tools.py
+    ├── requirements.txt
+    └── sample_prompts.md
+```
 
 ### 2.2. Study these specific code/config files
+
+Open each of the files and review the code.
 
 <hr>
 
