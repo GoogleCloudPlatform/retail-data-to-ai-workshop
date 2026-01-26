@@ -331,11 +331,11 @@ Run this from within the top level data_analyst_agent folder, from CLI. This wil
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
-LOCATION="us-central1"
+AGENT_ENGINE_LOCATION="us-central1"
 
 adk deploy agent_engine \
 --project=$PROJECT_ID   \
---region=$LOCATION   \
+--region=$AGENT_ENGINE_LOCATION   \
 --display_name="Data Analyst"   \
 --description="An agent that can answer natural language questions about data in the BQ dataset rscw_fridge_ds" \
 --staging_bucket=gs://agent-deployment-bucket-$PROJECT_NBR   \
@@ -344,10 +344,20 @@ adk deploy agent_engine \
 ./data_analyst_agent
 ```
 
-![README](../04-images/M20-13.png)   
+![README](../04-images/M20-13a.png)   
 <br><br>
 
+![README](../04-images/M20-13d.png)   
+<br><br>
 
+![README](../04-images/M20-13e.png)   
+<br><br>
+
+![README](../04-images/M20-13b.png)   
+<br><br>
+
+![README](../04-images/M20-13c.png)   
+<br><br>
 
 
 ### 5.3. Retrieve the Data Analyst Agent ID from the Agent Engine deployment
@@ -356,34 +366,101 @@ We will need to register with Gemini Enterprise.
 ```
 AGENT_ENGINE_LOCATION="us-central1"
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
-DATA_ANALYST_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines"  | grep -2 DEPLOYED_AGENT_RESOURCE_URI | grep reasoningEngines | cut -d'/' -f6 | cut -d '"' -f1`
+DATA_ANALYST_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines"  |  grep reasoningEngines | grep name | cut -d'/' -f6 | cut -d '"' -f1`
 echo $DATA_ANALYST_AGENT_ID
 ```
 
+### 5.4. Update the .env file with the agent engine ID
 
-### 5.4. Test the  Data Analyst Agent on Agent Engine in the "Playground"
+Here is the agent engine ID:
+
+![README](../04-images/M20-13d.png)   
+<br><br>
+
+Update the .env to reflect the agent engine ID:
 
 
-Navigate to the `Playground` tab and try out a few prompts.
+![README](../04-images/M20-13f.png)   
+<br><br>
+
+
+### 5.5. Test the  Data Analyst Agent on Agent Engine in the "Playground"
+
+#### 5.5.1. Test via the UI
+
+Navigate to the `Playground` tab and try out a few prompts.<br>
+
+1. Lets check if it can access the metadata (grounding file) and retireve results without tool call <br>
 
 ![README](../04-images/M20-14.png)   
 <br><br>
 
+2. Lets run a query to fetch some data
+
 ![README](../04-images/M20-15.png)   
 <br><br>
 
+3. Lets try multi-turn
+
 ![README](../04-images/M20-16.png)   
 <br><br>
+
+![README](../04-images/M20-16b.png)   
+<br><br>
+
+![README](../04-images/M20-16c.png)   
+<br><br>
+
+
+
+#### 5.5.2. Test via Python script
+
+1. Ensure you completed the .env update to reflect your deployed reasoningEngine agent ID from step 5.4
+
+2. Ensure you are at the right location
+```
+# Navigate so that you are at the top level directory of data_analyst_agent
+/Users/akhanolkar/Projects/github/rscw-agent-solution/data_analyst_agent <- HERE
+```
+
+3. Execute script
+
+```
+python data_analyst_agent/deployment_test.py 
+```
+
+4. Browse the output streamed
+
+![README](../04-images/M20-16d.png)   
+<br><br>
+
+![README](../04-images/M20-16e.png)   
+<br><br>
+
+![README](../04-images/M20-16f.png)   
+<br><br>
+
 
 <hr>
 
 
 ## 6. Create the Agentspace App (Shoonya Retail Agentverse) on Gemini Enterprise
 
-### 6.1. Create the application
+### 6.1. Grant the deployer (yourself), incremental IAM permissions
+
+```
+YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="user:$YOUR_UPN_FQN" \
+  --role="roles/discoveryengine.admin"
+
+```
+
+### 6.2. Create the application
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
-AGENTSPACE_APP_ID="shoonya-rscw-agentverse"
+AGENTSPACE_APP_ID="shoonya-agentverse"
 AGENTSPACE_LOCATION="global"
 
 
@@ -406,11 +483,11 @@ Author's output:
 ```
 THIS IS JUST FOR AWARENESS
 {
-  "name": "projects/6068sdsfd20/locations/global/collections/default_collection/operations/create-engine-2719846051686656876",
+  "name": "projects/606804615020/locations/global/collections/default_collection/operations/create-engine-10923137640597900575",
   "done": true,
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Engine",
-    "name": "projects/60sfsff20/locations/global/collections/default_collection/engines/shoonya-rscw-agentverse",
+    "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-agentverse",
     "displayName": "Shoonya Agentverse",
     "solutionType": "SOLUTION_TYPE_SEARCH",
     "searchEngineConfig": {
@@ -432,7 +509,7 @@ Visit the Gemini Enterprise UI on Cloud Shell and look at the app you just creat
 <br><br>
 
 
-### 6.2. Check agents registered with the app you just created
+### 6.3. Check agents registered with the app you just created
 
 ```
 
@@ -447,11 +524,11 @@ You should see the "Deep Research" agent automatically registered:
 {
   "agents": [
     {
-      "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-rscw-agentverse/assistants/default_assistant/agents/deep_research",
+      "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-agentverse/assistants/default_assistant/agents/deep_research",
       "displayName": "Deep Research",
       "description": "This agent is a specialized agent that gathers, analyzes, and understands information from internal and external sources. It generates a plan, an in-depth report, and a summary.",
-      "createTime": "2026-01-26T15:00:37.829994667Z",
-      "updateTime": "2026-01-26T15:00:37.958896Z",
+      "createTime": "2026-01-26T21:35:32.821528855Z",
+      "updateTime": "2026-01-26T21:35:33.135798Z",
       "managedAgentDefinition": {},
       "state": "ENABLED",
       "sharingConfig": {
@@ -477,6 +554,11 @@ You should see the "Deep Research" agent automatically registered:
 ### 7.1. Register the agent on Agent Engine with Gemini Enterprise for the Agent UI experience
 
 ```
+AGENT_ENGINE_LOCATION="us-central1"
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+DATA_ANALYST_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines"  |  grep reasoningEngines | grep name | cut -d'/' -f6 | cut -d '"' -f1`
+echo $DATA_ANALYST_AGENT_ID
+
 PAYLOAD="{
      \"displayName\": \"Data Analyst\",
      \"description\": \"An agent who can analyze data on your behalf with just natural language questions as input\",
@@ -503,16 +585,16 @@ curl -X POST \
 Author's output:
 ```
 {
-  "name": "projects/sdfsdfsdf/locations/global/collections/default_collection/engines/shoonya-rscw-agentverse/assistants/default_assistant/agents/16235529290319508283",
+  "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-agentverse/assistants/default_assistant/agents/1624231307787687665",
   "displayName": "Data Analyst",
   "description": "An agent who can analyze data on your behalf with just natural language questions as input",
   "icon": {
     "uri": "ICON_URI"
   },
-  "createTime": "2026-01-26T15:10:07.135076238Z",
+  "createTime": "2026-01-26T21:39:13.955130226Z",
   "adkAgentDefinition": {
     "provisionedReasoningEngine": {
-      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/2837528349499195392"
+      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/1306920202704781312"
     }
   },
   "state": "ENABLED"
@@ -520,10 +602,10 @@ Author's output:
 ```
 
 Make note of the IDs here-
-1. Agent ID on Gemini Enterprise is `16235529290319508283` in
-`projects/sdfsdfsdf/locations/global/collections/default_collection/engines/shoonya-rscw-agentverse/assistants/default_assistant/agents/16235529290319508283`
+1. Agent ID on Gemini Enterprise is `1624231307787687665` in
+`projects/sdfsdfsdf/locations/global/collections/default_collection/engines/shoonya-agentverse/assistants/default_assistant/agents/1624231307787687665`
 2. Agent name on Gemini Enterprise is `Data Analyst`
-3. Agent Engine (reasoning engine) ID is `2837528349499195392` from `projects/data-insights-quickstart/locations/us-central1/reasoningEngines/2837528349499195392`
+3. Agent Engine (reasoning engine) ID is `1306920202704781312` from `projects/data-insights-quickstart/locations/us-central1/reasoningEngines/1306920202704781312`
 4. It is super important that the right reasoning engine is registered with Gemini Enterprise for things to work
 
 
@@ -543,27 +625,27 @@ THIS IS INFORMATIONAL
 {
   "agents": [
     {
-      "name": "projects/6dfsdfsdf20/locations/global/collections/default_collection/engines/shoonya-rscw-agentverse/assistants/default_assistant/agents/16235529290319508283",
+      "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-agentverse/assistants/default_assistant/agents/1624231307787687665",
       "displayName": "Data Analyst",
       "description": "An agent who can analyze data on your behalf with just natural language questions as input",
       "icon": {
         "uri": "ICON_URI"
       },
-      "createTime": "2026-01-26T15:10:07.135076238Z",
-      "updateTime": "2026-01-26T15:10:07.411430Z",
+      "createTime": "2026-01-26T21:39:13.955130226Z",
+      "updateTime": "2026-01-26T21:39:14.074894Z",
       "adkAgentDefinition": {
         "provisionedReasoningEngine": {
-          "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/2837528349499195392"
+          "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/1306920202704781312"
         }
       },
       "state": "ENABLED"
     },
     {
-      "name": "projects/6dfsdfsdf20/locations/global/collections/default_collection/engines/shoonya-rscw-agentverse/assistants/default_assistant/agents/deep_research",
+      "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-agentverse/assistants/default_assistant/agents/deep_research",
       "displayName": "Deep Research",
       "description": "This agent is a specialized agent that gathers, analyzes, and understands information from internal and external sources. It generates a plan, an in-depth report, and a summary.",
-      "createTime": "2026-01-26T15:00:37.829994667Z",
-      "updateTime": "2026-01-26T15:00:37.958896Z",
+      "createTime": "2026-01-26T21:35:32.821528855Z",
+      "updateTime": "2026-01-26T21:35:33.135798Z",
       "managedAgentDefinition": {},
       "state": "ENABLED",
       "sharingConfig": {
@@ -573,7 +655,6 @@ THIS IS INFORMATIONAL
   ]
 }
 ```
-
 
 
 ![README](../04-images/M20-20.png)   
@@ -599,6 +680,19 @@ Launch the application as shown below.
 
 ![README](../04-images/M20-23.png)   
 <br><br>
+
+![README](../04-images/M20-24.png)   
+<br><br>
+
+![README](../04-images/M20-25.png)   
+<br><br>
+
+![README](../04-images/M20-26.png)   
+<br><br>
+
+![README](../04-images/M20-27.png)   
+<br><br>
+
 
 <hr>
 
