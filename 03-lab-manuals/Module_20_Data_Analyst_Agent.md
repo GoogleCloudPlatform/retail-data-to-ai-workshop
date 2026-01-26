@@ -215,7 +215,7 @@ This should ideally create the P4SA  - the agent engine default service agent ac
 We will first try to create a custom service account which we will refer to as Data Analyst Agent UMSA from this point on and try to provision the Agent on Agent Engine with this service account. Run the below in the terminal.
 
 ```
-DATA_ANALYST_UMSA="data-analyst-agent"
+DATA_ANALYST_UMSA="data-analyst-agent-sa"
 DATA_ANALYST_UMSA_FQN="$DATA_ANALYST_UMSA@$PROJECT_ID.iam.gserviceaccount.com"
 
 gcloud iam service-accounts create $DATA_ANALYST_UMSA \
@@ -231,7 +231,7 @@ BQ_DATASET_IN_SCOPE_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_ds"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/mcp.toolUser"
+  --role="roles/mcp.toolUser" 
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
@@ -240,7 +240,8 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 # Select 3 - None in the prompt
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/iam.oauthClientViewer"
+  --role="roles/iam.oauthClientViewer" 
+
 
 # Select 3 - None in the prompt
 gcloud projects add-iam-policy-binding $PROJECT_ID \
@@ -264,16 +265,26 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/bigquery.jobUser" 
+  --role="roles/bigquery.jobUser"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+--role="roles/bigquery.user"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+--role="roles/iam.serviceAccountUser"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+--role="roles/iam.serviceAccountTokenCreator" 
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
 --role="roles/bigquery.dataViewer" \
 --condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/bigquery.user" 
+
 
 ```
 
@@ -292,72 +303,11 @@ gcloud iam service-accounts add-iam-policy-binding \
     --member="user:${YOUR_UPN_FQN}" \
     --role="roles/iam.serviceAccountUser"
 
-gcloud iam service-accounts add-iam-policy-binding \
-    ${DATA_ANALYST_UMSA_FQN} \
-    --member="user:${YOUR_UPN_FQN}" \
-    --role="roles/iam.serviceAccountTokenCreator"
+
 ```
 <hr>
 
-### 4.5. Grant the Agent Engine Default Service Agent permissions [as the IAM permissionsto the Data Analyst UMSA did not work from the author's trials]
 
-The custom / user managed service account did not consistently work in terms of data access. So, lets grant the Agent Engine Default Service Agent permissions for data access. For product workloads, follow principle of least privilege. Run the below in the terminal.
-
-```
-PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
-PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
-AE_GMSA_FQN=service-$PROJECT_NBR@gcp-sa-aiplatform-re.iam.gserviceaccount.com
-
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$AE_GMSA_FQN" \
-  --role="roles/mcp.toolUser"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$AE_GMSA_FQN" \
-  --role="roles/aiplatform.reasoningEngineServiceAgent"
-
-# Select 3 - None in the prompt
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$AE_GMSA_FQN" \
-  --role="roles/iam.oauthClientViewer"
-
-# Select 3 - None in the prompt
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$AE_GMSA_FQN" \
-  --role="roles/iam.serviceAccountViewer"
-
-# Select 3 - None in the prompt
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$AE_GMSA_FQN" \
-  --role="roles/oauthconfig.editor"
-
-# Select 3 - None in the prompt
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$AE_GMSA_FQN" \
-  --role="roles/aiplatform.user"
-
-# Select 3 - None in the prompt
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$AE_GMSA_FQN" \
-  --role="roles/storage.objectCreator"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$AE_GMSA_FQN" \
-  --role="roles/bigquery.jobUser" 
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$AE_GMSA_FQN" \
---role="roles/bigquery.dataViewer" \
---condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$AE_GMSA_FQN" \
---role="roles/bigquery.user" 
-```
-
-
-<hr>
 
 ## 5. Deploy & test the Data Analyst Agent on Agent Engine
 
@@ -384,7 +334,7 @@ LOCATION="us-central1"
 adk deploy agent_engine \
 --project=$PROJECT_ID   \
 --region=$LOCATION   \
---display_name="Data Analyst Agent"   \
+--display_name="Data Analyst"   \
 --description="An agent that can answer natural language questions about data in the BQ dataset rscw_fridge_ds" \
 --staging_bucket=gs://agent-deployment-bucket-$PROJECT_NBR   \
 --env_file="./data_analyst_agent/.env"   \
