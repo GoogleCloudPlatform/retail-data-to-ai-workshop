@@ -21,43 +21,79 @@ gcloud init
 gcloud auth application-default login
 ```
 
-### 1.2. Database setup and 
+### 1.2. Create a user managed service account (UMSA) for the demand planner agent
 
-# INSERT INSTRUCTIONS
-
-### 1.3. Run the notebook that executes the Data Insights documentation scans & persists metadata to GCS
-
-# INSERT INSTRUCTIONS
-
-### 1.4. Create a user managed service account for provisioning services
-
-From your terminal, run the below:
+#### 1.2.1. Run the below on cloud shell to create the UMSA:
 ```
-PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
-PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
-LOCATION="us-central1"
-DEPLOYMENT_UMSA="rscw-devops-umsa"
-DEPLOYMENT_UMSA_FQN="rscw-devops-umsa@$PROJECT_ID.iam.gserviceaccount.com"
+DEMAND_PLANNER_UMSA="demand-planner-agent-sa"
+DEMAND_PLANNER_UMSA_FQN="$DEMAND_PLANNER_UMSA@$PROJECT_ID.iam.gserviceaccount.com"
 
-gcloud iam service-accounts create $DEPLOYMENT_UMSA \
-  --description="User Managed Service Account" \
-  --display-name="RSCW DevOps UMSA"
+gcloud iam service-accounts create $DEMAND_PLANNER_UMSA \
+  --description="User Managed Service Account for Demand Planner Agent" \
+  --display-name="Demand Planner Agent Service Account"
+```
+
+#### 1.2.2. Grant the UMSA requiste IAM permissions
+
+```
+BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds"
+BQ_TABLE_IN_SCOPE_FOR_WRITE_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
-  --role="roles/serviceusage.serviceUsageConsumer"
+  --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+  --role="roles/aiplatform.reasoningEngineServiceAgent"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
+  --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+  --role="roles/iam.serviceAccountViewer"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--role="roles/iam.serviceAccountUser"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--role="roles/iam.serviceAccountTokenCreator"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
   --role="roles/aiplatform.user"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DEPLOYMENT_UMSA_FQN" \
+  --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
   --role="roles/storage.objectCreator"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--role="roles/discoveryengine.admin"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+  --role="roles/bigquery.jobUser"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--role="roles/bigquery.user"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--role="roles/bigquery.metadataViewer"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--role="roles/bigquery.dataViewer" \
+--condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI\"),title=ReadAccessToSpecificDataset"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--role="roles/bigquery.dataEditor" \
+--condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=WriteAccessToSpecificTable"
+
 ```
 
-### 1.6. Grant yourself permissions to impersonate the provisioning UMSA
+####  1.2.3. Grant yourself permissions to impersonate the Data Analyst UMSA
 
+Run the below in the terminal.
 ```
 YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
 
@@ -66,51 +102,23 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/iam.serviceAccountTokenCreator"
 
 gcloud iam service-accounts add-iam-policy-binding \
-    ${DEPLOYMENT_UMSA_FQN} \
+    ${DATA_ANALYST_UMSA_FQN} \
     --member="user:${YOUR_UPN_FQN}" \
     --role="roles/iam.serviceAccountUser"
-
-gcloud iam service-accounts add-iam-policy-binding \
-    ${DEPLOYMENT_UMSA_FQN} \
-    --member="user:${YOUR_UPN_FQN}" \
-    --role="roles/iam.serviceAccountTokenCreator"
 ```
-
-
-### 1.7. Create a bucket for agent deployment
-
-From your terminal, run the below:
-```
-AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-$PROJECT_NBR"
-gcloud storage buckets create "gs://$AGENT_DEPLOYMENT_BUCKET" --location=$LOCATION  --impersonate-service-account=$DEPLOYMENT_UMSA_FQN
-
-```
-
-### 1.8. Enable APIs
-
-Only incremental APIs are listed below-
-```
-gcloud services enable telemetry.googleapis.com
-gcloud services enable logging.googleapis.com
-```
-
-
-### 1.9. Set up VS code or use any IDE on your machine
-
-Install VS code from https://code.visualstudio.com/download and configure it for Python and Google Cloud.
-
-
-
-### 1.8. Clone the repo
-
-You should have cloned the repo at the onset of this workshop, pull the latest code.
-
 <hr>
 
 
-## 2. Review the Data Analyst Agent code 
+## 2. Generate forecasts, and operationalize for agent use
 
-### 2.1. Review the code layout in VS code/your IDE
+### 2.1. Database setup, stored proecdure creation
+
+### 2.2. Data Insights scan execution to generate dataset and table metadata for agentic grounding
+
+
+## 3. Review the Demand Planner Agent code 
+
+### 3.1. Review the code layout in VS code/your IDE
 
 Navigate to the `rscw-agent-solution` in vs code/your IDE <br>
 
@@ -132,15 +140,15 @@ Here is what the layout should look like if you navigate to the top level data_a
 
 ```
 
-### 2.2. Study these specific code/config files
+### 3.2. Study these specific code/config files
 
 Open each of the files and review the code files.
 
 <hr>
 
-## 3. Run the agent locally
+## 4. Run the agent locally
 
-### 3.1. Set up a Python virtual environment in VS code / your IDE's terminal
+### 4.1. Set up a Python virtual environment in VS code / your IDE's terminal
 
 Run the below in your terminal-
 ```
@@ -148,12 +156,12 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3.2. Install the Python dependencies
+### 4.2. Install the Python dependencies
 
 Navigate to the Data_Analytics_Agent folder that has the requirements.txt and run the install from VS code terminal-
 `pip install -r requirements.txt`
 
-### 3.2. Update the env file 
+### 4.3. Update the env file 
 
 Modify the env file to reflect your GCP project ID, project number and location by updating the following with your details and saving the file-
 
@@ -167,11 +175,11 @@ GOOGLE_CLOUD_PROJECT_NUMBER="YOUR_PROJECT_NUMBER"
 <br><br>
 
 
-### 3.3. Launch a terminal in VS Code/your IDE and authenticate
+### 4.4. Launch a terminal in VS Code/your IDE and authenticate
 
 Follow instructions in section 1.
 
-### 3.4. Run adk web
+### 4.5. Run adk web
 
 In the terminal navigate to the top level data_analyst_agent directory and run the command below.<br>
 (e.g. from author - `/Users/akhanolkar/github/rscw-agent-solution/data_analyst_agent`)
@@ -187,7 +195,7 @@ adk web
 <br><br>
 
 
-### 3.4. Try out a few prompts
+### 4.6. Try out a few prompts
 
 The code base includes sample prompts, you can grab a few and try out like below.
 
@@ -212,18 +220,9 @@ Lets try to get the agent to delete all the data, the agent should state that it
 
 <hr>
 
-## 4. Preparing for deployment to Agent Engine
+## 5. Preparing for deployment to Agent Engine
 
 Our goal is to deploy the agent to agent engine to run as custom service account. Per the documentation this is supported. If it does not work, we will grant the Agent Engine default Service Agent the permissions needed for access. This is however not a best practice. 
-
-### 4.1. Requisite API enabling
-
-Run the below in the terminal.
-```
-gcloud services enable discoveryengine.googleapis.com
-```
-
-This should ideally create the P4SA  - the agent engine default service agent account that has the following construct- `service-YOUR_PROJECT_NUMBER@gcp-sa-aiplatform-re.iam.gserviceaccount.com`
 
 
 
@@ -244,73 +243,7 @@ gcloud iam service-accounts create $DATA_ANALYST_UMSA \
 
 We will need to grant the requisite UMSA IAM permissions. Run the below in the terminal.
 ```
-BQ_DATASET_IN_SCOPE_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_ds"
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/aiplatform.reasoningEngineServiceAgent"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/iam.serviceAccountViewer"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/iam.serviceAccountUser"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/iam.serviceAccountTokenCreator"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/aiplatform.user"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/storage.objectCreator"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/discoveryengine.admin"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/bigquery.jobUser"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/bigquery.user"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/bigquery.metadataViewer"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/bigquery.dataViewer" \
---condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
-
-```
-
-### 4.4. Grant yourself permissions to impersonate the Data Analyst UMSA
-
-Run the below in the terminal.
-```
-YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="user:$YOUR_UPN_FQN" \
-  --role="roles/iam.serviceAccountTokenCreator"
-
-gcloud iam service-accounts add-iam-policy-binding \
-    ${DATA_ANALYST_UMSA_FQN} \
-    --member="user:${YOUR_UPN_FQN}" \
-    --role="roles/iam.serviceAccountUser"
-
-
-```
-<hr>
 
 
 
