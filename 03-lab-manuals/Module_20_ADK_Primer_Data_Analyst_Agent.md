@@ -156,9 +156,25 @@ Navigate to the Data_Analytics_Agent folder that has the requirements.txt and ru
 Modify the env file to reflect your GCP project ID, project number and location by updating the following with your details and saving the file-
 
 ```
-GOOGLE_CLOUD_PROJECT="YOUR_PROJECT_ID"
-GOOGLE_CLOUD_LOCATION="YOUR_GCP_LOCATION"
-GOOGLE_CLOUD_PROJECT_NUMBER="YOUR_PROJECT_NUMBER"
+GOOGLE_CLOUD_PROJECT="<YOUR_PROJECT_ID>"
+GOOGLE_CLOUD_LOCATION="us-central1"
+GOOGLE_CLOUD_PROJECT_NUMBER="<YOUR_PROJECT_NUMBER>"
+
+GOOGLE_GENAI_USE_VERTEXAI="True"
+GOOGLE_CLOUD_AGENT_ENGINE_ENABLE_TELEMETRY=true
+OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
+
+GEMINI_MODEL="gemini-2.5-pro"
+
+BQ_DATASETS_IN_SCOPE="rscw_fridge_ds"
+BQ_METADATA_BUCKET="rscw-workshop-fridge-stage-<YOUR_PROJECT_NUMBER>"
+BQ_METADATA_FILE="frige-metadata-for-agent-grounding.md"
+
+DATA_ANALYST_USER_MANAGED_SERVICE_ACCOUNT_FQN="data-analyst-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
+
+
+AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-<YOUR_PROJECT_NUMBER>"
+DEPLOYED_AGENT_RESOURCE_URI="projects/<YOUR_PROJECT_NUMBER>/locations/us-central1/reasoningEngines/<THIS_WILL_COME_LATER>"
 ```
 
 ![README](../04-images/M20-10.png)   
