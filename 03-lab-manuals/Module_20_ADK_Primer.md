@@ -116,16 +116,17 @@ Here is what the layout should look like if you navigate to the top level data_a
 ```
 .
 ├── data_analyst_agent
-│   ├── __init__.py
-│   ├── agent.py
-│   ├── constants.py
-│   ├── system_instructions.py
-│   ├── tools.py
-│   └── utils.py
-├── deployment_test.py
-├── requirements.txt
-├── z_enhancements.md -> [NON-CODE] roadmap 
-└── z_sample_prompts.md -> [NON-CODE] use for cold start problem
+│   ├── data_analyst_agent
+│   │   ├── agent.py -> core component
+│   │   ├── constants.py -> loaded from .env entries
+│   │   ├── system_instructions.py -> core component
+│   │   ├── test.py -> test agent engine deployment
+│   │   ├── tools.py -> core component
+│   │   └── utils.py -> core component
+│   ├── miscellaneous
+│   │   ├── enhancements.md
+│   │   └── sample_prompts.md -> list of questions you can ask if you have a cold start problem
+│   └── requirements.txt -> dependencies
 
 ```
 
@@ -426,7 +427,7 @@ Navigate to the `Playground` tab and try out a few prompts.<br>
 3. Execute script
 
 ```
-python data_analyst_agent/deployment_test.py 
+python miscellaneous/deployment_test.py 
 ```
 
 4. Browse the output streamed
