@@ -24,7 +24,12 @@ gcloud auth application-default login
 ### 1.2. Create a user managed service account (UMSA) for the demand planner agent
 
 #### 1.2.1. Run the below on cloud shell to create the UMSA:
+
 ```
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
+LOCATION="us-central1"
+
 DEMAND_PLANNER_UMSA="demand-planner-agent-sa"
 DEMAND_PLANNER_UMSA_FQN="$DEMAND_PLANNER_UMSA@$PROJECT_ID.iam.gserviceaccount.com"
 
@@ -36,8 +41,7 @@ gcloud iam service-accounts create $DEMAND_PLANNER_UMSA \
 #### 1.2.2. Grant the UMSA requiste IAM permissions
 
 ```
-BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds"
-BQ_TABLE_IN_SCOPE_FOR_WRITE_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds"
+
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
@@ -79,15 +83,21 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
 --role="roles/bigquery.metadataViewer"
 
+BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds"
+
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
 --role="roles/bigquery.dataViewer" \
 --condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI\"),title=ReadAccessToSpecificDataset"
 
+BQ_DEMAND_FORECAST_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds/tables/demand_forecast"
+BQ_DEMAND_FORECAST_HISTORY_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds/tables/demand_forecast_history"
+BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds/tables/procedure_error_log"
+
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
 --role="roles/bigquery.dataEditor" \
---condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=WriteAccessToSpecificTable"
+--condition="expression=resource.name.startsWith(\"$BQ_DEMAND_FORECAST_TABLE_WRITE_ACCESS_RESOURCE_URI\") || resource.name.startsWith(\"$BQ_DEMAND_FORECAST_HISTORY_TABLE_WRITE_ACCESS_RESOURCE_URI\") || resource.name.startsWith(\"$BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\"),title=WriteAccessToSpecificTable"
 
 ```
 
@@ -102,7 +112,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/iam.serviceAccountTokenCreator"
 
 gcloud iam service-accounts add-iam-policy-binding \
-    ${DATA_ANALYST_UMSA_FQN} \
+    ${DEMAND_PLANNER_UMSA_FQN} \
     --member="user:${YOUR_UPN_FQN}" \
     --role="roles/iam.serviceAccountUser"
 ```
