@@ -21,7 +21,7 @@ gcloud init
 gcloud auth application-default login
 ```
 
-### 1.2. Ingest the refrigerator dataset from CLI
+### 1.2. Database setup and 
 
 # INSERT INSTRUCTIONS
 
