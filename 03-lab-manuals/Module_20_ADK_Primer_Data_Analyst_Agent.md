@@ -21,11 +21,11 @@ gcloud auth application-default login
 
 ### 1.2. Ingest the refrigerator dataset from CLI
 
-# INSERT INSTRUCTIONS
+# TODO: INSERT INSTRUCTIONS
 
 ### 1.3. Run the notebook that executes the Data Insights documentation scans & persists metadata to GCS
 
-# INSERT INSTRUCTIONS
+# TODO: INSERT INSTRUCTIONS
 
 ### 1.4. Create a user managed service account for provisioning services
 
