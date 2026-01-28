@@ -419,7 +419,7 @@ Navigate to the `Playground` tab and try out a few prompts.<br>
 
 3. Lets try multi-turn
 
-![README](../04-images/M20-16.png)   
+![README](../04-images/M20-16a.png)   
 <br><br>
 
 ![README](../04-images/M20-16b.png)   
