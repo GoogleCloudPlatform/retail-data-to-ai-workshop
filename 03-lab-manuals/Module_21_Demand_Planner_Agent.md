@@ -170,32 +170,32 @@ We will use two notebooks to complete this section. It is imperative that you co
 
 5. Here is how you can track execution of Data Insights documentation scans
    
-![README](../04-images/M21_DI_1.png)  
+![README](../04-images/M21-DI-1.png)  
 <br><br>
 
-![README](../04-images/M21_DI_2.png)  
+![README](../04-images/M21-DI-2.png)  
 <br><br>
 
  4. Browse the tables and dataset to ensure completion of the scans
 
-![README](../04-images/M21_DI_3.png)  
+![README](../04-images/M21-DI-3.png)  
 <br><br>
 
-![README](../04-images/M21_DI_4.png)  
+![README](../04-images/M21-DI-4.png)  
 <br><br>
 
-![README](../04-images/M21_DI_5.png)  
+![README](../04-images/M21-DI-5.png)  
 <br><br>
 
-![README](../04-images/M21_DI_6.png)  
+![README](../04-images/M21-DI-6.png)  
 <br><br>
 
 5. Browse Cloud Storage bucket to see the grounding file that has the metadata
 
-![README](../04-images/M21_DI_7.png)  
+![README](../04-images/M21-DI-7.png)  
 <br><br>
 
-![README](../04-images/M21_DI_8.png)  
+![README](../04-images/M21-DI-8.png)  
 <br><br>
 
 
