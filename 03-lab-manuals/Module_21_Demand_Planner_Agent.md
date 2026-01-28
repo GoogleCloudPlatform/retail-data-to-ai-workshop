@@ -196,7 +196,7 @@ Browse the tables and dataset to ensure completion of the scans
 ![README](../04-images/M21-DI-6.png)  
 <br><br>
 
-#### 2.3. Review the metadata grounding file generated that we will use as part of system instructions to the Demand Planner Agent
+#### 2.4. Review the metadata grounding file generated that we will use as part of system instructions to the Demand Planner Agent
 
 Browse Cloud Storage bucket to see the grounding file that has the metadata
 
@@ -234,7 +234,7 @@ Here is what the layout should look like if you navigate to the top level demand
 
 ```
 
-![README](../04-images/M21_3-1.png)  
+![README](../04-images/M21-3-1.png)  
 <br><br>
 
 ### 3.2. Study these specific code/config files
