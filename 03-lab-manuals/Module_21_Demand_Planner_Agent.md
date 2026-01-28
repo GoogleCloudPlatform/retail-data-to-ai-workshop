@@ -467,9 +467,9 @@ Notice that the author ran into a permissions issue, fixed the permissions and r
 <br><br>
 
 Here are the prompts used by the author:
-1. Can you show me the forecast for omni_item_id 'LRDCS2603S' for '2026-02-02' for location_id 'CHI-IL-ST'?
+1. Can you show me the demand forecast for omni_item_id 'LRDCS2603S' for '2026-02-02' for location_id 'CHI-IL-ST'?
 2. I see a demand SURGE. Can you adjust the forecast for this omni_item_id, for a SURGE?
-3. Can you show me the forecast for omni_item_id 'LRDCS2603S' for '2026-02-02' for location_id 'CHI-IL-ST' again?
+3. Can you show me the demand forecast for omni_item_id 'LRDCS2603S' for '2026-02-02' for location_id 'CHI-IL-ST' again?
 
 <hr>
 
@@ -527,24 +527,26 @@ Question 3 (a read):
 ## 6. Register the Demand Planner Agent with Agentspace on Gemini Enterprise to our Agentspace App (Shoonya Agentverse) 
 
 
-### 7.1. Register the agent on Agent Engine with Gemini Enterprise for the Agent UI experience
+### 6.1. Register the agent on Agent Engine with Gemini Enterprise for the Agent UI experience
 
 ```
+AGENTSPACE_APP_ID="shoonya-agentverse"
+AGENTSPACE_LOCATION="global"
 AGENT_ENGINE_LOCATION="us-central1"
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
-DEMAND_PLANNER_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines"  |  grep reasoningEngines | grep name | cut -d'/' -f6 | cut -d '"' -f1`
+DEMAND_PLANNER_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines"  |  grep -3 Demand | grep name | cut -d'/' -f6 | cut -d'"' -f1`
 echo $DEMAND_PLANNER_AGENT_ID
 
 PAYLOAD="{
-     \"displayName\": \"Data Analyst\",
-     \"description\": \"An agent who can analyze data on your behalf with just natural language questions as input\",
+     \"displayName\": \"Demand Planner\",
+     \"description\": \"An agent that can generate demand forecasts, adjust forecasts and answer natural language questions about forecast data in the BQ dataset rscw_fridge_forecast_ds\",
      \"icon\": {
         \"uri\": \"ICON_URI\"
   },
   \"adk_agent_definition\": {
      \"provisioned_reasoning_engine\": {
         \"reasoning_engine\":
-        \"projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines/$DATA_ANALYST_AGENT_ID\"
+        \"projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines/$DEMAND_PLANNER_AGENT_ID\"
      }
   }
 }"
@@ -560,17 +562,18 @@ curl -X POST \
 
 Author's output:
 ```
+THIS IS INFORMATIONAL
 {
-  "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-agentverse/assistants/default_assistant/agents/1624231307787687665",
-  "displayName": "Data Analyst",
-  "description": "An agent who can analyze data on your behalf with just natural language questions as input",
+  "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-agentverse/assistants/default_assistant/agents/4914517023421957910",
+  "displayName": "Demand Planner",
+  "description": "An agent that can generate demand forecasts, adjust forecasts and answer natural language questions about forecast data in the BQ dataset rscw_fridge_forecast_ds",
   "icon": {
     "uri": "ICON_URI"
   },
-  "createTime": "2026-01-26T21:39:13.955130226Z",
+  "createTime": "2026-01-28T19:07:46.045247269Z",
   "adkAgentDefinition": {
     "provisionedReasoningEngine": {
-      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/1306920202704781312"
+      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/6978429877191966720"
     }
   },
   "state": "ENABLED"
@@ -578,15 +581,15 @@ Author's output:
 ```
 
 Make note of the IDs here-
-1. Agent ID on Gemini Enterprise is `1624231307787687665` in
-`projects/sdfsdfsdf/locations/global/collections/default_collection/engines/shoonya-agentverse/assistants/default_assistant/agents/1624231307787687665`
-2. Agent name on Gemini Enterprise is `Data Analyst`
-3. Agent Engine (reasoning engine) ID is `1306920202704781312` from `projects/data-insights-quickstart/locations/us-central1/reasoningEngines/1306920202704781312`
+1. Agent ID on Gemini Enterprise is `4914517023421957910` in
+`projects/sdfsdfsdf/locations/global/collections/default_collection/engines/shoonya-agentverse/assistants/default_assistant/agents/4914517023421957910`
+2. Agent name on Gemini Enterprise is `Demand Planner`
+3. Agent Engine (reasoning engine) ID is `6978429877191966720` from `projects/data-insights-quickstart/locations/us-central1/reasoningEngines/6978429877191966720`
 4. It is super important that the right reasoning engine is registered with Gemini Enterprise for things to work
 
 
 
-### 7.2. Check agents registered with the app we created on Gemini enterprise
+### 6.2. Check agents registered with the app we created on Gemini enterprise
 
 ```
 curl -X GET \
@@ -594,18 +597,13 @@ curl -X GET \
 "https://$AGENTSPACE_LOCATION-discoveryengine.googleapis.com/v1alpha/projects/$PROJECT_ID/locations/$AGENTSPACE_LOCATION/collections/default_collection/engines/$AGENTSPACE_APP_ID/assistants/default_assistant/agents"
 
 ```
-Here is what the author got back:
-```
-THIS IS INFORMATIONAL
+You should see two agents - the Data Analyst and the Demand Planner.
 
 
-```
-
-
-![README](../04-images/M20-20.png)   
+![README](../04-images/M21_6_2.png)   
 <br><br>
 
-### 7.3. In case of discrepancies - update the Gemini Enterprise agent with the right Agent Engine agent ID ID 
+### 6.3. In case of discrepancies - update the Gemini Enterprise agent with the right Agent Engine agent ID ID 
 
 Here is how you update the Agent Engine deployed Agent ID.<br>
 SKIP THIS IF YOU HAVE THE RIGHT ID <br>
@@ -613,30 +611,11 @@ Documentation link: https://docs.cloud.google.com/gemini/enterprise/docs/registe
 
 <hr>
 
-## 8. Chat with the Demand Planner Agent in Gemini Enterprise
+## 7. Chat with the Demand Planner Agent in Gemini Enterprise
 
-Launch the application as shown below.
 
-![README](../04-images/M20-21.png)   
-<br><br>
 
-![README](../04-images/M20-22.png)   
-<br><br>
 
-![README](../04-images/M20-23.png)   
-<br><br>
-
-![README](../04-images/M20-24.png)   
-<br><br>
-
-![README](../04-images/M20-25.png)   
-<br><br>
-
-![README](../04-images/M20-26.png)   
-<br><br>
-
-![README](../04-images/M20-27.png)   
-<br><br>
 
 
 <hr>
