@@ -614,11 +614,17 @@ Documentation link: https://docs.cloud.google.com/gemini/enterprise/docs/registe
 ## 7. Chat with the Demand Planner Agent in Gemini Enterprise
 
 
+![README](../04-images/M21_7_1.png)   
+<br><br>
 
-
+![README](../04-images/M21_7_2.png)   
+<br><br>
 
 
 <hr>
+
+This concludes the module. Please proceed to the next module.
+
 
 
 
