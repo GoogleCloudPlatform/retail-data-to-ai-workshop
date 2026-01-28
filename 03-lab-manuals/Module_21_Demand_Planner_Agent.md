@@ -107,11 +107,12 @@ Lets ensure we lock down write access for our Demand Planner Agent to just 3 tab
 BQ_DEMAND_FORECAST_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds/tables/demand_forecast"
 BQ_DEMAND_FORECAST_HISTORY_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds/tables/demand_forecast_history"
 BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds/tables/procedure_error_log"
+FORECAST_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds/tables/forecast_activity_log"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
 --role="roles/bigquery.dataEditor" \
---condition="expression=resource.name.startsWith(\"$BQ_DEMAND_FORECAST_TABLE_WRITE_ACCESS_RESOURCE_URI\") || resource.name.startsWith(\"$BQ_DEMAND_FORECAST_HISTORY_TABLE_WRITE_ACCESS_RESOURCE_URI\") || resource.name.startsWith(\"$BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\"),title=WriteAccessToSpecificTable"
+--condition="expression=resource.name.startsWith(\"$BQ_DEMAND_FORECAST_TABLE_WRITE_ACCESS_RESOURCE_URI\") || resource.name.startsWith(\"$BQ_DEMAND_FORECAST_HISTORY_TABLE_WRITE_ACCESS_RESOURCE_URI\") || resource.name.startsWith(\"$BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\") || resource.name.startsWith(\"$FORECAST_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\" ),title=WriteAccessToSpecificTable"
 
 ```
 
@@ -283,7 +284,7 @@ AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-<YOUR_PROJECT_NUMBER>"
 DEPLOYED_AGENT_RESOURCE_URI="projects/<YOUR_PROJECT_NUMBER>/locations/us-central1/reasoningEngines/<THIS_WILL_COME_LATER>"
 ```
 
-![README](../04-images/M21_4-3.png)  
+![README](../04-images/M21-4-3.png)  
 <br><br>
 
 
@@ -359,26 +360,15 @@ The code base includes sample prompts, you can grab a few and try out like below
 ![README](../04-images/M21_4_6_13.png)   
 <br><br>
 
+Now that we have a solid prototype of an agent, lets deploy to Agent Engine.
 
 <hr>
 
-## 5. Deploy & test the Data Analyst Agent on Agent Engine
+## 5. Deploy & test the Demand Planner Agent on Agent Engine
 
+### 5.1. Deploy the agent to Agent Engine
 
-### 5.1. Grant the deployer (yourself), incremental IAM permissions
-
-```
-YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="user:$YOUR_UPN_FQN" \
-  --role="roles/discoveryengine.admin"
-
-```
-
-### 5.2. Deploy the agent to Agent Engine
-
-Run this from within the top level data_analyst_agent folder, from CLI. This will automatically read in any configs in agent_engine_config.json
+Run this from within the top level demand_planner_agent folder, from CLI. This will automatically read in any configs in agent_engine_config.json
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
@@ -395,73 +385,93 @@ adk deploy agent_engine \
 ./demand_planner_agent
 ```
 
-![README](../04-images/M20-13a.png)   
-<br><br>
 
-![README](../04-images/M20-13d.png)   
-<br><br>
-
-![README](../04-images/M20-13e.png)   
-<br><br>
-
-![README](../04-images/M20-13b.png)   
-<br><br>
-
-![README](../04-images/M20-13c.png)   
+![README](../04-images/M21_5_1.png)   
 <br><br>
 
 
-### 5.3. Retrieve the Demand Planner Agent ID from the Agent Engine deployment
+### 5.2. Review the deployment on the Cloud Console
+
+![README](../04-images/M21_5_2.png)   
+<br><br>
+
+### 5.3. The Reasoning Engine ID
+
+![README](../04-images/M21_5_3.png)   
+<br><br>
+
+
+### 5.4. The identity of the deployed agent 
+
+We are running the agent as a (custom) user managed service account.
+
+![README](../04-images/M21_5_4.png)   
+<br><br>
+
+
+### 5.5. Recap the permissions we granted in previous sections
+
+The agent runs as the demand planner service account on Agent Engine. Lets review the IAM permissions
+
+![README](../04-images/M21_5_5.png)   
+<br><br>
+
+![README](../04-images/M21_5_6.png)   
+<br><br>
+
+![README](../04-images/M21_5_7.png)   
+<br><br>
+
+![README](../04-images/M21_5_8.png)   
+<br><br>
+
+
+### 5.6. Retrieve the Demand Planner Agent ID from the Agent Engine deployment
 
 We will need to register with Gemini Enterprise.
 ```
 AGENT_ENGINE_LOCATION="us-central1"
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
-DEMAND_PLANNER_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines"  |  grep reasoningEngines | grep name | cut -d'/' -f6 | cut -d '"' -f1`
+DEMAND_PLANNER_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines"  |  grep -3 Demand | grep name | cut -d'/' -f6 | cut -d'"' -f1`
 echo $DEMAND_PLANNER_AGENT_ID
 ```
 
-### 5.4. Update the .env file with the agent engine ID
+### 5.7. Update the .env file with the agent engine ID
 
-Here is the agent engine ID:
+Update the .env
 
-![README](../04-images/M20-13d.png)   
+![README](../04-images/M21_5_9.png)   
 <br><br>
 
-Update the .env to reflect the agent engine ID:
+<hr>
 
 
-![README](../04-images/M20-13f.png)   
-<br><br>
+### 5.8. Test the  Demand Planner Agent on Agent Engine in the "Playground"
 
-
-### 5.5. Test the  Demand Planner Agent on Agent Engine in the "Playground"
-
-#### 5.5.1. Test via the UI
+#### 5.8.1. Test via the UI
 
 Navigate to the `Playground` tab and try out a few prompts.<br>
 
-1. Lets check if it can access the metadata (grounding file) and retireve results without tool call <br>
+Notice that the author ran into a permissions issue, fixed the permissions and reran successfully.
 
-![README](../04-images/M20-14.png)   
+![README](../04-images/M21_5_8_1.png)   
 <br><br>
 
-2. Lets run a query to fetch some data
-
-![README](../04-images/M20-15.png)   
+![README](../04-images/M21_5_8_2.png)   
 <br><br>
 
-3. Lets try multi-turn
-
-![README](../04-images/M20-16.png)   
+![README](../04-images/M21_5_8_3.png)   
 <br><br>
 
-![README](../04-images/M20-16b.png)   
+![README](../04-images/M21_5_8_4.png)   
 <br><br>
 
-![README](../04-images/M20-16c.png)   
-<br><br>
+Here are the prompts used by the author:
+1. Can you show me the forecast for omni_item_id 'LRDCS2603S' for '2026-02-02' for location_id 'CHI-IL-ST'?
+2. I see a demand SURGE. Can you adjust the forecast for this omni_item_id, for a SURGE?
+3. Can you show me the forecast for omni_item_id 'LRDCS2603S' for '2026-02-02' for location_id 'CHI-IL-ST' again?
 
+<hr>
 
 
 #### 5.5.2. Test via Python script
@@ -469,6 +479,7 @@ Navigate to the `Playground` tab and try out a few prompts.<br>
 1. Ensure you completed the .env update to reflect your deployed reasoningEngine agent ID from step 5.4
 
 2. Ensure you are at the right location
+
 ```
 # Navigate so that you are at the top level directory of demand_planner_agent
 /Users/akhanolkar/Projects/github/rscw-agent-solution/demand_planner_agent <- HERE
@@ -477,56 +488,43 @@ Navigate to the `Playground` tab and try out a few prompts.<br>
 3. Execute script
 
 ```
-python test.py 
+python demand_planner_agent/test.py 
 ```
 
 4. Browse the output streamed
 
-![README](../04-images/M20-16d.png)   
+Here is the author's output...<br>
+
+
+Question 1 (a read):
+
+![README](../04-images/M21_5_5_2_1.png)   
 <br><br>
 
-![README](../04-images/M20-16e.png)   
+![README](../04-images/M21_5_5_2_2.png)   
 <br><br>
 
-![README](../04-images/M20-16f.png)   
+![README](../04-images/M21_5_5_2_3.png)   
 <br><br>
 
+Question 2 (a stored procedure call that writes to database):
+
+![README](../04-images/M21_5_5_2_4.png)   
+<br><br>
+
+
+![README](../04-images/M21_5_5_2_5.png)   
+<br><br>
+
+Question 3 (a read):
+
+![README](../04-images/M21_5_5_2_6.png)   
+<br><br>
 
 <hr>
 
 
-## 6. Revisit the Agentspace App (Shoonya Agentverse) on Gemini Enterprise
-
-
-### 6.1. Check agents registered with the app you just created
-
-```
-
-PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
-AGENTSPACE_APP_ID="shoonya-agentverse"
-AGENTSPACE_LOCATION="global"
-
-curl -X GET \
--H "Authorization: Bearer $(gcloud auth print-access-token)" \
-"https://$AGENTSPACE_LOCATION-discoveryengine.googleapis.com/v1alpha/projects/$PROJECT_ID/locations/$AGENTSPACE_LOCATION/collections/default_collection/engines/$AGENTSPACE_APP_ID/assistants/default_assistant/agents"
-
-```
-
-You should see the "Deep Research" agent automatically registered:
-```
-
-```
-
-
-![README](../04-images/M20-19.png)   
-<br><br>
-
-
-<hr>
-
-
-
-## 7. Register the Demand Planner Agent with Agentspace on Gemini Enterprise
+## 6. Register the Demand Planner Agent with Agentspace on Gemini Enterprise to our Agentspace App (Shoonya Agentverse) 
 
 
 ### 7.1. Register the agent on Agent Engine with Gemini Enterprise for the Agent UI experience
