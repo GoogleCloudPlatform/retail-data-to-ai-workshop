@@ -140,14 +140,17 @@ We will use two notebooks to complete this section. It is imperative that you co
 ### 2.1. Database setup, stored procedure creation
 
 1. Run the notebook `Module_20c_Forecasting_Utils_Prework.ipynb` in BigQuery
+   
 ![README](../04-images/M21_2_1_1.png)  
 <br><br>
 
-2. You should see the following datasets created
+3. You should see the following datasets created
+   
 ![README](../04-images/M21_2_1_2.png)  
 <br><br>
 
-3. You should see the following objects created:
+5. You should see the following objects created:
+   
 ![README](../04-images/M21_2_1_3.png)  
 <br><br>
 
@@ -156,14 +159,17 @@ We will use two notebooks to complete this section. It is imperative that you co
 ### 2.2. Data Insights scan execution to generate dataset and table metadata for agentic grounding
 
 1. Run the notebook `Module_20b_Generic_Agentic_Grounding_Prework.ipynb` in BigQuery
+   
 ![README](../04-images/M21_2_2_1.png)  
 <br><br>
 
-2. Be sure to authenticateotherwise your notebook execution will not complete
+3. Be sure to authenticateotherwise your notebook execution will not complete
+   
 ![README](../04-images/M21_2_2_2.png)  
 <br><br>
 
-3. Here is how you can track execution of Data Insights documentation scans
+5. Here is how you can track execution of Data Insights documentation scans
+   
 ![README](../04-images/M21_DI_1.png)  
 <br><br>
 
@@ -201,7 +207,7 @@ We will use two notebooks to complete this section. It is imperative that you co
 
 Navigate to the `rscw-agent-solution` in vs code/your IDE <br>
 
-Here is what the layout should look like if you navigate to the top level data_analyst_agent folder:
+Here is what the layout should look like if you navigate to the top level demand_planner_agent folder:
 ```
 .
 ├── demand_planner_agent
@@ -219,6 +225,9 @@ Here is what the layout should look like if you navigate to the top level data_a
 │   └── requirements.txt
 
 ```
+
+![README](../04-images/M21_3-1.png)  
+<br><br>
 
 ### 3.2. Study these specific code/config files
 
@@ -263,10 +272,10 @@ BQ_METADATA_FILE="frige-forecast-metadata-for-agent-grounding.md"
 DATA_ANALYST_USER_MANAGED_SERVICE_ACCOUNT_FQN="demand-planner-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
 
 AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-<YOUR_PROJECT_NUMBER>"
-DEPLOYED_AGENT_RESOURCE_URI="projects/<YOUR_PROJECT_NUMBER>/locations/us-central1/reasoningEngines/1306920202704781312"
+DEPLOYED_AGENT_RESOURCE_URI="projects/<YOUR_PROJECT_NUMBER>/locations/us-central1/reasoningEngines/<THIS_WILL_COME_LATER>"
 ```
 
-![README](../04-images/M20-10.png)   
+![README](../04-images/M21_4-3.png)  
 <br><br>
 
 
@@ -283,33 +292,63 @@ In the terminal navigate to the top level data_analyst_agent directory and run t
 adk web
 ```
 
-![README](../04-images/M20-10b.png)   
-<br><br>
-
-![README](../04-images/M20-10c.png)   
-<br><br>
 
 
 ### 4.6. Try out a few prompts
 
 The code base includes sample prompts, you can grab a few and try out like below.
 
-![README](../04-images/M20-11.png)   
+![README](../04-images/M21_4_6_01.png)   
 <br><br>
 
-![README](../04-images/M20-12.png)   
+
+![README](../04-images/M21_4_6_02.png)   
 <br><br>
 
-We now know our agent is able to access data from BigQuery.
 
-Lets trying querying tables from a different dataset, the agent should state that it cannot.
-
-![README](../04-images/M20-12b.png)   
+![README](../04-images/M21_4_6_03.png)   
 <br><br>
 
-Lets try to get the agent to delete all the data, the agent should state that it cannot.
 
-![README](../04-images/M20-12c.png)   
+![README](../04-images/M21_4_6_04.png)   
+<br><br>
+
+
+![README](../04-images/M21_4_6_05.png)   
+<br><br>
+
+
+![README](../04-images/M21_4_6_06.png)   
+<br><br>
+
+
+![README](../04-images/M21_4_6_07.png)   
+<br><br>
+
+
+![README](../04-images/M21_4_6_08.png)   
+<br><br>
+
+
+![README](../04-images/M21_4_6_09.png)   
+<br><br>
+
+
+![README](../04-images/M21_4_6_10.png)   
+<br><br>
+
+
+![README](../04-images/M21_4_6_11.png)   
+<br><br>
+
+
+### 4.7. Try out detrimental action (delete data) as well as access a different BigQueryQ dataset
+
+
+![README](../04-images/M21_4_6_12.png)   
+<br><br>
+
+![README](../04-images/M21_4_6_13.png)   
 <br><br>
 
 
