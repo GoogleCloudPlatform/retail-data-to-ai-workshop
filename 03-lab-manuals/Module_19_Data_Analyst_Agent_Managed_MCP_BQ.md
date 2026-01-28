@@ -1,6 +1,6 @@
 # Module 19: [ADK Primer] Create a Data Analyst Agent with the BigQuery Managed MCP Server
 
-## THIS IS A WORK IN PROGRESS - the feature is too new
+## THIS IS A WORK IN PROGRESS - the feature is too new - PLEASE SKIP THIS MODULE
 
 In this tutorial we will create an agent for data QnA with ADK, and deploy it to Agent Engine, then register it with Gemini Enterprise. As part of the agent developer continuum, we will test the agent with `adk web` locally, deploy and test on `agent engine` playground, and finally via the `gemini enterprise` UI. 
 
