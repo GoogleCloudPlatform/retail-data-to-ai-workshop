@@ -713,6 +713,8 @@ Launch the application as shown below.
 
 <hr>
 
+Now that you know how to build a basic agent, lets head into the capstone work of building a multi-agent, autonomous agent solution. Proceed to the [next module](Module_21_Demand_Planner_Agent.md).
+
 
 
 
