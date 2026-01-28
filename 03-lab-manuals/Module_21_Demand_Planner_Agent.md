@@ -23,6 +23,11 @@ gcloud init
 gcloud auth application-default login
 ```
 
+Make sure you set the GCP project-
+```
+gcloud config set project <YOUR_PROJECT_ID>
+```
+
 <hr>
 
 ### 1.2. Create a user managed service account (UMSA) for the demand planner agent & grant it minimal permissions
@@ -130,13 +135,63 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 ## 2. Generate forecasts, and operationalize for agent use
 
-### 2.1. Database setup, stored proecdure creation
+We will use two notebooks to complete this section. It is imperative that you complete this section carefully to ensure the agent has the appropriate grounding and tooling.
 
-## INSERT NOTEBOOK DETAILS HERE
+### 2.1. Database setup, stored procedure creation
+
+1. Run the notebook `Module_20c_Forecasting_Utils_Prework.ipynb` in BigQuery
+![README](../04-images/M21_2_1_1.png)  
+<br><br>
+
+2. You should see the following datasets created
+![README](../04-images/M21_2_1_2.png)  
+<br><br>
+
+3. You should see the following objects created:
+![README](../04-images/M21_2_1_3.png)  
+<br><br>
+
+<hr>
 
 ### 2.2. Data Insights scan execution to generate dataset and table metadata for agentic grounding
 
-## INSERT NOTEBOOK DETAILS HERE
+1. Run the notebook `Module_20b_Generic_Agentic_Grounding_Prework.ipynb` in BigQuery
+![README](../04-images/M21_2_2_1.png)  
+<br><br>
+
+2. Be sure to authenticateotherwise your notebook execution will not complete
+![README](../04-images/M21_2_2_2.png)  
+<br><br>
+
+3. Here is how you can track execution of Data Insights documentation scans
+![README](../04-images/M21_DI_1.png)  
+<br><br>
+
+![README](../04-images/M21_DI_2.png)  
+<br><br>
+
+ 4. Browse the tables and dataset to ensure completion of the scans
+
+![README](../04-images/M21_DI_3.png)  
+<br><br>
+
+![README](../04-images/M21_DI_4.png)  
+<br><br>
+
+![README](../04-images/M21_DI_5.png)  
+<br><br>
+
+![README](../04-images/M21_DI_6.png)  
+<br><br>
+
+5. Browse Cloud Storage bucket to see the grounding file that has the metadata
+
+![README](../04-images/M21_DI_7.png)  
+<br><br>
+
+![README](../04-images/M21_DI_8.png)  
+<br><br>
+
 
 <hr>
 
