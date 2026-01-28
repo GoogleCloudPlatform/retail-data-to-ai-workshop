@@ -158,17 +158,21 @@ We will use two notebooks to complete this section. It is imperative that you co
 
 ### 2.2. Data Insights scan execution to generate dataset and table metadata for agentic grounding
 
+
+#### 2.1. Run the notebook
 1. Run the notebook `Module_20b_Generic_Agentic_Grounding_Prework.ipynb` in BigQuery
    
 ![README](../04-images/M21_2_2_1.png)  
 <br><br>
 
-3. Be sure to authenticateotherwise your notebook execution will not complete
+2. Be sure to authenticate, otherwise your notebook execution will not complete
    
 ![README](../04-images/M21_2_2_2.png)  
 <br><br>
 
-5. Here is how you can track execution of Data Insights documentation scans
+#### 2.2. Track completion of Data Insights documentation scans
+
+Here is how you can track execution of Data Insights documentation scans
    
 ![README](../04-images/M21-DI-1.png)  
 <br><br>
@@ -176,7 +180,9 @@ We will use two notebooks to complete this section. It is imperative that you co
 ![README](../04-images/M21-DI-2.png)  
 <br><br>
 
- 4. Browse the tables and dataset to ensure completion of the scans
+#### 2.3. Browse the insights generated
+
+Browse the tables and dataset to ensure completion of the scans
 
 ![README](../04-images/M21-DI-3.png)  
 <br><br>
@@ -190,7 +196,9 @@ We will use two notebooks to complete this section. It is imperative that you co
 ![README](../04-images/M21-DI-6.png)  
 <br><br>
 
-5. Browse Cloud Storage bucket to see the grounding file that has the metadata
+#### 2.3. Review the metadata grounding file generated that we will use as part of system instructions to the Demand Planner Agent
+
+Browse Cloud Storage bucket to see the grounding file that has the metadata
 
 ![README](../04-images/M21-DI-7.png)  
 <br><br>
