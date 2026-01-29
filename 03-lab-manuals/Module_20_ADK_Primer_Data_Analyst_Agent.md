@@ -687,6 +687,8 @@ Documentation link: https://docs.cloud.google.com/gemini/enterprise/docs/registe
 
 ## 8. Chat with the Data Analyst Agent in Gemini Enterprise
 
+**Note:** At the time of authoring of this content, the agent when accessed via Gemini Enterprise hallucinated, even crashed while this did not surface on Agent Engine playground or ADK web. Subsequent modules will not include Gemini Enterprise integration.
+
 Launch the application as shown below.
 
 ![README](../04-images/M20-21.png)   
