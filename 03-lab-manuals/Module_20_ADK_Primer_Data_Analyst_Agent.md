@@ -4,6 +4,8 @@ In this tutorial we will create an agent for data QnA with ADK, and deploy it to
 
 Note:
 The purpose of this tutorial is to show integration between products and is less about building a perfect agent. Many agentic features have been deliberatley skipped for simplicity and focus on standing up a basic QnA application.
+
+
    
 
 ## 1. Setup
