@@ -1,6 +1,6 @@
 # Module 21: [Capstone] Create a Demand Planner Agent 
 
-In this tutorial we will create a demand planner agent, and deploy it to Agent Engine, then register it with Gemini Enterprise. As part of the agent developer continuum, we will test the agent with `adk web` locally, deploy and test on `agent engine` playground, and finally via the `gemini enterprise` UI. <br>
+In this tutorial we will create a demand planner agent, and deploy it to Agent Engine, then register it with Gemini Enterprise. As part of the agent developer continuum, we will test the agent with `adk web` locally, deploy and test on `agent engine` playground. We will skip Gemini Enterprise registration as the focus is merely a functionally adequate UI for our agents, and ADK and Agent Engine playground are sufficient.<br>
 
 The demand planner agent can do the following:
 1. Can run on-demand forecasting (TimesFM in BigQuery)
@@ -521,104 +521,6 @@ Question 3 (a read):
 ![README](../04-images/M21_5_5_2_6.png)   
 <br><br>
 
-<hr>
-
-
-## 6. Register the Demand Planner Agent with Agentspace on Gemini Enterprise to our Agentspace App (Shoonya Agentverse) 
-
-
-### 6.1. Register the agent on Agent Engine with Gemini Enterprise for the Agent UI experience
-
-```
-AGENTSPACE_APP_ID="shoonya-agentverse"
-AGENTSPACE_LOCATION="global"
-AGENT_ENGINE_LOCATION="us-central1"
-PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
-DEMAND_PLANNER_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines"  |  grep -3 Demand | grep name | cut -d'/' -f6 | cut -d'"' -f1`
-echo $DEMAND_PLANNER_AGENT_ID
-
-PAYLOAD="{
-     \"displayName\": \"Demand Planner\",
-     \"description\": \"An agent that can generate demand forecasts, adjust forecasts and answer natural language questions about forecast data in the BQ dataset rscw_fridge_forecast_ds\",
-     \"icon\": {
-        \"uri\": \"ICON_URI\"
-  },
-  \"adk_agent_definition\": {
-     \"provisioned_reasoning_engine\": {
-        \"reasoning_engine\":
-        \"projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines/$DEMAND_PLANNER_AGENT_ID\"
-     }
-  }
-}"
-
-curl -X POST \
-  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-  -H "Content-Type: application/json" \
-  -H "X-Goog-User-Project: $PROJECT_ID" \
-  "https://$AGENTSPACE_LOCATION-discoveryengine.googleapis.com/v1alpha/projects/$PROJECT_ID/locations/$AGENTSPACE_LOCATION/collections/default_collection/engines/$AGENTSPACE_APP_ID/assistants/default_assistant/agents" \
-  -d "$PAYLOAD"
-```
-
-
-Author's output:
-```
-THIS IS INFORMATIONAL
-{
-  "name": "projects/606804615020/locations/global/collections/default_collection/engines/shoonya-agentverse/assistants/default_assistant/agents/4914517023421957910",
-  "displayName": "Demand Planner",
-  "description": "An agent that can generate demand forecasts, adjust forecasts and answer natural language questions about forecast data in the BQ dataset rscw_fridge_forecast_ds",
-  "icon": {
-    "uri": "ICON_URI"
-  },
-  "createTime": "2026-01-28T19:07:46.045247269Z",
-  "adkAgentDefinition": {
-    "provisionedReasoningEngine": {
-      "reasoningEngine": "projects/data-insights-quickstart/locations/us-central1/reasoningEngines/6978429877191966720"
-    }
-  },
-  "state": "ENABLED"
-}
-```
-
-Make note of the IDs here-
-1. Agent ID on Gemini Enterprise is `4914517023421957910` in
-`projects/sdfsdfsdf/locations/global/collections/default_collection/engines/shoonya-agentverse/assistants/default_assistant/agents/4914517023421957910`
-2. Agent name on Gemini Enterprise is `Demand Planner`
-3. Agent Engine (reasoning engine) ID is `6978429877191966720` from `projects/data-insights-quickstart/locations/us-central1/reasoningEngines/6978429877191966720`
-4. It is super important that the right reasoning engine is registered with Gemini Enterprise for things to work
-
-
-
-### 6.2. Check agents registered with the app we created on Gemini enterprise
-
-```
-curl -X GET \
--H "Authorization: Bearer $(gcloud auth print-access-token)" \
-"https://$AGENTSPACE_LOCATION-discoveryengine.googleapis.com/v1alpha/projects/$PROJECT_ID/locations/$AGENTSPACE_LOCATION/collections/default_collection/engines/$AGENTSPACE_APP_ID/assistants/default_assistant/agents"
-
-```
-You should see two agents - the Data Analyst and the Demand Planner.
-
-
-![README](../04-images/M21_6_2.png)   
-<br><br>
-
-### 6.3. In case of discrepancies - update the Gemini Enterprise agent with the right Agent Engine agent ID ID 
-
-Here is how you update the Agent Engine deployed Agent ID.<br>
-SKIP THIS IF YOU HAVE THE RIGHT ID <br>
-Documentation link: https://docs.cloud.google.com/gemini/enterprise/docs/register-and-manage-an-adk-agent#update_an_adk_agent
-
-<hr>
-
-## 7. Chat with the Demand Planner Agent in Gemini Enterprise
-
-
-![README](../04-images/M21_7_1.png)   
-<br><br>
-
-![README](../04-images/M21_7_2.png)   
-<br><br>
 
 
 <hr>
