@@ -52,7 +52,7 @@ LOCATION="us-central1"
 AGENT_UMSA="inventory-manager-agent-sa"
 AGENT_UMSA_FQN="$AGENT_UMSA@$PROJECT_ID.iam.gserviceaccount.com"
 
-gcloud iam service-accounts create $AGENT_UMSA_FQN \
+gcloud iam service-accounts create $AGENT_UMSA \
   --description="User Managed Service Account for Inventory Manager Agent" \
   --display-name="Inventory Manager Agent Service Account"
 ```
