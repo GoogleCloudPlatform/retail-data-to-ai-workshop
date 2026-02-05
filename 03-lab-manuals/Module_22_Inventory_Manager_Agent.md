@@ -216,9 +216,10 @@ GEMINI_MODEL="gemini-2.5-pro"
 
 BQ_DATASETS_IN_SCOPE="rscw_fridge_forecast_ds"
 BQ_METADATA_BUCKET="rscw-workshop-fridge-stage-<YOUR_PROJECT_NUMBER>"
-BQ_METADATA_FILE="frige-metadata-for-agent-grounding.md"
+BQ_METADATA_FILE_FOR_CORE_DATASET="fridge-metadata-for-agent-grounding.md"
+BQ_METADATA_FILE_FOR_FORECAST_DATASET="fridge-forecast-metadata-for-agent-grounding.md"
 
-DATA_ANALYST_USER_MANAGED_SERVICE_ACCOUNT_FQN="inventory-manager-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
+INVENTORY_MANAGER_SERVICE_ACCOUNT_FQN="inventory-manager-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
 
 AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-<YOUR_PROJECT_NUMBER>"
 DEPLOYED_AGENT_RESOURCE_URI="projects/<YOUR_PROJECT_NUMBER>/locations/us-central1/reasoningEngines/<THIS_WILL_COME_LATER>"
