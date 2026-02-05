@@ -122,7 +122,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 ```
 
-####  1.2.3. Grant yourself permissions to impersonate the Data Analyst UMSA
+####  1.2.3. Grant yourself permissions to impersonate the UMSA
 
 Run the below in the terminal.
 ```
