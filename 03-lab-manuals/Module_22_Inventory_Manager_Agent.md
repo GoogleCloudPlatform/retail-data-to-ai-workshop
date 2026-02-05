@@ -157,7 +157,7 @@ We will use a to complete this section. It is imperative that you complete this 
 
 Navigate to the `rscw-agent-solution` in vs code/your IDE <br>
 
-Here is what the layout should look like if you navigate to the top level demand_planner_agent folder:
+Here is what the layout should look like if you navigate to the top level inventory_manager_agent folder:
 ```
 .
 ├── inventory_manager_agent
