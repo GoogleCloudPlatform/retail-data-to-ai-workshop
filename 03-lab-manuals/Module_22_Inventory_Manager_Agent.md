@@ -265,7 +265,7 @@ adk deploy agent_engine \
 --project=$PROJECT_ID   \
 --region=$AGENT_ENGINE_LOCATION   \
 --display_name="Inventory Manager"   \
---description="An agent that can generate inventory allocation plan, adjust allocation, runa number of canned reports and answer adhoc natural language questions about inventory data in the BQ dataset rscw_fridge_ds" \
+--description="An agent that can generate inventory allocation plan, adjust allocation, run a number of canned reports and answer adhoc natural language questions about inventory data in the BQ dataset rscw_fridge_ds" \
 --staging_bucket=gs://agent-deployment-bucket-$PROJECT_NBR   \
 --env_file="./inventory_manager_agent/.env"   \
 --trace_to_cloud   \
