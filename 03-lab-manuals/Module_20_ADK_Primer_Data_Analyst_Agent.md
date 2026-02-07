@@ -251,6 +251,8 @@ DEPLOYED_AGENT_RESOURCE_URI="projects/<YOUR_PROJECT_NUMBER>/locations/us-central
 ![README](../04-images/M20-10.png)   
 <br><br>
 
+# REDO IMAGE
+
 
 ### 3.3. Launch a terminal in VS Code/your IDE and authenticate
 
@@ -267,6 +269,8 @@ adk web
 
 ![README](../04-images/M20-10b.png)   
 <br><br>
+
+# REDO IMAGE ABOVE
 
 ![README](../04-images/M20-10c.png)   
 <br><br>
@@ -385,6 +389,8 @@ Update the .env to reflect the agent engine ID:
 
 ![README](../04-images/M20-13f.png)   
 <br><br>
+
+# REDO IMAGE ABOVE
 
 
 ### 5.5. Test the  Data Analyst Agent on Agent Engine in the "Playground"
