@@ -92,9 +92,9 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 ```
 
-Lets ensure that our Demand Planner Agent has viewer access to the rscw_fridge_forecast_ds:
+Lets ensure that our Demand Planner Agent has viewer access to the capstone_ds:
 ```
-BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds"
+BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
@@ -104,10 +104,10 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 Lets ensure we lock down write access for our Demand Planner Agent to just 3 tables:
 ```
-BQ_DEMAND_FORECAST_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds/tables/demand_forecast"
-BQ_DEMAND_FORECAST_HISTORY_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds/tables/demand_forecast_history"
-BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds/tables/procedure_error_log"
-FORECAST_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/rscw_fridge_forecast_ds/tables/forecast_activity_log"
+BQ_DEMAND_FORECAST_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/demand_forecast"
+BQ_DEMAND_FORECAST_HISTORY_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/demand_forecast_history"
+BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/procedure_error_log"
+FORECAST_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/forecast_activity_log"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
@@ -274,9 +274,9 @@ OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
 
 GEMINI_MODEL="gemini-2.5-pro"
 
-BQ_DATASETS_IN_SCOPE="rscw_fridge_forecast_ds"
-BQ_METADATA_BUCKET="rscw-workshop-fridge-stage-<YOUR_PROJECT_NUMBER>"
-BQ_METADATA_FILE="frige-forecast-metadata-for-agent-grounding.md"
+BQ_DATASET_IN_SCOPE="capstone_ds"
+BQ_METADATA_BUCKET="capstone_stage_<YOUR_PROJECT_NUMBER>"
+BQ_METADATA_FILE="captone_database_metadata_grounding.md"
 
 DATA_ANALYST_USER_MANAGED_SERVICE_ACCOUNT_FQN="demand-planner-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
 
@@ -378,7 +378,7 @@ adk deploy agent_engine \
 --project=$PROJECT_ID   \
 --region=$AGENT_ENGINE_LOCATION   \
 --display_name="Demand Planner"   \
---description="An agent that can generate demand forecasts, adjust forecasts and answer natural language questions about forecast data in the BQ dataset rscw_fridge_forecast_ds" \
+--description="An agent that can generate demand forecasts, adjust forecasts and answer natural language questions about forecast data in the BQ dataset capstone_ds" \
 --staging_bucket=gs://agent-deployment-bucket-$PROJECT_NBR   \
 --env_file="./demand_planner_agent/.env"   \
 --trace_to_cloud   \
