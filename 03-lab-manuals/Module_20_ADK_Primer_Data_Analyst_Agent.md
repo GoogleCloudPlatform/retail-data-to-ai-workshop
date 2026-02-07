@@ -344,7 +344,7 @@ adk deploy agent_engine \
 --project=$PROJECT_ID   \
 --region=$AGENT_ENGINE_LOCATION   \
 --display_name="Data Analyst"   \
---description="An agent that can answer natural language questions about data in the BQ dataset rscw_fridge_ds" \
+--description="An agent that can answer natural language questions about data in the BQ dataset capstone_ds" \
 --staging_bucket=gs://agent-deployment-bucket-$PROJECT_NBR   \
 --env_file="./data_analyst_agent/.env"   \
 --trace_to_cloud   \
