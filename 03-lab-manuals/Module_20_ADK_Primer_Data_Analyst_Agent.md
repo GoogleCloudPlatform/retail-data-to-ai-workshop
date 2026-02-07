@@ -6,8 +6,6 @@ Note:
 The purpose of this tutorial is to show integration between products and is less about building a perfect agent. Many agentic features have been deliberatley skipped for simplicity and focus on standing up a basic QnA application.
 
 
-   
-
 ## 1. Setup
 
 ### 1.1. Authenticate to Google Cloud from CLI & generate Application Default Credentials
@@ -21,6 +19,8 @@ gcloud init
 gcloud auth application-default login
 ```
 
+<hr>
+
 ### 1.2. Enable APIs
 
 Only incremental APIs are listed below-
@@ -28,6 +28,8 @@ Only incremental APIs are listed below-
 gcloud services enable telemetry.googleapis.com
 gcloud services enable logging.googleapis.com
 ```
+
+<hr>
 
 ### 1.3. Create a user managed service account (UMSA) for the Data Analyst Agent
 
@@ -112,16 +114,13 @@ gcloud iam service-accounts add-iam-policy-binding \
     ${DATA_ANALYST_UMSA_FQN} \
     --member="user:${YOUR_UPN_FQN}" \
     --role="roles/iam.serviceAccountUser"
-
-
 ```
 
-### 1.4. Ingest the capstone data and run Data Insights scans
+<hr>
 
-# TODO: INSERT INSTRUCTIONS
+### 1.4. Create buckets
 
-
-### 1.5. Create a bucket for agent deployment
+#### 1.4.1. Create a bucket for agent deployment
 
 From your terminal, run the below:
 ```
@@ -130,14 +129,47 @@ gcloud storage buckets create "gs://$AGENT_DEPLOYMENT_BUCKET" --location=$LOCATI
 
 ```
 
+#### 1.4.2. Create a bucket for data & metadata
 
-### 1.6. Set up VS code or use any IDE on your machine
+From your terminal, run the below:
+```
+CAPSTONE_DATA_BUCKET="capstone_stage_$PROJECT_NBR"
+gcloud storage buckets create "gs://$CAPSTONE_DATA_BUCKET" --location=$LOCATION  
+```
 
-Install VS code from https://code.visualstudio.com/download and configure it for Python and Google Cloud.
+<hr>
 
-### 1.7. Clone the repo
+### 1.5. Upload data into the data bucket
 
 You should have cloned the repo at the onset of this workshop, pull the latest code.
+
+From your terminal run the below to upload data-
+# TODO
+
+```
+# TODO
+```
+
+<hr>
+
+### 1.6. Ingest the capstone data and run Data Insights scans
+
+To run through this module, we need a dataset created, tables, views, stored procedures in place, data loaded and data insights scans run. This takes about 35 minutes to run.<br><br>
+
+1. Upload the notebook called `Module_20_Capstone_setup.ipynb` to BigQuery.
+2. Authenticate - its in the section 1. Ensure you complete this interactive authentication
+3. Run through the rest of the notebook, review the tables, relationships.
+4. Last step in the notebook is to run Data Insights scans and generate a Data 
+
+<hr>
+
+
+### 1.7. Set up VS code or use any IDE on your machine
+
+Install VS code from https://code.visualstudio.com/download and configure it for Python and Google Cloud. <br>
+
+[https://docs.cloud.google.com/code/docs/vscode/install](https://docs.cloud.google.com/code/docs/vscode/install)
+
 
 <hr>
 
@@ -153,6 +185,8 @@ Here is what the layout should look like if you navigate to the top level data_a
 .
 ├── data_analyst_agent
 │   ├── data_analyst_agent
+│   │   ├── __init__.py
+│   │   ├── .agent_engine_config.json -> for any configs not supported by ADK command line
 │   │   ├── agent.py -> core component
 │   │   ├── constants.py -> loaded from .env entries
 │   │   ├── system_instructions.py -> core component
@@ -163,6 +197,7 @@ Here is what the layout should look like if you navigate to the top level data_a
 │   │   ├── enhancements.md
 │   │   └── sample_prompts.md -> list of questions you can ask if you have a cold start problem
 │   └── requirements.txt -> dependencies
+..other agents
 
 ```
 
