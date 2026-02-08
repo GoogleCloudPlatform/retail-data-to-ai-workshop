@@ -209,10 +209,9 @@ OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
 
 GEMINI_MODEL="gemini-2.5-pro"
 
-BQ_DATASETS_IN_SCOPE=["capstone_ds","capstone_ds"]
+BQ_DATASETS_IN_SCOPE="capstone_ds"
 BQ_METADATA_BUCKET="rscw-workshop-fridge-stage-<YOUR_PROJECT_NUMBER>"
-BQ_METADATA_FILE_FOR_CORE_DATASET="fridge-metadata-for-agent-grounding.md"
-BQ_METADATA_FILE_FOR_FORECAST_DATASET="fridge-forecast-metadata-for-agent-grounding.md"
+BQ_METADATA_FILE="fridge-metadata-for-agent-grounding.md"
 
 PROCUREMENT_MANAGER_AGENT_SERVICE_ACCOUNT_FQN="procurement-manager-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
 
