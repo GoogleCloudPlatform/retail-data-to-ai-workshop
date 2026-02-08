@@ -106,7 +106,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 Lets ensure we lock down write access for our agent to just a few tables:
 ```
 BQ_STOCK_PURCHASE_ORDERS_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/stock_purchase_orders"
-BQ_STOCK_PURCHASE_ORDER_ITEMS_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/stock_purchase_orders"
+BQ_STOCK_PURCHASE_ORDER_ITEMS_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/stock_purchase_order_items"
 BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/procedure_error_log"
 BQ_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/activity_log"
 
