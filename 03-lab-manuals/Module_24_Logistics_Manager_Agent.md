@@ -140,7 +140,7 @@ We will use a to complete this section. It is imperative that you complete this 
 
 ### 2.1. Database setup, stored procedures, tables, views review
 
-1. Run the notebook `Module_23_Procurement_Manager_Utils_Prework.ipynb` in BigQuery
+1. Run the notebook `Module_24_Logistics_Manager_Utils_Prework.ipynb` in BigQuery
 2. Visit the Cloud Console and browse the objects   
 
 <hr>
@@ -151,11 +151,11 @@ We will use a to complete this section. It is imperative that you complete this 
 
 Navigate to the `rscw-agent-solution` in vs code/your IDE <br>
 
-Here is what the layout should look like if you navigate to the top level procurement_manager_agent folder:
+Here is what the layout should look like if you navigate to the top level logistics_manager_agent folder:
 ```
 .
-├── procurement_manager_agent
-│   ├── procurement_manager_agent
+├── logistics_manager_agent
+│   ├── logistics_manager_agent
 │   │   ├── __init__.py
 │   │   ├── agent.py -> core code
 │   │   ├── constants.py -> configs
@@ -190,7 +190,7 @@ source .venv/bin/activate
 
 ### 4.2. Install the Python dependencies
 
-Navigate to the procurement_manager_agent folder that has the requirements.txt and run the install from VS code terminal-
+Navigate to the logistics_manager_agent folder that has the requirements.txt and run the install from VS code terminal-
 `pip install -r requirements.txt`
 
 ### 4.3. Update the env file 
@@ -208,12 +208,11 @@ OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
 
 GEMINI_MODEL="gemini-2.5-pro"
 
-BQ_DATASETS_IN_SCOPE=["rscw_fridge_ds","rscw_fridge_forecast_ds"]
-BQ_METADATA_BUCKET="rscw-workshop-fridge-stage-<YOUR_PROJECT_NUMBER>"
-BQ_METADATA_FILE_FOR_CORE_DATASET="fridge-metadata-for-agent-grounding.md"
-BQ_METADATA_FILE_FOR_FORECAST_DATASET="fridge-forecast-metadata-for-agent-grounding.md"
+BQ_DATASETS_IN_SCOPE="capstone_ds"
+BQ_METADATA_BUCKET="capstone_stage_<YOUR_PROJECT_NUMBER>"
+BQ_METADATA_FILE="captone_database_metadata_grounding.md"
 
-PROCUREMENT_MANAGER_AGENT_SERVICE_ACCOUNT_FQN="procurement-manager-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
+logistics_manager_agent_SERVICE_ACCOUNT_FQN="logistics-manager-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
 
 AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-<YOUR_PROJECT_NUMBER>"
 DEPLOYED_AGENT_RESOURCE_URI="projects/<YOUR_PROJECT_NUMBER>/locations/us-central1/reasoningEngines/<THIS_WILL_COME_LATER>"
@@ -229,8 +228,8 @@ Follow instructions in section 1.
 
 ### 4.5. Run adk web
 
-In the terminal navigate to the top level inventory_manager_agent directory and run the command below.<br>
-(e.g. from author - `/Users/akhanolkar/github/rscw-agent-solution/inventory_manager_agent`)
+In the terminal navigate to the top level logistics_manager_agent directory and run the command below.<br>
+(e.g. from author - `/Users/akhanolkar/github/rscw-agent-solution/logistics_manager_agent`)
 
 ```
 adk web
@@ -249,7 +248,7 @@ The code base includes sample prompts, you can grab a few and try out. The code 
 
 ### 5.1. Deploy the agent to Agent Engine
 
-Run this from within the top level procurement_manager_agent folder, from CLI. This will automatically read in any configs in agent_engine_config.json
+Run this from within the top level logistics_manager_agent folder, from CLI. This will automatically read in any configs in agent_engine_config.json
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
@@ -258,12 +257,12 @@ AGENT_ENGINE_LOCATION="us-central1"
 adk deploy agent_engine \
 --project=$PROJECT_ID   \
 --region=$AGENT_ENGINE_LOCATION   \
---display_name="Procurement Manager"   \
---description="An agent that can generate purchase orders with suppliers, run a number of canned reports and answer adhoc natural language questions about data in the BQ dataset rscw_fridge_ds" \
+--display_name="Logistics Manager"   \
+--description="An agent that can generate stock transfer orders, plan logistics, run a number of canned reports and answer adhoc natural language questions about data in the BQ dataset capstone_ds" \
 --staging_bucket=gs://agent-deployment-bucket-$PROJECT_NBR   \
---env_file="./procurement_manager_agent/.env"   \
+--env_file="./logistics_manager_agent/.env"   \
 --trace_to_cloud   \
-./procurement_manager_agent
+./logistics_manager_agent
 ```
 
 
