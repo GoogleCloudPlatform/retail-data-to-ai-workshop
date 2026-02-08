@@ -118,7 +118,7 @@ BQ_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/c
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/bigquery.dataEditor" \
---condition="expression=resource.name.startsWith(\"$BQ_STOCK_ALLOC_TABLE_WRITE_ACCESS_RESOURCE_URI\") || resource.name.startsWith(\"$BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\") || resource.name.startsWith(\"$BQ_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\" ),title=WriteAccessToSpecificTables"
+--condition="expression=resource.name.startsWith(\"$BQ_STOCK_ALLOC_TABLE_WRITE_ACCESS_RESOURCE_URI\") && resource.name.startsWith(\"$BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\") && resource.name.startsWith(\"$BQ_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\" ),title=WriteAccessToSpecificTables"
 
 ```
 
