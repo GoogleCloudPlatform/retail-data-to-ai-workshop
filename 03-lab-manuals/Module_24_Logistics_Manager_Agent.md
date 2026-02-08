@@ -145,7 +145,7 @@ We will use a to complete this section. It is imperative that you complete this 
 
 <hr>
 
-## 3. Review the Procurement Manager Agent code 
+## 3. Review the Logistics Manager Agent code 
 
 ### 3.1. Review the code layout in VS code/your IDE
 
@@ -244,7 +244,7 @@ The code base includes sample prompts, you can grab a few and try out. The code 
 
 <hr>
 
-## 5. Deploy & test the Inventory Manager Agent on Agent Engine
+## 5. Deploy & test the Logistics Manager Agent on Agent Engine
 
 ### 5.1. Deploy the agent to Agent Engine
 
