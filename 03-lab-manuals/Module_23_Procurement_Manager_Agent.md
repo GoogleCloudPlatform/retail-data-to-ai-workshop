@@ -229,8 +229,8 @@ Follow instructions in section 1.
 
 ### 4.5. Run adk web
 
-In the terminal navigate to the top level inventory_manager_agent directory and run the command below.<br>
-(e.g. from author - `/Users/akhanolkar/github/rscw-agent-solution/inventory_manager_agent`)
+In the terminal navigate to the top level procurement_manager_agent directory and run the command below.<br>
+(e.g. from author - `/Users/akhanolkar/github/rscw-agent-solution/procurement_manager_agent`)
 
 ```
 adk web
@@ -245,7 +245,7 @@ The code base includes sample prompts, you can grab a few and try out. The code 
 
 <hr>
 
-## 5. Deploy & test the Inventory Manager Agent on Agent Engine
+## 5. Deploy & test the Procurement Manager Agent on Agent Engine
 
 ### 5.1. Deploy the agent to Agent Engine
 
