@@ -60,27 +60,11 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
-  --role="roles/iam.serviceAccountViewer"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/iam.serviceAccountUser"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/iam.serviceAccountTokenCreator"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
   --role="roles/aiplatform.user"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
   --role="roles/storage.objectCreator"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/discoveryengine.admin"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
@@ -98,6 +82,18 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
 --role="roles/bigquery.dataViewer" \
 --condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+--role="roles/iam.serviceAccountUser"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+--role="roles/iam.serviceAccountTokenCreator"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+--role="roles/discoveryengine.admin"
 ```
 
 #### 1.3.3. Grant yourself permissions to impersonate the Data Analyst UMSA
@@ -154,17 +150,16 @@ From your terminal run the below to upload data-
 
 ### 1.6. Ingest the capstone data and run Data Insights scans
 
-To run through this module, we need a dataset created, tables, views, stored procedures in place, data loaded and data insights scans run. This takes about 35 minutes to run.<br><br>
-
-1. Upload the notebook called `Module_20_Capstone_setup.ipynb` to BigQuery.
-2. Authenticate - its in the `section 1`. Ensure you complete this interactive authentication
-3. Run through the rest of the notebook, review the tables, relationships.
-4. Last step in the notebook is to run Data Insights scans and generate a Data 
+We already completed this in Module 20 from `Module_20_Capstone_Setup.ipynb` in BigQuery.
 
 <hr>
 
+### 1.7. Quick review of the BQ metadata we generated for agentic grounding in Module 20
 
-### 1.7. Set up VS code or use any IDE on your machine
+
+
+
+### 1.8. Set up VS code or use any IDE on your machine
 
 Install VS code from https://code.visualstudio.com/download and configure it for Python and Google Cloud. <br>
 
