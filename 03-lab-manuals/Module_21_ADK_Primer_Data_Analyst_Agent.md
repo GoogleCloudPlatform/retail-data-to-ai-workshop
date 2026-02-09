@@ -1,6 +1,6 @@
 # Module 20: [ADK Primer] Create a Data Analyst Agent 
 
-In this tutorial we will create an agent for data QnA with ADK, and deploy it to Agent Engine, then register it with Gemini Enterprise. As part of the agent developer continuum, we will test the agent with `adk web` locally, deploy and test on `agent engine` playground, and finally via the `gemini enterprise` UI. 
+In this tutorial we will create an agent for data QnA with ADK, and deploy it to Agent Engine, then register it with Gemini Enterprise. As part of the agent developer continuum, we will test the agent with `adk web` locally, deploy and programmatically test, test on `agent engine` playground for a UI, and finally via the `gemini enterprise` UI. 
 
 Note:
 The purpose of this tutorial is to show integration between products and is less about building a perfect agent. Many agentic features have been deliberatley skipped for simplicity and focus on standing up a basic QnA application.
@@ -157,7 +157,7 @@ From your terminal run the below to upload data-
 To run through this module, we need a dataset created, tables, views, stored procedures in place, data loaded and data insights scans run. This takes about 35 minutes to run.<br><br>
 
 1. Upload the notebook called `Module_20_Capstone_setup.ipynb` to BigQuery.
-2. Authenticate - its in the section 1. Ensure you complete this interactive authentication
+2. Authenticate - its in the `section 1`. Ensure you complete this interactive authentication
 3. Run through the rest of the notebook, review the tables, relationships.
 4. Last step in the notebook is to run Data Insights scans and generate a Data 
 
@@ -178,7 +178,7 @@ Install VS code from https://code.visualstudio.com/download and configure it for
 
 ### 2.1. Review the code layout in VS code/your IDE
 
-Navigate to the `rscw-agent-solution` in vs code/your IDE <br>
+Navigate to the `capstone-retail-solution` in vs code/your IDE <br>
 
 Here is what the layout should look like if you navigate to the top level data_analyst_agent folder:
 ```
@@ -239,7 +239,7 @@ GEMINI_MODEL="gemini-2.5-pro"
 
 BQ_DATASET_IN_SCOPE="capstone_ds"
 BQ_METADATA_BUCKET="capstone_stage_606804615020"
-BQ_METADATA_FILE="captone_database_metadata_grounding.md"
+BQ_METADATA_FILE="metadata/captone_database_metadata_grounding.md"
 
 DATA_ANALYST_USER_MANAGED_SERVICE_ACCOUNT_FQN="data-analyst-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
 
@@ -261,7 +261,7 @@ Follow instructions in section 1.
 ### 3.4. Run adk web
 
 In the terminal navigate to the top level data_analyst_agent directory and run the command below.<br>
-(e.g. from author - `/Users/akhanolkar/github/rscw-agent-solution/data_analyst_agent`)
+(e.g. from author - `/Users/akhanolkar/github/capstone-retail-solution/data_analyst_agent`)
 
 ```
 adk web
@@ -707,7 +707,7 @@ Launch the application as shown below.
 
 <hr>
 
-Now that you know how to build a basic agent, lets head into the capstone work of building a multi-agent, autonomous agent solution. Proceed to the [next module](Module_21_Demand_Planner_Agent.md).
+Now that you know how to build a basic agent, lets head into the capstone work of building a multi-agent, autonomous agent solution. Proceed to the [next module](Module_22_Demand_Planner_Agent.md).
 
 
 
