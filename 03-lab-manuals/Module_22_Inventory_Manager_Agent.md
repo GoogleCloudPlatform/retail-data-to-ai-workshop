@@ -216,7 +216,7 @@ GEMINI_MODEL="gemini-2.5-pro"
 
 BQ_DATASETS_IN_SCOPE="capstone_ds"
 BQ_METADATA_BUCKET="capstone_stage_<YOUR_PROJECT_NUMBER>"
-BQ_METADATA_FILE="captone_database_metadata_grounding.md"
+BQ_METADATA_FILE="metadata/captone_database_metadata_grounding.md"
 
 INVENTORY_MANAGER_SERVICE_ACCOUNT_FQN="inventory-manager-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
 
