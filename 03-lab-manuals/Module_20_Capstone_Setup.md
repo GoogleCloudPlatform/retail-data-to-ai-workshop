@@ -36,6 +36,7 @@ gcloud services enable generativelanguage.googleapis.com
 gcloud services enable cloudaicompanion.googleapis.com
 gcloud services enable bigqueryunified.googleapis.com
 gcloud services enable servicenetworking.googleapis.com
+gcloud services enable compute.googleapis.com
 ```
 
 ## 5. IAM permissions for yourself
@@ -212,13 +213,6 @@ SUBNET_CIDR_CATCHALL="10.0.0.0/16"
 PEERING_NM="capstone-vpc-peering-to-service-networking"
 PEERING_RANGE_NAME="capstone-vpc-peering-reserved-range"
 
-# Create VPC
-gcloud compute networks create $VPC_NM \
---project=$PROJECT_ID \
---subnet-mode=custom \
---mtu=1460 \
---bgp-routing-mode=regional 
-
 # Create subnet
 gcloud compute networks subnets create $SUBNET_NM_CATCHALL \
  --network $VPC_NM \
@@ -227,15 +221,40 @@ gcloud compute networks subnets create $SUBNET_NM_CATCHALL \
  --enable-private-ip-google-access \
  --project $PROJECT_ID 
 
-# Pypi access
-gcloud compute firewall-rules create allow-pypi-access \
-    --network=$VPC_NM \
-    --action=ALLOW \
-    --direction=EGRESS \
-    --target-tags=notebook-allow-pypi \
-    --destination-ranges=0.0.0.0/0 \
-    --rules=tcp:80,tcp:443 \
-    --priority=1000
+# Create subnet firewall rules for open intra-VPC 
+gcloud compute --project=$PROJECT_ID firewall-rules create allow-intra-$SUBNET_NM_CATCHALL \
+--direction=INGRESS \
+--priority=1000 \
+--network=$VPC_NM \
+--action=ALLOW \
+--rules=all \
+--source-ranges=$SUBNET_CIDR_CATCHALL 
+
+# Create firewall rules
+gcloud compute firewall-rules create allow-ssh-$SUBNET_NM_CATCHALL \
+--project=$PROJECT_ID \
+--network=$VPC_NM \
+--direction=INGRESS \
+--priority=65534 \
+--source-ranges=0.0.0.0/0 \
+--action=ALLOW \
+--rules=tcp:22 
+
+gcloud compute firewall-rules create allow-rdp-$SUBNET_NM_CATCHALL \
+--project=$PROJECT_ID \
+--network=$VPC_NM \
+--allow tcp:3389 
+
+gcloud compute firewall-rules create allow-icmp-$SUBNET_NM_CATCHALL \
+--project=$PROJECT_ID \
+--network=$VPC_NM \
+--allow icmp 
+
+# tcp source IP ranges could be the same as previous subnet IP range
+gcloud compute firewall-rules create $VPC_NM-priority --network $VPC_NM --allow tcp:0-65535,udp:0-65535,icmp --source-ranges 10.0.0.0/24 --priority 65534
+
+# Allow SSH with IAP proxy
+gcloud compute firewall-rules create allow-ssh-ingress-from-iap-$VPC_NM  --direction=INGRESS --action=allow --rules=tcp:22 --network=$VPC_NM --source-ranges=35.235.240.0/20
 
 # Public internet egress
 gcloud compute firewall-rules create allow-all-egress-for-all \
@@ -260,6 +279,7 @@ gcloud services vpc-peerings connect \
   --network=$VPC_NM \
   --ranges=$PEERING_RANGE_NAME \
   --project=$PROJECT_ID 
+
 ```
 
 
