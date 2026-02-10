@@ -492,6 +492,6 @@ As part of the notebook, we generate the BigQuery metadata and persist it to GCS
 
 <hr>
 
-We have completed the data foundations for the capstone, proceed to the next module.
+We have completed the data foundations for the capstone, proceed to the [next module](Module_21_ADK_Primer_Data_Analyst_Agent.md).
 
 <hr>
