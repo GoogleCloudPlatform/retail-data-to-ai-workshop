@@ -331,7 +331,7 @@ rm -rf
 Again, navigate on cloud shell to retail-data-to-ai-workshop
 
 ```
-gsutil -m cp -r 01-data-assets/capstone_data gs://$DATA_BUCKET/
+gsutil -m cp -r 01-data-assets/capstone_data/* gs://$DATA_BUCKET/
 ```
 
 ## 8. Quick review of the scoped assets for this capstone
