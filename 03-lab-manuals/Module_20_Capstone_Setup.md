@@ -363,10 +363,106 @@ gsutil -m cp -r 01-data-assets/capstone_data/* gs://$DATA_BUCKET/
 Upload the `Module_20_Capstone_Setup.md` notebook to BQ and run it.<br>
 Expect this to take 30 minutes to complete.
 
+![README](../04-images/capstone_setup_20_01.png)  
+<br><br>
+
+
+![README](../04-images/capstone_setup_20_02.png)  
+<br><br>
+
+
+![README](../04-images/capstone_setup_20_03.png)  
+<br><br>
 
 <hr>
 
-## 9. About the data 
+## 12. About the data 
+
+The data consists of refrigerator products and associated retail and supply chain synthetic data. 
+
+```
+[{
+  "table_name": "fleet_master",
+  "description": "\"This table serves as a central repository of information about the vehicle fleet. It maintains key attributes for each vehicle in the fleet. The table facilitates tracking and management of vehicles. It supports reporting and analysis related to fleet composition.\""
+}, {
+  "table_name": "stock_movement",
+  "description": "\"This table tracks changes in stock levels. It records each instance of inventory adjustment. The table captures the date of the movement, the items affected, and the magnitude of the change. It also includes reference information for auditing purposes.\""
+}, {
+  "table_name": "demand_forecast_history",
+  "description": "\"This table stores historical demand forecast data. It tracks forecasts generated for various items and locations over time. The data includes forecast values, confidence levels, and prediction intervals. This information is used for analyzing forecast accuracy and trends.\""
+}, {
+  "table_name": "stock_transfer_order_items",
+  "description": "\"This table stores details about items included in stock transfer orders. It serves as a record of the specific items transferred between locations. The table tracks the quantity of each item involved in a transfer order. This data is useful for inventory management and order fulfillment processes.\""
+}, {
+  "table_name": "location_master",
+  "description": "\"This table stores information about various locations. It serves as a central repository for location-related details. The table provides a way to identify and categorize locations. It includes address and contact information for each location.\""
+}, {
+  "table_name": "stock_master",
+  "description": "\"This table tracks inventory levels for various items. It provides a snapshot of stock quantities at specific points in time. The data allows for monitoring inventory and managing reorder points. It supports analysis of stock availability.\""
+}, {
+  "table_name": "customer_master",
+  "description": "\"This table stores core information about customers. It serves as a central repository for customer contact details. The table facilitates customer identification and management. It supports customer-related analysis and reporting.\""
+}, {
+  "table_name": "supplier_master",
+  "description": "\"This table stores comprehensive information about suppliers. It serves as a central repository for supplier contact details and location data. The table facilitates efficient supplier management and enables streamlined communication. It supports analysis of supplier distribution across different geographic regions.\""
+}, {
+  "table_name": "product_suppliers",
+  "description": "\"This table stores information about the relationship between products and their suppliers. It identifies the various suppliers for each product. The table also includes details on supplier types. It contains data pertaining to the expected time it takes for a supplier to deliver a product.\""
+}, {
+  "table_name": "demand_forecast",
+  "description": "\"This table stores demand forecasts for various items at different locations. It includes the predicted demand values, along with associated confidence levels and prediction intervals. The table tracks when the forecasts were generated and by whom. It also provides a status indicator for AI-driven forecasts.\""
+}, {
+  "table_name": "stock_transfer_orders",
+  "description": "\"This table tracks the movement of stock between different locations. It records details about each transfer order, including origination and destination points. The table also captures the status of each order, along with any associated references. It provides a history of stock transfers and supports analysis of transfer efficiency.\""
+}, {
+  "table_name": "product_master",
+  "description": "\"This table serves as a comprehensive product catalog. It stores key attributes and identifiers for each product. The table facilitates product lookups and comparisons. It also supports inventory management and sales analysis.\""
+}, {
+  "table_name": "stock_master_location",
+  "description": "\"This table tracks inventory levels across different locations. It provides a snapshot of stock quantities for various items. The data is recorded on a specific date. This allows for analysis of inventory distribution. It supports inventory management and supply chain optimization.\""
+}, {
+  "table_name": "pos_transactions",
+  "description": "\"This table stores records of point-of-sale transactions. It captures details about each transaction, including the location where it occurred. The table also tracks customer information and the status of each transaction. Payment details, such as the payment method and total amount, are recorded as well.\""
+}, {
+  "table_name": "stock_thresholds",
+  "description": "\"This table stores calculated stock level thresholds for various items. It is used to monitor inventory levels across different locations. The table facilitates the determination of optimal stock levels. It supports the identification of items needing reordering. This data is essential for maintaining adequate stock and preventing shortages.\""
+}, {
+  "table_name": "driver_master",
+  "description": "\"This table stores core information about drivers. It serves as a central repository for driver identification. The table facilitates linking drivers to employee records. It supports efficient driver management and tracking.\""
+}, {
+  "table_name": "stock_allocation_plan",
+  "description": "\"This table stores planned stock allocations for items across different locations. It tracks the quantity of each item intended for a specific location. The data includes the date the allocation was planned. It also indicates whether the allocation plan is the most current one. This table supports analysis of stock distribution strategies.\""
+}, {
+  "table_name": "agent_activity_log",
+  "description": "\"This table tracks actions performed on items. It records the type of action taken and provides additional details about each action. The table also captures the date and time when each action occurred. It identifies the agent responsible for performing each action.\""
+}, {
+  "table_name": "demand_signal_log",
+  "description": "\"This table logs demand signals related to items. It tracks when a signal is triggered for an item. The table records details about the signal, including who triggered it. It also indicates whether the signal is currently active.\""
+}, {
+  "table_name": "stock_purchase_orders",
+  "description": "\"This table stores details about stock purchase orders. It tracks orders placed with suppliers, including order dates and expected delivery dates. The table also records the total cost of each order and its current status. This data is used to manage and analyze the procurement process.\""
+}, {
+  "table_name": "product_docs_ref_data",
+  "description": "\"This table serves as a reference for product documentation. It links products to their associated documentation files. The table facilitates the retrieval of relevant documents for specific products. It also allows for categorization and identification of different types of product documents.\""
+}, {
+  "table_name": "procedure_error_log",
+  "description": "\"This table stores information about errors encountered during the execution of stored procedures. It records the time the error occurred. The table also captures the specific procedure that generated the error. This data is useful for debugging and monitoring stored procedure execution.\""
+}, {
+  "table_name": "stock_purchase_order_items",
+  "description": "\"This table stores information about items included in stock purchase orders. It provides a breakdown of each purchase order. The table includes details on the quantity and price of each item ordered. This data is used to track and manage stock procurement.\""
+}, {
+  "table_name": "forecast_activity_log",
+  "description": "\"This table tracks activities related to forecasting. It records details about when forecast-related actions occur. The table also captures who performed these actions. This enables auditing and monitoring of the forecasting process. It provides a log of changes and events related to specific forecasts.\""
+}, {
+  "table_name": "forecast_override_configs",
+  "description": "\"This table stores configuration settings used to override demand forecasts. It holds adjustment factors that can be applied to forecasts in specific situations. These adjustments account for temporary increases or decreases in expected demand. The table also tracks when and by whom these configurations were last modified.\""
+}, {
+  "table_name": "pos_transaction_items",
+  "description": "\"This table stores information about individual items sold within point-of-sale transactions. It captures the details of each item purchased during a transaction. The data includes the quantity sold, the price, and the total value for each item. This table facilitates analysis of sales at the item level.\""
+}]
+```
+
+
 
 
 <hr>
