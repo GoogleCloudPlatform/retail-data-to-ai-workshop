@@ -472,6 +472,9 @@ You can go to BigQuery Studio in the Cloud Console and look at the table scans a
 ![README](../04-images/capstone_setup_20_06c.png)  
 <br><br>
 
+![README](../04-images/capstone_setup_20_06c.png)  
+<br><br>
+
 <hr>
 
 ## 14. About the BigQuery metadata persisted to GCS for agentic grounding
