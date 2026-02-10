@@ -3,6 +3,11 @@
 ## 1. Motivation
 The IT leadership of Shoonya, our fictitious retail chain would like to see a functional prototype of an agentic solution for demand, inventory, procurement and logistics, so that they can get business buy-in for building an agent ensemble that can serve as digital counterparts of their human personas. They also want to explore what autonomous agent action looks like and what guardrails can be put in place. The capstone modules provides exactly such an immersive learning experience with refrigerators as the focus product category.
 
+### Scenario we are developing to demonstrate
+
+![README](../04-images/capstone_setup_20_00.png)  
+<br><br>
+
 <hr>
 
 ## 2. Module scope
