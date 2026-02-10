@@ -21,6 +21,18 @@ This module provides the data foundations for the capstone. <br>
 1. This module should take about 30 minutes or so, largely due to the time taken for Data Insights and the Gemini limits enforced for Data Insights
 2. This capstone can be run indepenently - without any dependency on the previous learning modules
 
+## 4. IAM permissions
+
+```
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
+UMSA="capstone-umsa"
+UMSA_FQN="$UMSA@$PROJECT_ID.iam.gserviceaccount.com"
+
+
+
+```
+
 
 ## 4. Clone the repo if you have not already
 ```
