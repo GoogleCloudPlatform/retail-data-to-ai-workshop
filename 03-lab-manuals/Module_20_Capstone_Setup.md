@@ -26,6 +26,8 @@ This module provides the data foundations for the capstone. <br>
 1. This module should take about 30-45 minutes or so, largely due to the time taken for Data Insights (and the 45 or so database objects) and the Gemini limits enforced for Data Insights
 2. This capstone can be run indepenently - without any dependency on the previous learning modules
 
+<hr>
+
 ## 4. Enable APIs
 
 From cloud shell, run the below:
@@ -43,6 +45,8 @@ gcloud services enable bigqueryunified.googleapis.com
 gcloud services enable servicenetworking.googleapis.com
 gcloud services enable compute.googleapis.com
 ```
+
+<hr>
 
 ## 5. IAM permissions for yourself
 
@@ -92,6 +96,8 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/compute.networkAdmin"
 
 ```
+
+<hr>
 
 ## 6. Update Organization Policies 
 
@@ -206,7 +212,7 @@ rm restrictVpcPeering.yaml
 <hr>
 
 
-## 6. Create a VCP and Subnet
+## 7. Create a VCP and Subnet
 
 We will need this for BigQuery notebook runtime
 
@@ -288,12 +294,12 @@ gcloud services vpc-peerings connect \
 ```
 
 
-## 7. Clone the repo if you have not already
+## 8. Clone the repo if you have not already
 ```
 git clone https://github.com/GoogleCloudPlatform/retail-data-to-ai-workshop.git
 ```
 
-## 8. Create a bucket to load data to
+## 9. Create a bucket to load data to
 
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
@@ -305,7 +311,7 @@ gcloud storage buckets create gs://$DATA_BUCKET --location=$LOCATION
 ```
 
 
-## 9. Prepare the data for upload to the bucket
+## 10. Prepare the data for upload to the bucket
 
 Switch to the `retail-data-to-ai-workshop` directory and run the below.
 
@@ -331,7 +337,7 @@ rm -rf *.tgz
 rm -rf 
 ```
 
-## 10. Upload to the data bucket
+## 11. Upload to the data bucket
 
 Again, navigate on cloud shell to retail-data-to-ai-workshop
 
@@ -339,7 +345,7 @@ Again, navigate on cloud shell to retail-data-to-ai-workshop
 gsutil -m cp -r 01-data-assets/capstone_data/* gs://$DATA_BUCKET/
 ```
 
-## 8. Quick review of the scoped assets for this capstone
+## 12. Quick review of the scoped assets for this capstone
 
 ```
 .
@@ -363,7 +369,7 @@ gsutil -m cp -r 01-data-assets/capstone_data/* gs://$DATA_BUCKET/
 ```
 
 
-## 11. Run the setup notebook in BigQuery to complete all else
+## 13. Run the setup notebook in BigQuery to complete all else
 
 Upload the `Module_20_Capstone_Setup.md` notebook to BQ and run it.<br>
 Expect this to take 30 minutes to complete.
@@ -381,7 +387,7 @@ Expect this to take 30 minutes to complete.
 
 <hr>
 
-## 12. About the data 
+## 14. About the data 
 
 ![README](../04-images/capstone_setup_20_04.png)  
 <br><br>
@@ -446,11 +452,11 @@ supplier_master:This table stores comprehensive information about suppliers. It 
 
 <hr>
 
-## 13. About the Data Insights scans 
+## 15. About the Data Insights scans 
 
 You can go to BigQuery Studio in the Cloud Console and look at the table scans and dataset scans - samples below.
 
-### 13.1. Table documentation scans
+### 15.1. Table documentation scans
 
 ![README](../04-images/capstone_setup_20_05a.png)  
 <br><br>
@@ -461,7 +467,7 @@ You can go to BigQuery Studio in the Cloud Console and look at the table scans a
 ![README](../04-images/capstone_setup_20_05b.png)  
 <br><br>
 
-### 13.2. Dataset documentation scans
+### 15.2. Dataset documentation scans
 
 ![README](../04-images/capstone_setup_20_06a.png)  
 <br><br>
@@ -477,7 +483,7 @@ You can go to BigQuery Studio in the Cloud Console and look at the table scans a
 
 <hr>
 
-## 14. About the BigQuery metadata persisted to GCS for agentic grounding
+## 16. About the BigQuery metadata persisted to GCS for agentic grounding
 
 As part of the notebook, we generate the BigQuery metadata and persist it to GCS. This metadata is provided to the agents in the subsequent modules for improving accuracy of answers generated.
 
