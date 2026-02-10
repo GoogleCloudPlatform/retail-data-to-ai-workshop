@@ -1,16 +1,33 @@
 # Module 20: Capstone Setup
 
+## 1. Motivation
+The IT leadership of Shoonya, our fictitious retail chain would like to see a functional prototype of an agentic solution for demand, inventory, procurement and logistics, so that they can get business buy-in for building an agent ensemble that can serve as digital counterparts of their human personas. They also want to explore what autonomous agent action looks like and what guardrails can be put in place. This module provides exactly such an immersive learning experience with refrigerators as the focus product category.
 
 <hr>
 
-## 3. Upload the data to GCS
+## 2. Module scope
+This module provides the data foundations for the capstone. <br>
+1. Create BigQuery datasets
+2. Create tables and views
+3. Load data
+4. Create astored procedures
+5. Run Data Insights table and dataset documentation scans.
+6. Create a file with Data Insights (dataset, table and column descriptions, and relationships) and persist to a GCS bucket
 
-### 3.1. Clone the repo if you have not already
+<hr>
+
+## 3. Duration and prerequisites
+
+1. This module should take about 30 minutes or so, largely due to the time taken for Data Insights and the Gemini limits enforced for Data Insights
+2. This capstone can be run indepenently - without any dependency on the previous learning modules
+
+
+## 4. Clone the repo if you have not already
 ```
 git clone https://github.com/GoogleCloudPlatform/retail-data-to-ai-workshop.git
 ```
 
-### 3.2. Create a bucket to load data to
+## 5. Create a bucket to load data to
 
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
@@ -23,7 +40,7 @@ gcloud storage buckets create gs://$DATA_BUCKET --location=$LOCATION
 ```
 
 
-### 3.3. Prepare the data for upload to the bucket
+## 6. Prepare the data for upload to the bucket
 
 Switch to the `retail-data-to-ai-workshop` directory and run the below.
 
@@ -48,30 +65,40 @@ tar -xvzf wine-cellar.tgz
 rm -rf *.tgz
 ```
 
-### 3.4. Upload to the data bucket
+## 7. Upload to the data bucket
 
 Again, navigate on cloud shell to retail-data-to-ai-workshop
-```
-gsutil -m cp -r 01-data-assets
 
 ```
+gsutil -m cp -r 01-data-assets/* gs://$DATA_BUCKET/
+```
 
 
-### 3.4. Run the setup notebook in BigQuery
+## 8. Run the setup notebook in BigQuery to complete all else
 
 
 
 <hr>
 
-## 4. Overview of objects in BigQuery
+## 9. About the data 
+
+
+<hr>
+
+## 10. About the BigQuery objects created in the nitebook
+
+
+
 
 
 
 <hr>
 
-## 5. Overview of Data Insights
+## 11. About the Data Insights scan results
 
 
+
+## 12. About the BQ metadata persisted to GCS for agentic grounding
 
 
 <hr>
