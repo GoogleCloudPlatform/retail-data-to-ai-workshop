@@ -299,19 +299,21 @@ gcloud services vpc-peerings connect \
 git clone https://github.com/GoogleCloudPlatform/retail-data-to-ai-workshop.git
 ```
 
-## 9. Create a bucket to load data to
+## 9. Create buckets 
 
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
 LOCATION="us-central1"
 DATA_BUCKET="capstone_stage_$PROJECT_NBR"
+AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-$PROJECT_NBR"
 
+gcloud storage buckets create "gs://$AGENT_DEPLOYMENT_BUCKET" --location=$LOCATION  
 gcloud storage buckets create gs://$DATA_BUCKET --location=$LOCATION 
 ```
 
 
-## 10. Prepare the data for upload to the bucket
+## 10. Prepare the data for upload to the data bucket
 
 Switch to the `retail-data-to-ai-workshop` directory and run the below.
 
