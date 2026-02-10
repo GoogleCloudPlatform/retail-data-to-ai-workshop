@@ -341,7 +341,6 @@ gsutil -m cp -r 01-data-assets/capstone_data/* gs://$DATA_BUCKET/
 ├── 01-data-assets
 │   └── capstone_data
 │       ├── fridge_tabular_data
-│       ├── fridge_userguides
 │       └── metadata
 │           └── captone_database_metadata_grounding.md
 ├── 02-code-assets
