@@ -378,6 +378,10 @@ Expect this to take 30 minutes to complete.
 
 ## 12. About the data 
 
+![README](../04-images/capstone_setup_20_04.png)  
+<br><br>
+
+
 The data consists of refrigerator products and associated retail and supply chain synthetic data. 
 
 
@@ -435,26 +439,54 @@ stock_transfer_orders:This table tracks the movement of stock between different 
 supplier_master:This table stores comprehensive information about suppliers. It serves as a central repository for supplier contact details and location data. The table facilitates efficient supplier management and enables streamlined communication. It supports analysis of supplier distribution across different geographic regions.
 
 
+<hr>
 
+## 13. About the Data Insights scans 
+
+You can go to BigQuery Studio in the Cloud Console and look at the table scans and dataset scans - samples below.
+
+### 13.1. Table documentation scans
+
+![README](../04-images/capstone_setup_20_05a.png)  
+<br><br>
+
+![README](../04-images/capstone_setup_20_05b.png)  
+<br><br>
+
+![README](../04-images/capstone_setup_20_05b.png)  
+<br><br>
+
+### 13.2. Dataset documentation scans
+
+![README](../04-images/capstone_setup_20_06a.png)  
+<br><br>
+
+![README](../04-images/capstone_setup_20_06b.png)  
+<br><br>
+
+![README](../04-images/capstone_setup_20_06c.png)  
+<br><br>
 
 <hr>
 
-## 10. About the BigQuery objects created in the nitebook
+## 14. About the BigQuery metadata persisted to GCS for agentic grounding
 
+As part of the notebook, we generate the BigQuery metadata and persist it to GCS. This metadata is provided to the agents in the subsequent modules for improving accuracy of answers generated.
 
+![README](../04-images/capstone_setup_20_07a.png)  
+<br><br>
 
+![README](../04-images/capstone_setup_20_07b.png)  
+<br><br>
 
+![README](../04-images/capstone_setup_20_07c.png)  
+<br><br>
 
-
-<hr>
-
-## 11. About the Data Insights scan results
-
-
-
-## 12. About the BQ metadata persisted to GCS for agentic grounding
-
+![README](../04-images/capstone_setup_20_07d.png)  
+<br><br>
 
 <hr>
 
 We have completed the data foundations for the capstone, proceed to the next module.
+
+<hr>
