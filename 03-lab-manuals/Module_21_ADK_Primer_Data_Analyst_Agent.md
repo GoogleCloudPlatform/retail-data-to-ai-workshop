@@ -112,59 +112,20 @@ gcloud iam service-accounts add-iam-policy-binding \
     --role="roles/iam.serviceAccountUser"
 ```
 
-<hr>
+### 1.4. Set up a python virtual environment to use for ADK & install dependencies
 
-### 1.4. Create buckets
-
-#### 1.4.1. Create a bucket for agent deployment
-
-From your terminal, run the below:
+Run the below in cloud shel
 ```
-AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-$PROJECT_NBR"
-gcloud storage buckets create "gs://$AGENT_DEPLOYMENT_BUCKET" --location=$LOCATION  
-
+python -m venv .venv
+source .venv/bin/activate
 ```
 
-#### 1.4.2. Create a bucket for data & metadata
-
-From your terminal, run the below:
 ```
-CAPSTONE_DATA_BUCKET="capstone_stage_$PROJECT_NBR"
-gcloud storage buckets create "gs://$CAPSTONE_DATA_BUCKET" --location=$LOCATION  
+cd ~/retail-data-to-ai-workshop
+cd 02-code-assets/capstone-retail-solution/data_analyst_agent/
+pip install -r requirements.txt
+cd ..
 ```
-
-<hr>
-
-### 1.5. Upload data into the data bucket
-
-You should have cloned the repo at the onset of this workshop, pull the latest code.
-
-From your terminal run the below to upload data-
-# TODO
-
-```
-# TODO
-```
-
-<hr>
-
-### 1.6. Ingest the capstone data and run Data Insights scans
-
-We already completed this in Module 20 from `Module_20_Capstone_Setup.ipynb` in BigQuery.
-
-<hr>
-
-### 1.7. Quick review of the BQ metadata we generated for agentic grounding in Module 20
-
-
-
-
-### 1.8. Set up VS code or use any IDE on your machine
-
-Install VS code from https://code.visualstudio.com/download and configure it for Python and Google Cloud. <br>
-
-[https://docs.cloud.google.com/code/docs/vscode/install](https://docs.cloud.google.com/code/docs/vscode/install)
-
 
 <hr>
 
@@ -204,13 +165,6 @@ Open each of the files and review the code files.
 
 ## 3. Run the agent locally
 
-### 3.1. Set up a Python virtual environment in VS code / your IDE's terminal
-
-Run the below in your terminal-
-```
-python -m venv .venv
-source .venv/bin/activate
-```
 
 ### 3.2. Install the Python dependencies
 
