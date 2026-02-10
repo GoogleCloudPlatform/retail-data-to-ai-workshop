@@ -97,7 +97,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 **(needed for Argolis environment on GCP)** <br><br>
 
-The organization policies include the superset applicable for all flavors of Dataproc, required in Argolis.<br>
+The organization policies include the superset applicable for modules in development, and required in Argolis.<br>
 Paste these and run in cloud shell-
 
 ### 6.a. Relax require OS Login
