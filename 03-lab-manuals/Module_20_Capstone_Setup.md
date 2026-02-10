@@ -23,7 +23,7 @@ This module provides the data foundations for the capstone. <br>
 
 ## 3. Duration and prerequisites
 
-1. This module should take about 30 minutes or so, largely due to the time taken for Data Insights and the Gemini limits enforced for Data Insights
+1. This module should take about 30-45 minutes or so, largely due to the time taken for Data Insights (and the 45 or so database objects) and the Gemini limits enforced for Data Insights
 2. This capstone can be run indepenently - without any dependency on the previous learning modules
 
 ## 4. Enable APIs
