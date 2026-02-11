@@ -424,7 +424,7 @@ Here are the prompts used by the author:
 
 ```
 # Navigate so that you are at the top level directory of demand_planner_agent
-/Users/akhanolkar/Projects/github/rscw-agent-solution/demand_planner_agent <- HERE
+~/retail-data-to-ai-workshop/capstone-retail-solution/demand_planner_agent <- HERE
 ```
 
 3. Execute script
