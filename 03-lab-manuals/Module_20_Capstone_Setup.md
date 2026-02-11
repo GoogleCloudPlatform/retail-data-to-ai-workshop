@@ -214,7 +214,7 @@ rm restrictVpcPeering.yaml
 
 ## 7. Create a VCP and Subnet
 
-We will need this for BigQuery notebook runtime
+We will need this for BigQuery notebook runtime & for subsequent modules.
 
 ```
 VPC_NM="capstone-vpc"
@@ -289,7 +289,17 @@ gcloud services vpc-peerings connect \
   --service=servicenetworking.googleapis.com \
   --network=$VPC_NM \
   --ranges=$PEERING_RANGE_NAME \
-  --project=$PROJECT_ID 
+  --project=$PROJECT_ID
+
+gcloud compute routers create capstone-nat-router \
+    --network=$VPC_NM \
+    --region=$LOCATION
+
+gcloud compute routers nats create capstone-internet-egress-nat \
+    --router=capstone-nat-router \
+    --region=$LOCATION \
+    --nat-custom-subnet-ip-ranges=$SUBNET_NM_CATCHALL \
+    --auto-allocate-nat-external-ips
 
 ```
 
