@@ -143,7 +143,7 @@ pip install -r retail-data-to-ai-workshop/02-code-assets/capstone-retail-solutio
 
 ## 2. Review the Data Analyst Agent code 
 
-### 2.1. Review the code layout in VS code/your IDE
+### 2.1. Review the code layout in VS code/your IDE/cloud shell
 
 Navigate to the `capstone-retail-solution` in Cloud Shell editor <br>
 
