@@ -318,6 +318,22 @@ adk deploy agent_engine \
 ./data_analyst_agent
 ```
 
+![README](../04-images/capstone_M21_AE_01.png)  
+<br><br>
+
+![README](../04-images/capstone_M21_AE_02.png)  
+<br><br>
+
+![README](../04-images/capstone_M21_AE_03.png)  
+<br><br>
+
+![README](../04-images/capstone_M21_AE_04.png)  
+<br><br>
+
+![README](../04-images/capstone_M21_AE_05.png)  
+<br><br>
+
+<hr>
 
 ### 4.2. Retrieve the Data Analyst Agent ID from the Agent Engine deployment
 
