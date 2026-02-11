@@ -152,27 +152,8 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 <hr>
 
-## 3. Agent tooling overview
+## 3. Agent code layout
 
-
-
-<hr>
-
-## 4. Agent grounding overview
-
-Browse Cloud Storage bucket to see the grounding file that has the metadata
-
-![README](../04-images/M21-DI-7.png)  
-<br><br>
-
-![README](../04-images/M21-DI-8.png)  
-<br><br>
-
-<hr>
-
-## 5. Agent code overview
-
-### 5.1. Review the code layout in VS code/your IDE/Cloud Shell:
 
 Navigate to the `capstone-retail-solution`<br>
 
@@ -192,21 +173,39 @@ Here is what the layout should look like if you navigate to the top level demand
 │   │   ├── enhancements.md
 │   │   └── sample_prompts.md
 │   └── requirements.txt
-
 ```
+
+## 4. Agent tooling overview
+
+
+
+<hr>
+
+## 5. Agent grounding overview
+
+Browse Cloud Storage bucket to see the grounding file that has the metadata
+
+
+
+<hr>
+
+## 6. Agent instructions overview
+
+Browse Cloud Storage bucket to see the grounding file that has the metadata
+
+
+
+<hr>
 
 ![README](../04-images/M21-3-1.png)  
 <br><br>
 
-### 3.2. Study these specific code/config files
-
-Open each of the files and review the code files.
 
 <hr>
 
-## 4. Run the agent locally
+## 7. Prep for running agent locally
 
-### 4.1. Set up a Python virtual environment in VS code / your IDE's terminal
+### 7.1. Set up a Python virtual environment in VS code / your IDE's terminal
 
 Run the below in your terminal-
 ```
@@ -214,45 +213,20 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-### 4.2. Install the Python dependencies
+### 7.2. Install the Python dependencies
 
 Navigate to the Data_Analytics_Agent folder that has the requirements.txt and run the install from VS code terminal-
 `pip install -r requirements.txt`
 
-### 4.3. Update the env file 
-
-Modify the env file to reflect your GCP project ID, project number and location by updating the following with your details and saving the file-
-
-```
-GOOGLE_CLOUD_PROJECT="<YOUR_PROJECT_ID>"
-GOOGLE_CLOUD_LOCATION="us-central1"
-GOOGLE_CLOUD_PROJECT_NUMBER="<YOUR_PROJECT_NUMBER>"
-
-GOOGLE_GENAI_USE_VERTEXAI="True"
-GOOGLE_CLOUD_AGENT_ENGINE_ENABLE_TELEMETRY=true
-OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
-
-GEMINI_MODEL="gemini-2.5-pro"
-
-BQ_DATASET_IN_SCOPE="capstone_ds"
-BQ_METADATA_BUCKET="capstone_stage_<YOUR_PROJECT_NUMBER>"
-BQ_METADATA_FILE="captone_database_metadata_grounding.md"
-
-DATA_ANALYST_USER_MANAGED_SERVICE_ACCOUNT_FQN="demand-planner-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
-
-AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-<YOUR_PROJECT_NUMBER>"
-DEPLOYED_AGENT_RESOURCE_URI="projects/<YOUR_PROJECT_NUMBER>/locations/us-central1/reasoningEngines/<THIS_WILL_COME_LATER>"
-```
-
-![README](../04-images/M21-4-3.png)  
-<br><br>
+### 7.3. Update the env file 
 
 
-### 4.4. Launch a terminal in VS Code/your IDE and authenticate
 
-Follow instructions in section 1.
+<hr>
 
-### 4.5. Run adk web
+## 8. Run `adk web` and test the agent locally/cloud shell
+
+### 8.1. Launch `adk web`
 
 In the terminal navigate to the top level data_analyst_agent directory and run the command below.<br>
 (e.g. from author - `/Users/akhanolkar/github/rscw-agent-solution/demand_planner_agent`)
@@ -261,9 +235,7 @@ In the terminal navigate to the top level data_analyst_agent directory and run t
 adk web
 ```
 
-
-
-### 4.6. Try out a few prompts
+### 8.2. Try out a few prompts
 
 The code base includes sample prompts, you can grab a few and try out like below.
 
@@ -311,22 +283,13 @@ The code base includes sample prompts, you can grab a few and try out like below
 <br><br>
 
 
-### 4.7. Try out detrimental action (delete data) as well as access a different BigQueryQ dataset
-
-
-![README](../04-images/M21_4_6_12.png)   
-<br><br>
-
-![README](../04-images/M21_4_6_13.png)   
-<br><br>
-
 Now that we have a solid prototype of an agent, lets deploy to Agent Engine.
 
 <hr>
 
-## 5. Deploy & test the Demand Planner Agent on Agent Engine
+## 9. Deploy & test the Demand Planner Agent on Agent Engine
 
-### 5.1. Deploy the agent to Agent Engine
+### 9.1. Deploy the agent to Agent Engine
 
 Run this from within the top level demand_planner_agent folder, from CLI. This will automatically read in any configs in agent_engine_config.json
 ```
@@ -350,18 +313,18 @@ adk deploy agent_engine \
 <br><br>
 
 
-### 5.2. Review the deployment on the Cloud Console
+### 9.2. Review the deployment on the Cloud Console
 
 ![README](../04-images/M21_5_2.png)   
 <br><br>
 
-### 5.3. The Reasoning Engine ID
+### 9.3. The Reasoning Engine ID
 
 ![README](../04-images/M21_5_3.png)   
 <br><br>
 
 
-### 5.4. The identity of the deployed agent 
+### 9.4. The identity of the deployed agent 
 
 We are running the agent as a (custom) user managed service account.
 
@@ -369,7 +332,7 @@ We are running the agent as a (custom) user managed service account.
 <br><br>
 
 
-### 5.5. Recap the permissions we granted in previous sections
+### 9.5. Recap the permissions we granted in previous sections
 
 The agent runs as the demand planner service account on Agent Engine. Lets review the IAM permissions
 
@@ -386,7 +349,7 @@ The agent runs as the demand planner service account on Agent Engine. Lets revie
 <br><br>
 
 
-### 5.6. Retrieve the Demand Planner Agent ID from the Agent Engine deployment
+### 9.6. Retrieve the Demand Planner Agent ID from the Agent Engine deployment
 
 We will need to register with Gemini Enterprise.
 ```
@@ -396,19 +359,9 @@ DEMAND_PLANNER_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth p
 echo $DEMAND_PLANNER_AGENT_ID
 ```
 
-### 5.7. Update the .env file with the agent engine ID
-
-Update the .env
-
-![README](../04-images/M21_5_9.png)   
-<br><br>
-
-<hr>
 
 
-### 5.8. Test the  Demand Planner Agent on Agent Engine in the "Playground"
-
-#### 5.8.1. Test via the UI
+### 9.7 Test the  Demand Planner Agent on Agent Engine in the "Playground"
 
 Navigate to the `Playground` tab and try out a few prompts.<br>
 
