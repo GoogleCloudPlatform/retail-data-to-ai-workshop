@@ -390,7 +390,7 @@ DEMAND_PLANNER_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth p
 echo $DEMAND_PLANNER_AGENT_ID
 ```
 
-### 9.7 Test the  Demand Planner Agent on Agent Engine in the "Playground"
+### 9.7. Test the  Demand Planner Agent on Agent Engine in the "Playground"
 
 Navigate to the `Playground` tab and try out a few prompts.<br>
 
