@@ -154,10 +154,10 @@ Navigate to the `capstone-retail-solution` in Cloud Shell editor <br>
 ![README](../04-images/capstone_M21_02.png)  
 <br><br>
 
-![README](../04-imagescapstone_M21_03.png)  
+![README](../04-images/capstone_M21_03.png)  
 <br><br>
 
-![README](../04-imagescapstone_M21_04.png)  
+![README](../04-images/capstone_M21_04.png)  
 <br><br>
 
 Here is what the layout should look like if you navigate to the top level data_analyst_agent folder:
