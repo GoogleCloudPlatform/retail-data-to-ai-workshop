@@ -199,29 +199,26 @@ Here is what the layout should look like if you navigate to the top level demand
 
 ## 4. Agent tooling overview
 
+The agent has 4 tools as shown below. Study the code to understand what each has to offer.
 
+![README](../04-images/capstone_M22_AT_01.png)  
+<br><br>
+
+![README](../04-images/capstone_M22_AT_02.png)  
+<br><br>
 
 <hr>
 
 ## 5. Agent grounding overview
 
-Browse Cloud Storage bucket to see the grounding file that has the metadata
-
+Browse Cloud Storage bucket to see the grounding file that has the metadata. [We covered this in Module 20.](https://github.com/GoogleCloudPlatform/retail-data-to-ai-workshop/blob/ADK-MCP-Primer/03-lab-manuals/Module_20_Capstone_Setup.md#16-about-the-bigquery-metadata-persisted-to-gcs-for-agentic-grounding)
 
 
 <hr>
 
 ## 6. Agent instructions overview
 
-Browse Cloud Storage bucket to see the grounding file that has the metadata
-
-
-
-<hr>
-
-![README](../04-images/M21-3-1.png)  
-<br><br>
-
+Review the [agent instructions](../02-code-assets/capstone-retail-solution/demand_planner_agent/demand_planner_agent/system_instructions.py).
 
 <hr>
 
