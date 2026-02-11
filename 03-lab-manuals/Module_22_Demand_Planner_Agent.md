@@ -152,10 +152,9 @@ gcloud iam service-accounts add-iam-policy-binding \
 ### 2.1. Stored Procedures
 There are a number of stored procedures. Review the below-
 
-| # | Stored Procedure  |  |
-| -- | :-- |  :--- |
-| 1. | capstone_ds.run_demand_forecast
- | This generates the demand forecast based on historical data using TimesFM in BigQuery |
+| # | Stored Procedure  |  Purpose |
+| -- | :-- |  :-- |  
+| 1. | capstone_ds.run_demand_forecast| This generates the demand forecast based on historical data using TimesFM in BigQuery |
 | 2. | capstone_ds.update_item_demand_forecast | Updates the latest demand forecast for a specific products for a SURGE or a SLUMP.  |
 
 ### 2.2. Data
