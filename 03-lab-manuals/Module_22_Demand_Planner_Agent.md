@@ -234,12 +234,24 @@ source .venv/bin/activate
 
 ### 7.2. Install the Python dependencies
 
-Navigate to the Data_Analytics_Agent folder that has the requirements.txt and run the install from VS code terminal-
-`pip install -r requirements.txt`
+You dont need any incremental dependencies.
+
 
 ### 7.3. Update the env file 
 
+Run the below in the terminal:
+```
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
+LOCATION="us-central1"
 
+cd ~/retail-data-to-ai-workshop/02-code-assets/capstone-retail-solution
+
+sed -i s/'LOCATION'/$LOCATION/g demand_planner_agent/demand_planner_agent/.env
+sed -i s/'PROJECT_ID'/$PROJECT_ID/g demand_planner_agent/demand_planner_agent/.env
+sed -i s/'PROJECT_NBR'/$PROJECT_NBR/g demand_planner_agent/demand_planner_agent/.env
+sed -i s/'PROJECT_ID'/$PROJECT_ID/g demand_planner_agent/demand_planner_agent/.agent_engine_config.json
+```
 
 <hr>
 
@@ -247,8 +259,8 @@ Navigate to the Data_Analytics_Agent folder that has the requirements.txt and ru
 
 ### 8.1. Launch `adk web`
 
-In the terminal navigate to the top level data_analyst_agent directory and run the command below.<br>
-(e.g. from author - `/Users/akhanolkar/github/rscw-agent-solution/demand_planner_agent`)
+In the terminal navigate to the top level demand_planner_agent directory and run the command below.<br>
+(e.g. from author - `/Users/akhanolkar/github/capstone-retail-solution/demand_planner_agent`)
 
 ```
 adk web
@@ -377,8 +389,6 @@ PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 DEMAND_PLANNER_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines"  |  grep -3 Demand | grep name | cut -d'/' -f6 | cut -d'"' -f1`
 echo $DEMAND_PLANNER_AGENT_ID
 ```
-
-
 
 ### 9.7 Test the  Demand Planner Agent on Agent Engine in the "Playground"
 
