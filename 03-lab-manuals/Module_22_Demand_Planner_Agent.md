@@ -147,7 +147,31 @@ gcloud iam service-accounts add-iam-policy-binding \
 ```
 <hr>
 
-## 2. Data overview
+## 2. Data & routines overview
+
+### 2.1. Stored Procedures
+There are a number of stored procedures. Review the below-
+
+| # | Stored Procedure  |  |
+| -- | :-- |  :--- |
+| 1. | capstone_ds.run_demand_forecast
+ | This generates the demand forecast based on historical data using TimesFM in BigQuery |
+| 2. | capstone_ds.update_item_demand_forecast | Updates the latest demand forecast for a specific products for a SURGE or a SLUMP.  |
+
+### 2.2. Data
+The captone setup module details all the tables in the BigQuery dataset. Some tables you may want to browse take a look at are:
+
+| # | Table  |  |
+| -- | :-- |  :--- |
+| 1. | demand_forecast | This table stores demand forecasts for various items at different locations. It includes the predicted demand values, along with associated confidence levels and prediction intervals. The table tracks when the forecasts were generated and by whom. It also provides a status indicator for AI-driven forecasts.|
+| 2. | demand_signal_log | This table logs demand signals related to items. It tracks when a signal is triggered for an item. The table records details about the signal, including who triggered it. It also indicates whether the signal is currently active.|
+| 3. | forecast_activity_log | This table tracks activities related to forecasting. It records details about when forecast-related actions occur. The table also captures who performed these actions. This enables auditing and monitoring of the forecasting process. It provides a log of changes and events related to specific forecasts.|
+| 4. | forecast_override_configs | This table stores configuration settings used to override demand forecasts. It holds adjustment factors that can be applied to forecasts in specific situations. These adjustments account for temporary increases or decreases in expected demand. The table also tracks when and by whom these configurations were last modified.|
+| 5. | agent_activity_log | This table tracks actions performed on items. It records the type of action taken and provides additional details about each action. The table also captures the date and time when each action occurred. It identifies the agent responsible for performing each action.|
+
+### 2.3. Report SQLs
+
+Review the [constants.py](../02-code-assets/capstone-retail-solution/demand_planner_agent/demand_planner_agent/constants.py) for the report SQL.
 
 
 <hr>
@@ -163,15 +187,14 @@ Here is what the layout should look like if you navigate to the top level demand
 ├── demand_planner_agent
 │   ├── demand_planner_agent
 │   │   ├── __init__.py
-│   │   ├── agent.py -> core code
-│   │   ├── constants.py -> configs
-│   │   ├── system_instructions.py -> core code
-│   │   ├── test.py -> agent engine deployment testing
-│   │   ├── tools.py -> core code
-│   │   └── utils.py -> core code
-│   ├── miscellaneous
-│   │   ├── enhancements.md
-│   │   └── sample_prompts.md
+│   │   ├── .agent_engine_config.json -> for any configs not supported by ADK command line
+│   │   ├── agent.py -> core component
+│   │   ├── constants.py -> loaded from .env entries
+│   │   ├── .env -> needs configuration from you
+│   │   ├── system_instructions.py -> core component
+│   │   ├── test.py -> test agent engine deployment
+│   │   ├── tools.py -> core component
+│   │   └── utils.py -> core component
 │   └── requirements.txt
 ```
 
