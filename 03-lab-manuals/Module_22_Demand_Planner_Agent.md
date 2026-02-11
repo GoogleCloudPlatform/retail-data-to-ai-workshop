@@ -18,9 +18,13 @@ The agent can run the following reports:
 6. Demand Signal Log (from the Market Intelligence Agent)
 7. Agent Activity Log (from other agents)
 
+And has access to several others.
+
 <hr>
 
 ## 1. Setup
+
+The setup is the same as for the previous agent.
 
 ### 1.1. Authenticate to Google Cloud from CLI & generate Application Default Credentials
 
@@ -49,7 +53,7 @@ PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
 LOCATION="us-central1"
 
- ="demand-planner-agent-sa"
+ AGENT_UMSA="demand-planner-agent-sa"
 AGENT_UMSA_FQN="$AGENT_UMSA@$PROJECT_ID.iam.gserviceaccount.com"
 
 gcloud iam service-accounts create $AGENT_UMSA \
@@ -143,71 +147,18 @@ gcloud iam service-accounts add-iam-policy-binding \
 ```
 <hr>
 
+## 2. Data overview
 
-## 2. Generate forecasts, and operationalize for agent use
-
-We will use two notebooks to complete this section. It is imperative that you complete this section carefully to ensure the agent has the appropriate grounding and tooling.
-
-### 2.1. Database setup, stored procedure creation
-
-1. Run the notebook `Module_20c_Forecasting_Utils_Prework.ipynb` in BigQuery
-   
-![README](../04-images/M21_2_1_1.png)  
-<br><br>
-
-3. You should see the following datasets created
-   
-![README](../04-images/M21_2_1_2.png)  
-<br><br>
-
-5. You should see the following objects created:
-   
-![README](../04-images/M21_2_1_3.png)  
-<br><br>
 
 <hr>
 
-### 2.2. Data Insights scan execution to generate dataset and table metadata for agentic grounding
+## 3. Agent tooling overview
 
 
-#### 2.1. Run the notebook
-1. Run the notebook `Module_20b_Generic_Agentic_Grounding_Prework.ipynb` in BigQuery
-   
-![README](../04-images/M21_2_2_1.png)  
-<br><br>
 
-2. Be sure to authenticate, otherwise your notebook execution will not complete
-   
-![README](../04-images/M21_2_2_2.png)  
-<br><br>
+<hr>
 
-#### 2.2. Track completion of Data Insights documentation scans
-
-Here is how you can track execution of Data Insights documentation scans
-   
-![README](../04-images/M21-DI-1.png)  
-<br><br>
-
-![README](../04-images/M21-DI-2.png)  
-<br><br>
-
-#### 2.3. Browse the insights generated
-
-Browse the tables and dataset to ensure completion of the scans
-
-![README](../04-images/M21-DI-3.png)  
-<br><br>
-
-![README](../04-images/M21-DI-4.png)  
-<br><br>
-
-![README](../04-images/M21-DI-5.png)  
-<br><br>
-
-![README](../04-images/M21-DI-6.png)  
-<br><br>
-
-#### 2.4. Review the metadata grounding file generated that we will use as part of system instructions to the Demand Planner Agent
+## 4. Agent grounding overview
 
 Browse Cloud Storage bucket to see the grounding file that has the metadata
 
@@ -217,14 +168,13 @@ Browse Cloud Storage bucket to see the grounding file that has the metadata
 ![README](../04-images/M21-DI-8.png)  
 <br><br>
 
-
 <hr>
 
-## 3. Review the Demand Planner Agent code 
+## 5. Agent code overview
 
-### 3.1. Review the code layout in VS code/your IDE
+### 5.1. Review the code layout in VS code/your IDE/Cloud Shell:
 
-Navigate to the `rscw-agent-solution` in vs code/your IDE <br>
+Navigate to the `capstone-retail-solution`<br>
 
 Here is what the layout should look like if you navigate to the top level demand_planner_agent folder:
 ```
