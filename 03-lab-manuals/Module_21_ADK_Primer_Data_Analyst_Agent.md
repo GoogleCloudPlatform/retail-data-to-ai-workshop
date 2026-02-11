@@ -345,25 +345,10 @@ DATA_ANALYST_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth pri
 echo $DATA_ANALYST_AGENT_ID
 ```
 
-### 4.3. Update the .env file with the agent engine ID
 
-Here is the agent engine ID:
+### 4.3. Test the  Data Analyst Agent on Agent Engine in the "Playground"
 
-![README](../04-images/M20-13d.png)   
-<br><br>
-
-Update the .env to reflect the agent engine ID:
-
-
-![README](../04-images/M20-13f.png)   
-<br><br>
-
-# REDO IMAGE ABOVE
-
-
-### 4.4. Test the  Data Analyst Agent on Agent Engine in the "Playground"
-
-#### 4.4.1. Test via the UI
+#### 4.3.1. Test via the UI
 
 Navigate to the `Playground` tab and try out a few prompts.<br>
 
@@ -390,7 +375,7 @@ Navigate to the `Playground` tab and try out a few prompts.<br>
 
 
 
-#### 4.5.2. Test via Python script
+#### 4.3.2. Test via Python script
 
 1. Ensure you completed the .env update to reflect your deployed reasoningEngine agent ID from step 5.4
 
