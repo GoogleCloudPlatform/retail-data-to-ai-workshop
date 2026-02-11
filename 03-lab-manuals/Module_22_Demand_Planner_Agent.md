@@ -1,12 +1,22 @@
-# Module 21: [Capstone] Create a Demand Planner Agent 
+# Module 22: [Capstone] Create a Demand Planner Agent 
 
-In this tutorial we will create a demand planner agent, and deploy it to Agent Engine, then register it with Gemini Enterprise. As part of the agent developer continuum, we will test the agent with `adk web` locally, deploy and test on `agent engine` playground. We will skip Gemini Enterprise registration as the focus is merely a functionally adequate UI for our agents, and ADK and Agent Engine playground are sufficient.<br>
+In this tutorial we will create a demand planner agent, and deploy it to Agent Engine. If you recall, we are to demonstrate to Shoonya executive leadership autonomous, multi-agent solutions on Google Cloud. As part of the agent developer continuum, we will test the agent with `adk web` locally, deploy and test on `agent engine` playground. We will skip Gemini Enterprise registration as the focus is merely a functionally adequate UI for our agents, and ADK and Agent Engine playground are sufficient.<br>
 
 The demand planner agent can do the following:
 1. Can run on-demand forecasting (TimesFM in BigQuery)
 2. Can adjust forecasts based on demand signals for product (demand surge, slump)
 3. Can do QnA on forecast data
-4. Has limited access to view data, and to modify data
+4. Run a number of reports
+5. Has limited access to view data, and to modify data
+
+The agent can run the following reports:
+1. Average Rate of Sale (per day)
+2. Weeks of Supply
+3. Inventory Reconciliation
+4. On Hand Inventory
+5. Available to Promise
+6. Demand Signal Log (from the Market Intelligence Agent)
+7. Agent Activity Log (from other agents)
 
 <hr>
 
@@ -39,10 +49,10 @@ PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
 LOCATION="us-central1"
 
-DEMAND_PLANNER_UMSA="demand-planner-agent-sa"
-DEMAND_PLANNER_UMSA_FQN="$DEMAND_PLANNER_UMSA@$PROJECT_ID.iam.gserviceaccount.com"
+ ="demand-planner-agent-sa"
+AGENT_UMSA_FQN="$AGENT_UMSA@$PROJECT_ID.iam.gserviceaccount.com"
 
-gcloud iam service-accounts create $DEMAND_PLANNER_UMSA \
+gcloud iam service-accounts create $AGENT_UMSA \
   --description="User Managed Service Account for Demand Planner Agent" \
   --display-name="Demand Planner Agent Service Account"
 ```
@@ -51,43 +61,43 @@ gcloud iam service-accounts create $DEMAND_PLANNER_UMSA \
 
 ```
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+  --member="serviceAccount:$AGENT_UMSA_FQN" \
   --role="roles/aiplatform.reasoningEngineServiceAgent"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+  --member="serviceAccount:$AGENT_UMSA_FQN" \
   --role="roles/iam.serviceAccountViewer"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/iam.serviceAccountUser"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/iam.serviceAccountTokenCreator"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+  --member="serviceAccount:$AGENT_UMSA_FQN" \
   --role="roles/aiplatform.user"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+  --member="serviceAccount:$AGENT_UMSA_FQN" \
   --role="roles/storage.objectCreator"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/discoveryengine.admin"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+  --member="serviceAccount:$AGENT_UMSA_FQN" \
   --role="roles/bigquery.jobUser"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/bigquery.user"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/bigquery.metadataViewer"
 
 ```
@@ -97,7 +107,7 @@ Lets ensure that our Demand Planner Agent has viewer access to the capstone_ds:
 BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/bigquery.dataViewer" \
 --condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI\"),title=ReadAccessToSpecificDataset"
 ```
@@ -110,7 +120,7 @@ BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/dat
 FORECAST_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/forecast_activity_log"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DEMAND_PLANNER_UMSA_FQN" \
+--member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/bigquery.dataEditor" \
 --condition="expression=resource.name.startsWith(\"$BQ_DEMAND_FORECAST_TABLE_WRITE_ACCESS_RESOURCE_URI\") && resource.name.startsWith(\"$BQ_DEMAND_FORECAST_HISTORY_TABLE_WRITE_ACCESS_RESOURCE_URI\") && resource.name.startsWith(\"$BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\") && resource.name.startsWith(\"$FORECAST_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\" ),title=WriteAccessToSpecificTable"
 
@@ -127,7 +137,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/iam.serviceAccountTokenCreator"
 
 gcloud iam service-accounts add-iam-policy-binding \
-    ${DEMAND_PLANNER_UMSA_FQN} \
+    ${AGENT_UMSA_FQN} \
     --member="user:${YOUR_UPN_FQN}" \
     --role="roles/iam.serviceAccountUser"
 ```
