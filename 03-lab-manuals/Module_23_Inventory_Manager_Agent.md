@@ -1,4 +1,4 @@
-# Module 22: [Capstone] Create an Inventory Manager Agent 
+# Module 23: [Capstone] Create an Inventory Manager Agent 
 
 You are already familiar with agent development from the previous modules. This module is identical, we are merely creating a different persona. The drill is the same - as part of the agent developer continuum, we will test the agent with `adk web` locally, deploy and test on `agent engine` playground. We will skip Gemini Enterprise registration as the focus is merely a functionally adequate UI for our agents, and ADK and Agent Engine playground are sufficient.<br>
 
@@ -6,6 +6,7 @@ The inventory manager agent can do the following:
 1. Generate the default inventory allocation plan
 2. Adjust inventory allocation across stores and warehouse
 3. Answer any adhoc questions (best effort)
+<br><br>
 4. Generate a variety of canned reports:<br>
 a) Inventory Reconciliation Report<br>
 b) On Hand Inventory Report<br>
@@ -17,28 +18,10 @@ g) Reorder Point Report<br>
 h) Inventory Aging Report<br>
 i) Inventory Allocation Report<br>
 j) Under-performing Inventory Report<br>
-
+<br>And has access to more that are not listed here.
 <hr>
 
 ## 1. Setup
-
-### 1.1. Authenticate to Google Cloud from CLI & generate Application Default Credentials
-
-Run each of these in cloud shell / terminal:
-```
-gcloud init
-```
-
-```
-gcloud auth application-default login
-```
-
-Make sure you set the GCP project-
-```
-gcloud config set project <YOUR_PROJECT_ID>
-```
-
-<hr>
 
 ### 1.2. Create a user managed service account (UMSA) for the agent & grant it minimal permissions
 
