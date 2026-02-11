@@ -5,7 +5,7 @@
     "cpu": "8",
     "memory": "24Gi"
   },
-  "service_account": "logistics-manager-agent-sa@capstone-testing-487003.iam.gserviceaccount.com",
+  "service_account": "logistics-manager-agent-sa@PROJECT_ID.iam.gserviceaccount.com",
   "env_vars": {
   "GOOGLE_CLOUD_AGENT_ENGINE_ENABLE_TELEMETRY": "true",
   "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "true"}
