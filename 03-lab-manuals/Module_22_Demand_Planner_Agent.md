@@ -53,7 +53,7 @@ PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
 LOCATION="us-central1"
 
- AGENT_UMSA="demand-planner-agent-sa"
+AGENT_UMSA="demand-planner-agent-sa"
 AGENT_UMSA_FQN="$AGENT_UMSA@$PROJECT_ID.iam.gserviceaccount.com"
 
 gcloud iam service-accounts create $AGENT_UMSA \
@@ -340,9 +340,6 @@ adk deploy agent_engine \
 ```
 
 
-![README](../04-images/M21_5_1.png)   
-<br><br>
-
 
 ### 9.2. Review the deployment on the Cloud Console
 
@@ -367,16 +364,13 @@ We are running the agent as a (custom) user managed service account.
 
 The agent runs as the demand planner service account on Agent Engine. Lets review the IAM permissions
 
-![README](../04-images/M21_5_5.png)   
+![README](../04-images/capstone_M22_AT_03.png)   
 <br><br>
 
-![README](../04-images/M21_5_6.png)   
+![README](../04-images/capstone_M22_AT_04.png)   
 <br><br>
 
-![README](../04-images/M21_5_7.png)   
-<br><br>
-
-![README](../04-images/M21_5_8.png)   
+![README](../04-images/capstone_M22_AT_05.png)   
 <br><br>
 
 
@@ -390,7 +384,14 @@ DEMAND_PLANNER_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth p
 echo $DEMAND_PLANNER_AGENT_ID
 ```
 
-### 9.7. Test the  Demand Planner Agent on Agent Engine in the "Playground"
+### 9.7. Update the .env file with the agent ID retrieved
+
+Run the below in the terminal:
+```
+sed -i s/'TBD'/$DEMAND_PLANNER_AGENT_ID/g ~/retail-data-to-ai-workshop/02-code-assets/capstone-retail-solution/demand_planner_agent/demand_planner_agent/.env
+```
+
+### 9.8. Test the  Demand Planner Agent on Agent Engine in the "Playground"
 
 Navigate to the `Playground` tab and try out a few prompts.<br>
 
@@ -467,7 +468,7 @@ Question 3 (a read):
 
 <hr>
 
-This concludes the module. Please proceed to the next module.
+This concludes the module. Please proceed to the [next module](Module_23_Inventory_Manager_Agent.md).
 
 
 
