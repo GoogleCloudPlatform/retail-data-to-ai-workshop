@@ -21,6 +21,10 @@ gcloud init
 gcloud auth application-default login
 ```
 
+```
+gcloud config set project YOUR_ACTUAL_PROJECT_ID
+```
+
 <hr>
 
 ### 1.2. Enable APIs
@@ -36,11 +40,12 @@ gcloud services enable logging.googleapis.com
 ### 1.3. Create a user managed service account (UMSA) for the Data Analyst Agent
 
 #### 1.3.1. Create the UMSA
-We will first try to create a custom service account which we will refer to as Data Analyst Agent UMSA from this point on and try to provision the Agent on Agent Engine with this service account. Run the below in the terminal.
+We will first try to create a custom service account which we will refer to as Data Analyst Agent UMSA from this point on and try to provision the Agent on Agent Engine with this service account. Our goal is to ensure the agent has exactly the permissions provided to this UMSA and not any more.<br><br>Run the below in the terminal.
 
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
+LOCATION="us-central1"
 
 DATA_ANALYST_UMSA="data-analyst-agent-sa"
 DATA_ANALYST_UMSA_FQN="$DATA_ANALYST_UMSA@$PROJECT_ID.iam.gserviceaccount.com"
@@ -82,11 +87,6 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
---role="roles/bigquery.dataViewer" \
---condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
 --role="roles/iam.serviceAccountUser"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
@@ -96,6 +96,11 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
 --role="roles/discoveryengine.admin"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$DATA_ANALYST_UMSA_FQN" \
+--role="roles/bigquery.dataViewer" \
+--condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_RESOURCE_URI\"),title=AccessToSpecificDataset"
 ```
 
 #### 1.3.3. Grant yourself permissions to impersonate the Data Analyst UMSA
@@ -104,10 +109,12 @@ Run the below in the terminal.
 ```
 YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
 
+# Enter the option for 'None' if asked about conditional access
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="user:$YOUR_UPN_FQN" \
   --role="roles/iam.serviceAccountTokenCreator"
 
+# Enter the option for 'None' if asked about conditional access
 gcloud iam service-accounts add-iam-policy-binding \
     ${DATA_ANALYST_UMSA_FQN} \
     --member="user:${YOUR_UPN_FQN}" \
@@ -116,17 +123,20 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 ### 1.4. Set up a python virtual environment to use for ADK & install dependencies
 
-Run the below in cloud shel
+Run the below in cloud shell terminal
+
+#### 1.4.1. Create a python virtual environment
+
 ```
+cd ~
 python -m venv .venv
 source .venv/bin/activate
 ```
 
+#### 1.4.2. Install dependencies
 ```
-cd ~/retail-data-to-ai-workshop
-cd 02-code-assets/capstone-retail-solution/data_analyst_agent/
-pip install -r requirements.txt
-cd ..
+cd ~/
+pip install -r retail-data-to-ai-workshop/02-code-assets/capstone-retail-solution/data_analyst_agent/requirements.txt 
 ```
 
 <hr>
@@ -136,7 +146,19 @@ cd ..
 
 ### 2.1. Review the code layout in VS code/your IDE
 
-Navigate to the `capstone-retail-solution` in vs code/your IDE <br>
+Navigate to the `capstone-retail-solution` in Cloud Shell editor <br>
+
+![README](../04-images/capstone_M21_01.png)  
+<br><br>
+
+![README](../04-images/capstone_M21_02.png)  
+<br><br>
+
+![README](../04-imagescapstone_M21_03.png)  
+<br><br>
+
+![README](../04-imagescapstone_M21_04.png)  
+<br><br>
 
 Here is what the layout should look like if you navigate to the top level data_analyst_agent folder:
 ```
@@ -147,6 +169,7 @@ Here is what the layout should look like if you navigate to the top level data_a
 │   │   ├── .agent_engine_config.json -> for any configs not supported by ADK command line
 │   │   ├── agent.py -> core component
 │   │   ├── constants.py -> loaded from .env entries
+│   │   ├── .env -> needs configuration from you
 │   │   ├── system_instructions.py -> core component
 │   │   ├── test.py -> test agent engine deployment
 │   │   ├── tools.py -> core component
@@ -159,137 +182,131 @@ Here is what the layout should look like if you navigate to the top level data_a
 
 ```
 
-### 2.2. Study these specific code/config files
+### 2.2. Study the data_analyst_agent specific code/config files
 
 Open each of the files and review the code files.
 
-<hr>
+### 2.3. Study the BQ metadata grounding file from the previous module yet again
 
-## 3. Run the agent locally
-
-
-### 3.2. Install the Python dependencies
-
-Navigate to the Data_Analytics_Agent folder that has the requirements.txt and run the install from VS code terminal-
-`pip install -r requirements.txt`
-
-### 3.2. Update the env file 
-
-Modify the env file to reflect your GCP project ID, project number and location by updating the following with your details and saving the file-
-
-```
-GOOGLE_CLOUD_PROJECT="<YOUR_PROJECT_ID>"
-GOOGLE_CLOUD_LOCATION="us-central1"
-GOOGLE_CLOUD_PROJECT_NUMBER="<YOUR_PROJECT_NUMBER>"
-
-GOOGLE_GENAI_USE_VERTEXAI="True"
-GOOGLE_CLOUD_AGENT_ENGINE_ENABLE_TELEMETRY=true
-OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
-
-GEMINI_MODEL="gemini-2.5-pro"
-
-BQ_DATASET_IN_SCOPE="capstone_ds"
-BQ_METADATA_BUCKET="capstone_stage_606804615020"
-BQ_METADATA_FILE="metadata/captone_database_metadata_grounding.md"
-
-DATA_ANALYST_USER_MANAGED_SERVICE_ACCOUNT_FQN="data-analyst-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
+This file is critical for accuracy of agent response to adhoc questions involving data
 
 
-AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-<YOUR_PROJECT_NUMBER>"
-DEPLOYED_AGENT_RESOURCE_URI="projects/<YOUR_PROJECT_NUMBER>/locations/us-central1/reasoningEngines/<THIS_WILL_COME_LATER>"
-```
-
-![README](../04-images/M20-10.png)   
+![README](../04-images/capstone_M21_05.png)  
 <br><br>
 
-# REDO IMAGE
+
+### 2.4. Update the config files to reflect your GCP project details from Cloud Shell terminal
+
+Run the below in Cloud Shell-
+```
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
+LOCATION="us-central1"
+
+cd ~/retail-data-to-ai-workshop/02-code-assets/capstone-retail-solution
+
+sed -i s/'LOCATION'/$LOCATION/g data_analyst_agent/data_analyst_agent/.env
+sed -i s/'PROJECT_ID'/$PROJECT_ID/g data_analyst_agent/data_analyst_agent/.env
+sed -i s/'PROJECT_NBR'/$PROJECT_NBR/g data_analyst_agent/data_analyst_agent/.env
+sed -i s/'PROJECT_ID'/$PROJECT_ID/g data_analyst_agent/data_analyst_agent/.agent_engine_config.json
+```
+
+Open the file in Cloud Shell editor and ensure they are updated accurately or `cat` the files
+
+<hr>
 
 
-### 3.3. Launch a terminal in VS Code/your IDE and authenticate
+## 3. Run the agent with `adk web` from Cloud Shell
 
-Follow instructions in section 1.
+### 3.1. Navigate to the top level directory for the agent
 
-### 3.4. Run adk web
+```
+cd ~/retail-data-to-ai-workshop/02-code-assets/capstone-retail-solution/data_analyst_agent
+```
 
-In the terminal navigate to the top level data_analyst_agent directory and run the command below.<br>
-(e.g. from author - `/Users/akhanolkar/github/capstone-retail-solution/data_analyst_agent`)
+### 3.2. Launch `adk web`
 
+1. Ensure your virtual environment is activated
+2. Ensure you have run `gcloud auth application-default login`
+3. Configure your project and location in your cloud shell
+```
+export GOOGLE_CLOUD_PROJECT="$PROJECT_ID"
+export GOOGLE_CLOUD_LOCATION="$LOCATION"
+```
+
+4. Launch adk web in your cloud shell
 ```
 adk web
 ```
 
-![README](../04-images/M20-10b.png)   
+
+![README](../04-images/capstone_M21_06.png)  
 <br><br>
 
-# REDO IMAGE ABOVE
+5. Click on the URL that shows up
+6. Keep the terminal you started adk web on open, you can refer this for behind the scenes peek
+7. Interact with the agent in the tab that opened
 
-![README](../04-images/M20-10c.png)   
+![README](../04-images/capstone_M21_07.png)  
 <br><br>
 
+### 3.3. Sample prompts
 
-### 3.4. Try out a few prompts
+```
+1. I dont know where to start. Can you show me what the BigQuery datasets available are first?
+2. Can you show me any 5 tables in the capstone_ds dataset? Include the table name and description
+3. Can you describe what stock_movement table is about?
+4. Can you show me columns of this table?
+5. Can you show me some data in this table?
+6. How does this table relate to other tables?
+7. What is the difference between stock_movement table and stock_master table?
+8. Can you show me a few customers?
+9. Can you show me orders for this customer ID 00f8ac751ae484a82adb20b42ad1aca7?
+10. What is the total spend by customer ID 00f8ac751ae484a82adb20b42ad1aca7?
+11. Can you show me a few products?
+12. What are the categories of products available?
+13. How many active refrigerator SKUs do we currently carry?
+14. Do we sell any products in the wine cellar category?
+13. Show me sales, and inventory for product omni item id LRDCS2603S
+14. Are there comparable active products we carry?
+15. Show me fast moving products
+16. What are the top 5 best-selling products by revenue?
+17. What is the average price of products in the 'wine cellar' category?
+18. Show me inventory for product omni item id LRDCS2603S
+19. What are products where we are short of inventory?
+20. Can you show me the inventory forecast for product omni item id LRDCS2603S?
+21. Which products have the highest inventory levels right now?
+22. Who is the supplier for product omni item id LRDCS2603S?
+23. What are other products supplied by the same supplier?
+24. Which supplier's products account for the most sales?
+25. Which city has the most customers?
+26. Which is the city by customer location from a sales perspective?
+27. Can you segment customers into 'high-value', 'medium-value', and 'low-value' based on their total spending, and show the count of customers in each segment?
+28. What is the month-over-month growth rate of sales revenue for the 'french door' category?
+29. Is there a correlation between the lead time of a product from its supplier and its sales volume? Show the top 10 products with the longest lead times and their corresponding sales.
+31. What is the average order value for each payment type?
+32. Can you show me purchase order history for product omni item id LRDCS2603S?
+33. Can you show me stock movement history for product omni item id LRDCS2603S?
+34. Can you show me stock transfer history for product omni item id LRDCS2603S?
 
-The code base includes sample prompts, you can grab a few and try out like below.
-
-![README](../04-images/M20-11.png)   
-<br><br>
-
-![README](../04-images/M20-12.png)   
-<br><br>
-
-We now know our agent is able to access data from BigQuery.
-
-Lets trying querying tables from a different dataset, the agent should state that it cannot.
-
-![README](../04-images/M20-12b.png)   
-<br><br>
-
-Lets try to get the agent to delete all the data, the agent should state that it cannot.
-
-![README](../04-images/M20-12c.png)   
-<br><br>
-
+```
 
 <hr>
 
-## 4. Preparing for deployment to Agent Engine
 
-Our goal is to deploy the agent to agent engine to run as custom service account. Per the documentation this is supported. If it does not work, we will grant the Agent Engine default Service Agent the permissions needed for access. This is however not a best practice. 
-
-### 4.1. Requisite API enabling
-
-Run the below in the terminal.
-```
-gcloud services enable discoveryengine.googleapis.com
-```
-
-This should ideally create the P4SA  - the agent engine default service agent account that has the following construct- `service-YOUR_PROJECT_NUMBER@gcp-sa-aiplatform-re.iam.gserviceaccount.com`
-
-<hr>
+## 4. Deploy & test the Data Analyst Agent on Agent Engine
 
 
+### 4.1. Deploy the agent to Agent Engine
 
-## 5. Deploy & test the Data Analyst Agent on Agent Engine
-
-
-### 5.1. Grant the deployer (yourself), incremental IAM permissions
-
-```
-YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="user:$YOUR_UPN_FQN" \
-  --role="roles/discoveryengine.admin"
-
-```
-
-### 5.2. Deploy the agent to Agent Engine
-
-Run this from within the top level data_analyst_agent folder, from CLI. This will automatically read in any configs in agent_engine_config.json
+Run this from within the top level data_analyst_agent folder, from CLI.  This will automatically read in any configs in agent_engine_config.json. (your Python virtual environment needs to be activated - we already did this).
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
 AGENT_ENGINE_LOCATION="us-central1"
+AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-$PROJECT_NBR"
+
+cd ~/retail-data-to-ai-workshop/02-code-assets/capstone-retail-solution/data_analyst_agent/
 
 adk deploy agent_engine \
 --project=$PROJECT_ID   \
@@ -302,23 +319,8 @@ adk deploy agent_engine \
 ./data_analyst_agent
 ```
 
-![README](../04-images/M20-13a.png)   
-<br><br>
 
-![README](../04-images/M20-13d.png)   
-<br><br>
-
-![README](../04-images/M20-13e.png)   
-<br><br>
-
-![README](../04-images/M20-13b.png)   
-<br><br>
-
-![README](../04-images/M20-13c.png)   
-<br><br>
-
-
-### 5.3. Retrieve the Data Analyst Agent ID from the Agent Engine deployment
+### 4.2. Retrieve the Data Analyst Agent ID from the Agent Engine deployment
 
 We will need to register with Gemini Enterprise.
 ```
@@ -328,7 +330,7 @@ DATA_ANALYST_AGENT_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth pri
 echo $DATA_ANALYST_AGENT_ID
 ```
 
-### 5.4. Update the .env file with the agent engine ID
+### 4.3. Update the .env file with the agent engine ID
 
 Here is the agent engine ID:
 
@@ -344,9 +346,9 @@ Update the .env to reflect the agent engine ID:
 # REDO IMAGE ABOVE
 
 
-### 5.5. Test the  Data Analyst Agent on Agent Engine in the "Playground"
+### 4.4. Test the  Data Analyst Agent on Agent Engine in the "Playground"
 
-#### 5.5.1. Test via the UI
+#### 4.4.1. Test via the UI
 
 Navigate to the `Playground` tab and try out a few prompts.<br>
 
@@ -373,7 +375,7 @@ Navigate to the `Playground` tab and try out a few prompts.<br>
 
 
 
-#### 5.5.2. Test via Python script
+#### 4.5.2. Test via Python script
 
 1. Ensure you completed the .env update to reflect your deployed reasoningEngine agent ID from step 5.4
 
@@ -404,9 +406,9 @@ python miscellaneous/deployment_test.py
 <hr>
 
 
-## 6. Create the Agentspace App (Shoonya Retail Agentverse) on Gemini Enterprise
+## 5. Create the Agentspace App (Shoonya Retail Agentverse) on Gemini Enterprise
 
-### 6.1. Grant the deployer (yourself), incremental IAM permissions
+### 5.1. Grant the deployer (yourself), incremental IAM permissions
 
 ```
 YOUR_UPN_FQN=`gcloud auth list --filter=status:ACTIVE --format="value(account)"`
@@ -417,7 +419,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 ```
 
-### 6.2. Create the application
+### 5.2. Create the application
 ```
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
 AGENTSPACE_APP_ID="shoonya-agentverse"
@@ -469,7 +471,7 @@ Visit the Gemini Enterprise UI on Cloud Shell and look at the app you just creat
 <br><br>
 
 
-### 6.3. Check agents registered with the app you just created
+### 5.3. Check agents registered with the app you just created
 
 ```
 
@@ -508,10 +510,10 @@ You should see the "Deep Research" agent automatically registered:
 
 
 
-## 7. Register the Data Analyst Agent with Agentspace on Gemini Enterprise
+## 6. Register the Data Analyst Agent with Agentspace on Gemini Enterprise
 
 
-### 7.1. Register the agent on Agent Engine with Gemini Enterprise for the Agent UI experience
+### 6.1. Register the agent on Agent Engine with Gemini Enterprise for the Agent UI experience
 
 ```
 AGENT_ENGINE_LOCATION="us-central1"
@@ -570,7 +572,7 @@ Make note of the IDs here-
 
 
 
-### 7.2. Check agents registered with the app we created on Gemini enterprise
+### 6.2. Check agents registered with the app we created on Gemini enterprise
 
 ```
 curl -X GET \
@@ -620,7 +622,7 @@ THIS IS INFORMATIONAL
 ![README](../04-images/M20-20.png)   
 <br><br>
 
-### 7.3. In case of discrepancies - update the Gemini Enterprise agent with the right Agent Engine agent ID ID 
+### 6.3. In case of discrepancies - update the Gemini Enterprise agent with the right Agent Engine agent ID ID 
 
 Here is how you update the Agent Engine deployed Agent ID.<br>
 SKIP THIS IF YOU HAVE THE RIGHT ID <br>
@@ -628,7 +630,7 @@ Documentation link: https://docs.cloud.google.com/gemini/enterprise/docs/registe
 
 <hr>
 
-## 8. Chat with the Data Analyst Agent in Gemini Enterprise
+## 7. Chat with the Data Analyst Agent in Gemini Enterprise
 
 **Note:** At the time of authoring of this content, the agent when accessed via Gemini Enterprise hallucinated, even crashed while this did not surface on Agent Engine playground or ADK web. Subsequent modules will not include Gemini Enterprise integration.
 
