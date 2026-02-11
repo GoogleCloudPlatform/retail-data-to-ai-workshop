@@ -160,7 +160,7 @@ There are a number of stored procedures. Review the below-
 ### 2.2. Data
 The captone setup module details all the tables in the BigQuery dataset. Some tables you may want to browse take a look at are:
 
-| # | Table  |  |
+| # | Table  | Purpose  |
 | -- | :-- |  :--- |
 | 1. | demand_forecast | This table stores demand forecasts for various items at different locations. It includes the predicted demand values, along with associated confidence levels and prediction intervals. The table tracks when the forecasts were generated and by whom. It also provides a status indicator for AI-driven forecasts.|
 | 2. | demand_signal_log | This table logs demand signals related to items. It tracks when a signal is triggered for an item. The table records details about the signal, including who triggered it. It also indicates whether the signal is currently active.|
