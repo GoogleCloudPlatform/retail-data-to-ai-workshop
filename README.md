@@ -63,7 +63,7 @@ L200 - L300
 
 <hr>
 
-## Technical Stack
+## Technical Stack (including roadmap items)
 
 ![README](04-images/capstone_tech_stack_1.png)  
 <br><br>
