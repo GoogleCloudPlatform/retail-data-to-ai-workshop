@@ -112,7 +112,7 @@ To see what is coming, click [here](ROADMAP.md).
 
 In the capstone modules you will use some of the learnings from the modules above, and stand up a minimum viable autonomous multi-agent, retail supply chain agent solution with the best of breed Google Cloud services.
 
-### Capstone Agents and their collaboration
+### Capstone Agentverse & Collaboration
 
 ![README](04-images/capstone_hero_scenario.png)  
 <br><br>
@@ -132,10 +132,15 @@ In the capstone modules you will use some of the learnings from the modules abov
 ![README](04-images/capstone_agent_signatures.png)  
 <br><br>
 
+### Capstone - Getting Started
+
+
+
 
 ### Capstone Agent Roadmap
 
-
+1. Autonomous action - March 2026
+2. Vector search - March - April 2026
 
 <hr>
 
