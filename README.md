@@ -140,14 +140,22 @@ In the capstone modules you will use some of the learnings from the modules abov
 
 ### 9B.5. Capstone - Getting Started
 
-
-
+| Module # | Focus  |
+| -- | :-- | 
+|  20 | [**Environment setup and data loading**](03-lab-manuals/Module_20_Capstone_Setup.md) | 
+|  21 | [**ADK Primer - Building a Data Analyst Agent**](03-lab-manuals/Module_21_ADK_Primer_Data_Analyst_Agent.md) | 
+|  22 | [**Demand Planner Agent Development**](03-lab-manuals/Module_22_Demand_Planner_Agent.md) | 
+|  23 | [**Inventory Manager Agent Development**](03-lab-manuals/Module_23_Inventory_Manager_Agent.md) | 
+|  24 | [**Procurement Manager Agent Development**](03-lab-manuals/Module_24_Procurement_Manager_Agent.md) | 
+|  25 | [**Logistics Manager Agent Development**](03-lab-manuals/Module_25_Logistics_Manager_Agent.md) |
+|  26 | Autonomous Agent Action to Prevent Stockout - coming soon |
 <hr>
 
 ### 9B.6. Capstone Agent Roadmap
 
-1. Autonomous action - March 2026
-2. Vector search - March - April 2026
+1. Autonomous action - 20261Q
+2. Vector search - 20262Q
+3. Advanced agent features
 
 <hr>
 
