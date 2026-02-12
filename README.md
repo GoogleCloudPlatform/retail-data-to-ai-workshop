@@ -2,36 +2,34 @@
 
 This repository hosts `tutorials for LLM powered data & AI products` that can be leveraged in a Data-to-AI estate on Google Cloud. 
 
-## Features <br>
-(1) **Learning modules** - each covering a practical problem to be solved, architecture & considerations, code and configuration, and comprehensive instruction manuals, links to product documentation, and best practices for an immersive learning experience. <br> 
+## 1. Features <br>
+(1) **Part 1: Learning modules** - each covering a practical problem to be solved, architecture & considerations, code and configuration, and comprehensive instruction manuals, links to product documentation, and best practices for an immersive learning experience. The learning modules prepare you to build the solution featured in Part 2.<br> 
 
-(2) **Primer on creating custom agents** with Agent Development Kit (ADK), hosting on Agent Engine with UI on Gemini Enterprise and leveraging MCP toolbox for databases <br> 
-
-(3) **Fully functional multi-agent, autonomous agent `retail supply chain solution` (with public/synthetic data) for preventing stockouts** featuring the best of breed data and agent development techncial stack on Google Cloud. <br><br>
+(3) **Part 2: Capstone solution** - Fully functional multi-agent, autonomous agent `retail supply chain solution` (with public/synthetic data) for preventing stockouts featuring the best of breed data and agent development techncial stack on Google Cloud. <br><br>
 In some cases, the latest features are showcased, in public preview, and may also include features in private preview.<br>
 
 Note: This repository will be kept current and new features will be steadily added, you can stay tuned by following the [roadmap](ROADMAP.md).
 
 <hr>
 
-## Objective
+## 2. Objective
 The objective is to demystify Google Cloud products and services for data and agentic development through a fully scripted hands-on and immersive learning experience with a relatable use case.<br>
 
 <hr>
 
-##  Disclaimer
+##  3. Disclaimer
 1. This repository and its contents are not an official Google Product.
 2. The code in this repository ***is intended for educational purposes***. While it can be used to quickstart development by enterprises, due diligence and hardening of the code is required for deployment to higher environments
 3. The architecture showcased ***does not dictate*** retail and supply chain architecture, but merely how to use Google Cloud products to solve business problems.
 
 <hr>
 
-## Audience
+## 4. Audience
 The intended audience is anyone with interest in learning Google Cloud products. 
 
 <hr>
 
-## Format & Duration
+## 5. Format & Duration
 The tutorials are fully scripted (no research needed), with (fully automated) environment setup (coming soon), data, code, commands, notebooks, orchestration, and configuration.<br>
 
 **Option 1 - DIY:** <br> 
@@ -48,7 +46,7 @@ Expect to spend ~12 hours to fully understand, read product documentation and ex
 
 <hr>
 
-## Dependencies
+## 6. Dependencies
 
 1. A Google Cloud project
 2. IAM permissions to provision services, and grant IAM permissions
@@ -57,47 +55,26 @@ Expect to spend ~12 hours to fully understand, read product documentation and ex
 
 <hr>
 
-## Level
+## 7. Level
 
 L200 - L300
 
 <hr>
 
-## Technical Stack
+## 8. Technical Stack (including roadmap items)
 
-| # | Purpose  | Product/Service/Technology |
-| -- | :-- |  :--- |
-| 1. | Operational database | AlloyDB |
-| 2. | Analytical database | BigQuery |
-| 3. | LLM-powered agenting grounding - metadata and golden dataset generation (no-code)| Dataplex `Data Insights API` |
-| 4. | LLM-powered Data warehouse dimensional model code generation with just prompts (no-code)| `Data Engineering Agent` |
-| 5. | LLM-powered Reporting Data Mart code generation with just prompts (no-code) | `Data Engineering Agent` |
-| 6. | Workflow management and orchestration of BigQuery jobs | `Dataform` |
-| 7. | Out of the box (no-code) Data QnA agent | BigQuery `Conversational Analytics API` |
-| 8. | Out of the box (no-code) Exploratory Data Analysis & visualization with just prompts on Colab Enterprise | `Data Science Agent` |
-| 9. | Generative AI functions with SQL | BigQuery `*.GENERATE*` functions |
-| 10. | Time series forecasting | `TimesFM` and `Arima Plus` in BigQuery |
-| 11. | Image generation | Gemini |
-| 12. | Multimodal embedding generation with SQL | BigQuery `AI.EMBED` and `AI.GENERATE_EMBEDDING` |
-| 13. | Multimodal search with SQL | Bigquery `VECTOR_SEARCH` abd `AI.SEARCH` |
-| 14. | Apache Iceberg Lakehouse | BigQuery `Managed Iceberg Tables`<br>BigLake managed REST Catalog |
-| 15. | Managed Apache Spark compute | `Dataproc Serverless` |
-| 16. | Agent Development SDK* | Google Agent Development Kit (`ADK`) |
-| 17. | Agent runtime* | `Agent Engine`  |
-| 18. | Agent UI* | Agentspace on `Gemini Enterprise` |
-| 19. | Standardized and secure database access tooling* | `MCP toolbox for databases` |
-| 20. | Agent-to-Agent secure discovery, communication, and collaboration* | `A2A`  |
-| 21. | Event driven orchestration* | Cloud Run Functions<br>Cloud Pub/Sub  |
-| 22. | Time-based scheduling orchestration* | Cloud composer<br>  |
-| 23. | Serverless compute* | Cloud Run |
-| 24. | Secret store* | Secret Manager |
-| 25. | Provisioning automation* | Terraform |
+![README](04-images/capstone_tech_stack_1.png)  
+<br><br>
 
-`*` - Coming soon
+![README](04-images/capstone_tech_stack_2.png)  
+<br><br>
 
 <hr>
 
-## Learning Modules
+## 9A. [PART 1] Learning Modules
+These learning modules give you a gentle introduction to Google Cloud's portfolio of LLM powered products. These modules are optional to try out if strapped for time. You can directly go to the [`capstone modules`](capstone---autonomous-multi-agent-retail-supply-chain-solution).
+
+### 9A.1. Learning Modules - series
 
 | Module # | Focus  |
 | -- | :-- | 
@@ -114,42 +91,88 @@ L200 - L300
 |   8. | [**Generate content with SQL with Generative AI functions in BigQuery**](03-lab-manuals/Module-08-GenAI-Functions-In-BQ.md) <br>Using Generative AI functions in BigQuery - we will generate product descriptions and user manuals. We will learn to do keyword extraction, play with knobs for te same, then do sentiment analysis of product reviews   | 
 |   9. | [**Embedding generation and vector search in BigQuery with just SQL**](03-lab-manuals/Module-09-Embedding-Gen-And-Vector-Search-In-BQ.md) <br> We will generate product images based on descriptions. We will then generate embeddings for the product description and images and learn to do text-to-text search as well as text-to-image search - all from within BigQuery with SQL  | 
 | 10a. | [**Apache Iceberg Lakehouse in BigQuery with managed Iceberg tables**](https://github.com/anagha-google/retail-supply-chain-workshop/blob/main/03-lab-manuals/Module-10a-Apache-Iceberg-Lakehouse.md) <br> We will learn to create an Apache Iceberg lakehouse with BigQuey managed Iceberg tables, and learn to run DML operations on Iceberg with BigQuery SQL. We will also query these tables with Apache Spark on Dataproc Servereless to fetch the freshest data.  | 
-|  11. | **Primer on Custom Agent Development on GCP with a data QnA chat application** (coming soon)   | 
-|  12. | **Multi-agent, autonomous agent solution with best of breed Google Cloud agentic stack for preventing retail stockouts** (coming soon)   | 
 
-<hr>
-
-
-
-## Getting started
+### 9A.2. Learning Modules - getting started
 
 1. Review the dependencies and ensure they are met
 2. Proceed to the [provisioning module](03-lab-manuals/Module-00-Provisioning.md).
 3. Follow along each page of the user manual
 
-<hr>
-
-## Roadmap
-
+### 9A.3. Learning Modules - roadmap
 If you would like additional features to be showcased, log an issue with details.<br>
 To see what is coming, click [here](ROADMAP.md).
 
 <hr>
 
+<hr>
 
-## Issues
+## 9B. [PART 2] Capstone - Autonomous Multi-agent Retail Supply Chain Solution
+
+In the capstone modules you will use some of the learnings from the modules above, and stand up a minimum viable autonomous multi-agent, retail supply chain agent solution with the best of breed Google Cloud services.
+
+### 9B.1. Capstone Agentverse & Collaboration
+
+![README](04-images/capstone_hero_scenario.png)  
+<br><br>
+
+<hr>
+
+### 9B.2. Capstone Technical Stack
+
+![README](04-images/capstone_stack_overview.png)  
+<br><br>
+
+<hr>
+
+### 9B.3. Capstone Agent Development Continuum
+
+![README](04-images/capstone_agent_development_continuum.png)  
+<br><br>
+
+<hr>
+
+### 9B.4. Capstone Agent Capabilities
+
+![README](04-images/capstone_agent_signatures.png)  
+<br><br>
+
+<hr>
+
+### 9B.5. Capstone - Getting Started
+
+| Module # | Focus  |
+| -- | :-- | 
+|  20 | [**Environment setup and data loading**](03-lab-manuals/Module_20_Capstone_Setup.md) | 
+|  21 | [**ADK Primer - Building a Data Analyst Agent**](03-lab-manuals/Module_21_ADK_Primer_Data_Analyst_Agent.md) | 
+|  22 | [**Demand Planner Agent Development**](03-lab-manuals/Module_22_Demand_Planner_Agent.md) | 
+|  23 | [**Inventory Manager Agent Development**](03-lab-manuals/Module_23_Inventory_Manager_Agent.md) | 
+|  24 | [**Procurement Manager Agent Development**](03-lab-manuals/Module_24_Procurement_Manager_Agent.md) | 
+|  25 | [**Logistics Manager Agent Development**](03-lab-manuals/Module_25_Logistics_Manager_Agent.md) |
+|  26 | Autonomous Agent Action to Prevent Stockout - coming soon |
+<hr>
+
+### 9B.6. Capstone Agent Roadmap
+
+1. Autonomous action - 20261Q
+2. Vector search - 20262Q
+3. Advanced agent features
+
+<hr>
+
+
+## 10. Issues
 
 Share you feedback, and issues encountered, by logging issues.
 
 <hr>
 
-## Cleanup
+## 11. Cleanup
 
 If you provisioned a GCP project to run through this content, you can simply shut down the project to stop spend. Alternately, you can delete instances, shut down individual services. Terraform for cleanup is on the roadmap and will be made available.
 
 <hr>
 
-## Contributing
+## 12. Contributing
 
 Contributions to this library are always welcome and highly encouraged.
 
@@ -161,13 +184,13 @@ information.
 
 <hr>
 
-## Authors
+## 13. Authors
 
 This repository and content is maintained by the Google AI Ready Data Cloud Solution Architect team.
 
 | # | Contributor  | Role |
 | -- | :-- |  :--- |
-| 1. | Anagha Khanolkar | Vision, primary author & technical architect |
+| 1. | Anagha Khanolkar | Vision, author & technical architect |
 | 2. | Ashwin Sridhar | Industry subject matter expertise - Supply Chain |
 | 3. | Ryan Price | Industry subject matter expertise - Retail |
 
@@ -175,7 +198,7 @@ This repository and content is maintained by the Google AI Ready Data Cloud Solu
 
 
 
-## License
+## 14. License
 
 Apache 2.0 - See [LICENSE](LICENSE) for more information.
 

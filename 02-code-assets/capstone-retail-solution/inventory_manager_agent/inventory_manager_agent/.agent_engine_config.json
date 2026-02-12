@@ -1,0 +1,12 @@
+{
+  "min_instances": 1,
+  "max_instances": 10,
+  "resource_limits": {
+    "cpu": "8",
+    "memory": "24Gi"
+  },
+  "service_account": "inventory-manager-agent-sa@PROJECT_ID.iam.gserviceaccount.com",
+  "env_vars": {
+  "GOOGLE_CLOUD_AGENT_ENGINE_ENABLE_TELEMETRY": "true",
+  "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "true"}
+}

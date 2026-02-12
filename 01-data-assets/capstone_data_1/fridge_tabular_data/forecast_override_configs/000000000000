@@ -1,0 +1,7 @@
+item_number,omni_item_id,demand_surge_multiplier,demand_slump_multiplier,last_update_date,last_updated_by
+RT31CG5624S9,RT31CG5624S9,1.5,0.75,2026-02-02,Demand Planner
+GRSS2652AF,GRSS2652AF,1.5,0.75,2026-02-02,Demand Planner
+RS65DG54R3S9,RS65DG54R3S9-EF,1.5,0.75,2026-02-02,Demand Planner
+FRFN2813AF,FRFN2813AF,1.5,0.75,2026-02-02,Demand Planner
+LRDCS2603S,LRDCS2603S,1.5,0.75,2026-02-02,Demand Planner
+RF70F29MER,RF70F29MER,1.5,0.75,2026-02-02,Demand Planner

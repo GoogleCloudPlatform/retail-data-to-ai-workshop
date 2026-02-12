@@ -1,0 +1,1 @@
+stock_transfer_order_id,from_location_id,to_location_id,status,vehicle_id,reference_id,reference_id_type,transfer_type,transfer_order_date,fulfillment_date
