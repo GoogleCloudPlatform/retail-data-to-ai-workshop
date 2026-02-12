@@ -167,10 +167,10 @@ Here is what the layout should look like if you navigate to the top level procur
 
 The agent has 4 tools as shown below. Study the code to understand what each has to offer.
 
-![README](../04-images/capstone_M23_AT_01.png)  
+![README](../04-images/capstone_M24_AT_01.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_02.png)  
+![README](../04-images/capstone_M24_AT_02.png)  
 <br><br>
 
 <hr>
@@ -235,46 +235,52 @@ adk web
 
 See the screenshots below and try out a few prompts.
 
-![README](../04-images/capstone_M23_AT_03.png)  
+![README](../04-images/capstone_M24_AT_04.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_04.png)  
+![README](../04-images/capstone_M24_AT_05.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_05.png)  
+![README](../04-images/capstone_M24_AT_06.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_06.png)  
+![README](../04-images/capstone_M24_AT_07.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_07.png)  
+![README](../04-images/capstone_M24_AT_08.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_08.png)  
+![README](../04-images/capstone_M24_AT_09.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_09.png)  
+![README](../04-images/capstone_M24_AT_10.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_10.png)  
+![README](../04-images/capstone_M24_AT_11.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_11.png)  
+![README](../04-images/capstone_M24_AT_12.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_12.png)  
+![README](../04-images/capstone_M24_AT_13.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_13.png)  
+![README](../04-images/capstone_M24_AT_14.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_14.png)  
+![README](../04-images/capstone_M24_AT_15.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_15.png)  
+![README](../04-images/capstone_M24_AT_16.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_16.png)  
+![README](../04-images/capstone_M24_AT_17.png)  
+<br><br>
+
+![README](../04-images/capstone_M24_AT_18.png)  
+<br><br>
+
+![README](../04-images/capstone_M24_AT_19.png)  
 <br><br>
 
 Now that we have a solid prototype of an agent, lets deploy to Agent Engine.
@@ -294,8 +300,8 @@ AGENT_ENGINE_LOCATION="us-central1"
 adk deploy agent_engine \
 --project=$PROJECT_ID   \
 --region=$AGENT_ENGINE_LOCATION   \
---display_name="procurement manager"   \
---description="An agent that can generate inventory allocation plan, adjust allocation, run a number of canned reports and answer adhoc natural language questions about inventory data in the BQ dataset capstone_ds" \
+--display_name="Procurement Manager"   \
+--description="An agent that can generate place pruchase orders with suppliers and run a a variety of reports and answer adhoc questions" \
 --staging_bucket=gs://agent-deployment-bucket-$PROJECT_NBR   \
 --env_file="./procurement_manager_agent/.env"   \
 --trace_to_cloud   \
@@ -306,12 +312,12 @@ adk deploy agent_engine \
 
 ### 9.2. Review the deployment on the Cloud Console
 
-![README](../04-images/capstone_M23_AT_17.png)  
+![README](../04-images/capstone_M24_AT_20.png)  
 <br><br>
 
 ### 9.3. The Reasoning Engine ID
 
-![README](../04-images/capstone_M23_AT_18.png)  
+![README](../04-images/capstone_M24_AT_21.png)  
 <br><br>
 
 
@@ -319,7 +325,7 @@ adk deploy agent_engine \
 
 We are running the agent as a (custom) user managed service account.
 
-![README](../04-images/capstone_M23_AT_19.png)  
+![README](../04-images/capstone_M24_AT_22.png)  
 <br><br>
 
 
@@ -327,13 +333,13 @@ We are running the agent as a (custom) user managed service account.
 
 The agent runs as the procurement manager service account on Agent Engine. Lets review the IAM permissions
 
-![README](../04-images/capstone_M23_AT_20.png)  
+![README](../04-images/capstone_M24_AT_23.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_21.png)  
+![README](../04-images/capstone_M24_AT_24.png)  
 <br><br>
 
-![README](../04-images/capstone_M23_AT_22.png)  
+![README](../04-images/capstone_M24_AT_25.png)  
 <br><br>
 
 
@@ -357,13 +363,13 @@ sed -i s/'TBD'/$procurement_manager_agent_ID/g ~/retail-data-to-ai-workshop/02-c
 ### 9.8. Test the  procurement manager Agent on Agent Engine in the "Playground"
 
 Navigate to the `Playground` tab and try out a few prompts.<br>
-Here are the prompts you can try out:
-1. Can you generate the inventory allocation plan?
-2. Can you run the 'Weeks of Supply' report?
+Here is a prompt you can try out:
+1. Can you run the 'Weeks of Supply' report?
+
 
 <hr>
 
-This concludes the module. Please proceed to the [next module](Module_24_Procurement_Manager_Agent.md).
+This concludes the module. Please proceed to the [next module](Module_25_Logistics_Manager_Agent.md).
 
 
 
