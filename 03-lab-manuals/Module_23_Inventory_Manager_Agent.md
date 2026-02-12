@@ -357,7 +357,7 @@ echo $inventory_manager_agent_ID
 
 ### 9.7. Update the .env file with the agent ID retrieved
 
-Run the below in the terminal:
+This is useful to test prorammatically with test.py in the codebase. Run the below in the terminal:
 ```
 sed -i s/'TBD'/$inventory_manager_agent_ID/g ~/retail-data-to-ai-workshop/02-code-assets/capstone-retail-solution/inventory_manager_agent/inventory_manager_agent/.env
 ```
