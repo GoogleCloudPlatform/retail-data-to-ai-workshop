@@ -18,7 +18,9 @@ The agent can run the following reports:
 6. Demand Signal Log (from the Market Intelligence Agent)
 7. Agent Activity Log (from other agents)
 
-And has access to several others.
+And has access to several others.<br><br>
+
+Screencast: [go/demand_planner_screencast](go/demand_planner_screencast)
 
 <hr>
 
