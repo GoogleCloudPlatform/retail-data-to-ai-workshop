@@ -125,7 +125,7 @@ There are a number of stored procedures. Review the below-
 
 | # | Stored Procedure  |  Purpose |
 | -- | :-- |  :-- |  
-| 1. | capstone_ds.generate_stock_purchase_order| Generates stock purchase orders with suppliers  |
+| 1. | capstone_ds.generate_stock_transfer_order| Generates stock transfer orders to move inventory from location to location  |
 
 
 ### 2.2. Data
@@ -133,8 +133,8 @@ The captone setup module details all the tables in the BigQuery dataset. Some ta
 
 | # | Table  | Purpose  |
 | -- | :-- |  :--- |
-| 1. | stock_purchase_orders | This table stores details about stock purchase orders. It tracks orders placed with suppliers, including order dates and expected delivery dates. The table also records the total cost of each order and its current status. This data is used to manage and analyze the procurement process. |
-| 2. | stock_purchase_order_items |This table stores information about items included in stock purchase orders. It provides a breakdown of each purchase order. The table includes details on the quantity and price of each item ordered. This data is used to track and manage stock procurement.|
+| 1. | stock_transfer_orders | This table tracks the movement of stock between different locations. It records details about each transfer order, including origination and destination points. The table also captures the status of each order, along with any associated references. It provides a history of stock transfers and supports analysis of transfer efficiency. |
+| 2. | stock_transfer_order_items |This table stores details about items included in stock transfer orders. It serves as a record of the specific items transferred between locations. The table tracks the quantity of each item involved in a transfer order. This data is useful for inventory management and order fulfillment processes.|
 
 ### 2.3. Report SQLs
 
@@ -235,6 +235,9 @@ adk web
 ### 8.2. Try out a few prompts
 
 See the screenshots below and try out a few prompts.
+
+![README](../04-images/capstone_M25_AT_03.png)  
+<br><br>
 
 ![README](../04-images/capstone_M25_AT_04.png)  
 <br><br>
