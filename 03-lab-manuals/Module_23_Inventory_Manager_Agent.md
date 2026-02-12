@@ -241,10 +241,49 @@ adk web
 
 ### 8.2. Try out a few prompts
 
-The code base includes sample prompts, you can grab a few and try out like below.
+See the screenshots below and try out a few prompts.
 
+![README](../04-images/capstone_M23_AT_03.png)  
+<br><br>
 
+![README](../04-images/capstone_M23_AT_04.png)  
+<br><br>
 
+![README](../04-images/capstone_M23_AT_05.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_06.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_07.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_08.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_09.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_10.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_11.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_12.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_13.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_14.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_15.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_16.png)  
+<br><br>
 
 Now that we have a solid prototype of an agent, lets deploy to Agent Engine.
 
@@ -270,6 +309,7 @@ adk deploy agent_engine \
 --trace_to_cloud   \
 ./inventory_manager_agent
 ```
+
 
 
 
