@@ -124,12 +124,12 @@ In the capstone modules you will use some of the learnings from the modules abov
 
 ### Capstone Agent Development Continuum
 
-![README](04-images/capstone_stack_overview.png)  
+![README](04-images/capstone_agent_development_continuum.png)  
 <br><br>
 
 ### Capstone Agent Capabilities
 
-![README](04-images/capstone_stack_overview.png)  
+![README](04-images/capstone_agent_signatures.png)  
 <br><br>
 
 
