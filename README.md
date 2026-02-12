@@ -72,7 +72,7 @@ L200 - L300
 <hr>
 
 ## [Optional] Learning Modules
-These learning modules give you a gentle introduction to Google Cloud's portfolio of LLM powered products. These modules are optional to try out if strapped for time. You can directly go to the capstone modules.
+These learning modules give you a gentle introduction to Google Cloud's portfolio of LLM powered products. These modules are optional to try out if strapped for time. You can directly go to the [`capstone modules`](capstone---autonomous-multi-agent-retail-supply-chain-solution).
 
 ### Learning Modules - series
 
