@@ -3,7 +3,7 @@
 This repository hosts `tutorials for LLM powered data & AI products` that can be leveraged in a Data-to-AI estate on Google Cloud. 
 
 ## 1. Features <br>
-(1) **Part 1: Learning modules** - each covering a practical problem to be solved, architecture & considerations, code and configuration, and comprehensive instruction manuals, links to product documentation, and best practices for an immersive learning experience. <br> 
+(1) **Part 1: Learning modules** - each covering a practical problem to be solved, architecture & considerations, code and configuration, and comprehensive instruction manuals, links to product documentation, and best practices for an immersive learning experience. The learning modules prepare you to build the solution featured in Part 2.<br> 
 
 (3) **Part 2: Capstone solution** - Fully functional multi-agent, autonomous agent `retail supply chain solution` (with public/synthetic data) for preventing stockouts featuring the best of breed data and agent development techncial stack on Google Cloud. <br><br>
 In some cases, the latest features are showcased, in public preview, and may also include features in private preview.<br>
