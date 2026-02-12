@@ -65,11 +65,18 @@ L200 - L300
 
 ## Technical Stack
 
-The products and technologies showcased are detailed [here](TECHNICAL_STACK.md)
+![README](04-images/capstone_tech_stack_1.png)  
+<br><br>
+
+![README](04-images/capstone_tech_stack_2.png)  
+<br><br>
 
 <hr>
 
 ## [Optional] Learning Modules
+These learning modules give you a gentle introduction to Google Cloud's portfolio of LLM powered products. These modules are optional to try out if strapped for time. You can directly go to the capstone modules.
+
+### Learning Modules - series
 
 | Module # | Focus  |
 | -- | :-- | 
@@ -87,6 +94,17 @@ The products and technologies showcased are detailed [here](TECHNICAL_STACK.md)
 |   9. | [**Embedding generation and vector search in BigQuery with just SQL**](03-lab-manuals/Module-09-Embedding-Gen-And-Vector-Search-In-BQ.md) <br> We will generate product images based on descriptions. We will then generate embeddings for the product description and images and learn to do text-to-text search as well as text-to-image search - all from within BigQuery with SQL  | 
 | 10a. | [**Apache Iceberg Lakehouse in BigQuery with managed Iceberg tables**](https://github.com/anagha-google/retail-supply-chain-workshop/blob/main/03-lab-manuals/Module-10a-Apache-Iceberg-Lakehouse.md) <br> We will learn to create an Apache Iceberg lakehouse with BigQuey managed Iceberg tables, and learn to run DML operations on Iceberg with BigQuery SQL. We will also query these tables with Apache Spark on Dataproc Servereless to fetch the freshest data.  | 
 
+### Learning Modules - getting started
+
+1. Review the dependencies and ensure they are met
+2. Proceed to the [provisioning module](03-lab-manuals/Module-00-Provisioning.md).
+3. Follow along each page of the user manual
+
+### Learning Modules - roadmap
+If you would like additional features to be showcased, log an issue with details.<br>
+To see what is coming, click [here](ROADMAP.md).
+
+<hr>
 
 <hr>
 
@@ -94,25 +112,30 @@ The products and technologies showcased are detailed [here](TECHNICAL_STACK.md)
 
 In the capstone modules you will use some of the learnings from the modules above, and stand up a minimum viable multi-agent, autonomous retail supply chain agent solution with the best of breed Google Cloud services.
 
+### Capstone Agents and their collaboration
+
+![README](04-images/capstone_hero_scenario.png)  
+<br><br>
+
+### Capstone Technical Stack
+
+![README](04-images/capstone_stack_overview.png)  
+<br><br>
+
+### Capstone Agent Development Continuum
+
+![README](04-images/capstone_stack_overview.png)  
+<br><br>
+
+### Capstone Agent Capabilities
+
+![README](04-images/capstone_stack_overview.png)  
+<br><br>
 
 
+### Capstone Agent Roadmap
 
 
-
-
-
-## Getting started
-
-1. Review the dependencies and ensure they are met
-2. Proceed to the [provisioning module](03-lab-manuals/Module-00-Provisioning.md).
-3. Follow along each page of the user manual
-
-<hr>
-
-## Roadmap
-
-If you would like additional features to be showcased, log an issue with details.<br>
-To see what is coming, click [here](ROADMAP.md).
 
 <hr>
 
