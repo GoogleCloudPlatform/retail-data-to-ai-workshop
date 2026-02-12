@@ -49,18 +49,6 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$AGENT_UMSA_FQN" \
-  --role="roles/iam.serviceAccountViewer"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$AGENT_UMSA_FQN" \
---role="roles/iam.serviceAccountUser"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$AGENT_UMSA_FQN" \
---role="roles/iam.serviceAccountTokenCreator"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$AGENT_UMSA_FQN" \
   --role="roles/aiplatform.user"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
@@ -79,17 +67,28 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/bigquery.metadataViewer"
 
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$AGENT_UMSA_FQN" \
+--role="roles/iam.serviceAccountUser"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$AGENT_UMSA_FQN" \
+--role="roles/iam.serviceAccountTokenCreator"
+
+Select 'None' if prompted to choose IAM condition
+
 ```
 
 Lets ensure that our Demand Planner Agent has viewer access to the capstone_ds:
 ```
-BQ_DATASET_1_IN_SCOPE_FOR_READS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds"
-BQ_DATASET_2_IN_SCOPE_FOR_READS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds"
+
+BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/bigquery.dataViewer" \
---condition="expression=resource.name.startsWith(\"$BQ_DATASET_1_IN_SCOPE_FOR_READS_RESOURCE_URI\") && resource.name.startsWith(\"$BQ_DATASET_2_IN_SCOPE_FOR_READS_RESOURCE_URI\"),title=ReadAccessToSpecificDatasets"
+--condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI\"),title=ReadAccessToSpecificDatasets"
 ```
 
 Lets ensure we lock down write access for our agent to just a few tables:
