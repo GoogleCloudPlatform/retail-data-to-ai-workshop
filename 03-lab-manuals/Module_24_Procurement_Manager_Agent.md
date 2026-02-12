@@ -14,25 +14,8 @@ d) + more <br>
 
 <hr>
 
+
 ## 1. Setup
-
-### 1.1. Authenticate to Google Cloud from CLI & generate Application Default Credentials
-
-Run each of these in cloud shell / terminal:
-```
-gcloud init
-```
-
-```
-gcloud auth application-default login
-```
-
-Make sure you set the GCP project-
-```
-gcloud config set project <YOUR_PROJECT_ID>
-```
-
-<hr>
 
 ### 1.2. Create a user managed service account (UMSA) for the agent & grant it minimal permissions
 
@@ -60,18 +43,6 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$AGENT_UMSA_FQN" \
-  --role="roles/iam.serviceAccountViewer"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$AGENT_UMSA_FQN" \
---role="roles/iam.serviceAccountUser"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$AGENT_UMSA_FQN" \
---role="roles/iam.serviceAccountTokenCreator"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$AGENT_UMSA_FQN" \
   --role="roles/aiplatform.user"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
@@ -90,30 +61,41 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/bigquery.metadataViewer"
 
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$AGENT_UMSA_FQN" \
+--role="roles/iam.serviceAccountUser"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$AGENT_UMSA_FQN" \
+--role="roles/iam.serviceAccountTokenCreator"
+
+Select 'None' if prompted to choose IAM condition
+
 ```
 
-Lets ensure that our Demand Planner Agent has viewer access to the capstone_ds:
+Lets ensure that our procurement manager Agent has viewer access to the capstone_ds:
 ```
-BQ_DATASET_1_IN_SCOPE_FOR_READS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds"
-BQ_DATASET_2_IN_SCOPE_FOR_READS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds"
+BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/bigquery.dataViewer" \
---condition="expression=resource.name.startsWith(\"$BQ_DATASET_1_IN_SCOPE_FOR_READS_RESOURCE_URI\") && resource.name.startsWith(\"$BQ_DATASET_2_IN_SCOPE_FOR_READS_RESOURCE_URI\"),title=ReadAccessToSpecificDatasets"
+--condition="expression=resource.name.startsWith(\"$BQ_DATASET_IN_SCOPE_FOR_READS_RESOURCE_URI\"),title=ReadAccessToSpecificDatasets"
 ```
 
 Lets ensure we lock down write access for our agent to just a few tables:
 ```
-BQ_STOCK_PURCHASE_ORDERS_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/stock_purchase_orders"
-BQ_STOCK_PURCHASE_ORDER_ITEMS_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/stock_purchase_order_items"
+BQ_STOCK_PO_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/stock_purchase_orders"
+BQ_STOCK_PO_ITEMS_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/stock_purchase_order_items"
 BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/procedure_error_log"
-BQ_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/activity_log"
+BQ_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI="projects/$PROJECT_ID/datasets/capstone_ds/tables/agent_activity_log"
+
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$AGENT_UMSA_FQN" \
 --role="roles/bigquery.dataEditor" \
---condition="expression=resource.name.startsWith(\"$BQ_STOCK_PURCHASE_ORDERS_TABLE_WRITE_ACCESS_RESOURCE_URI\") && resource.name.startsWith(\"$BQ_STOCK_PURCHASE_ORDER_ITEMS_TABLE_WRITE_ACCESS_RESOURCE_URI\") && resource.name.startsWith(\"$BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\") && resource.name.startsWith(\"$BQ_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\" ),title=WriteAccessToSpecificTables"
+--condition="expression=resource.name.startsWith(\"$BQ_STOCK_PO_TABLE_WRITE_ACCESS_RESOURCE_URI\") && resource.name.startsWith(\"$BQ_STOCK_PO_ITEMS_TABLE_WRITE_ACCESS_RESOURCE_URI\") && resource.name.startsWith(\"$BQ_PROCEDURE_ERROR_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\") && resource.name.startsWith(\"$BQ_ACTIVITY_LOG_TABLE_WRITE_ACCESS_RESOURCE_URI\" ),title=WriteAccessToSpecificTables"
 
 ```
 
@@ -135,53 +117,83 @@ gcloud iam service-accounts add-iam-policy-binding \
 <hr>
 
 
-## 2. Incremental database object creation, and operationalizing for agent use
+## 2. Data & routines overview
 
-We will use a to complete this section. It is imperative that you complete this section carefully to ensure the agent has the appropriate grounding and tooling in place.
+### 2.1. Stored Procedures
+There are a number of stored procedures. Review the below-
 
-### 2.1. Database setup, stored procedures, tables, views review
+| # | Stored Procedure  |  Purpose |
+| -- | :-- |  :-- |  
+| 1. | capstone_ds.generate_inventory_allocation_plan| Generates the inventory allocation plan that dictates stock in the store versus warehouse each day  |
+| 2. | capstone_ds.adjust_inventory_allocation | Updates inventory allocation across each store and the warehouse  |
 
-1. Run the notebook `Module_23_Procurement_Manager_Utils_Prework.ipynb` in BigQuery
-2. Visit the Cloud Console and browse the objects   
+### 2.2. Data
+The captone setup module details all the tables in the BigQuery dataset. Some tables you may want to browse are:
+
+| # | Table  | Purpose  |
+| -- | :-- |  :--- |
+| 1. | stock_allocation_plan| This table stores planned stock allocations for items across different locations. It tracks the quantity of each item intended for a specific location. The data includes the date the allocation was planned. It also indicates whether the allocation plan is the most current one. This table supports analysis of stock distribution strategies. |
+| 2. | stock_master_location|This table tracks inventory levels across different locations. It provides a snapshot of stock quantities for various items. The data is recorded on a specific date. This allows for analysis of inventory distribution. It supports inventory management and supply chain optimization.|
+| 3. | stock_master | This table tracks inventory levels for various items. It provides a snapshot of stock quantities at specific points in time. The data allows for monitoring inventory and managing reorder points. It supports analysis of stock availability. |
+| 4. | stock_movement | This table tracks changes in stock levels. It records each instance of inventory adjustment. The table captures the date of the movement, the items affected, and the magnitude of the change. It also includes reference information for auditing purposes.|
+| 5. | stock_thresholds | This table stores calculated stock level thresholds for various items. It is used to monitor inventory levels across different locations. The table facilitates the determination of optimal stock levels. It supports the identification of items needing reordering. This data is essential for maintaining adequate stock and preventing shortages.|
+
+### 2.3. Report SQLs
+
+Review the [constants.py](../02-code-assets/capstone-retail-solution/procurement_manager_agent/procurement_manager_agent/constants.py) for the report SQL listing. Run the SQL to familiarize yourself.
+
 
 <hr>
 
-## 3. Review the Procurement Manager Agent code 
+## 3. Agent code layout
 
-### 3.1. Review the code layout in VS code/your IDE
 
-Navigate to the `rscw-agent-solution` in vs code/your IDE <br>
-
+Navigate to the `capstone-retail-solution`<br>
 Here is what the layout should look like if you navigate to the top level procurement_manager_agent folder:
 ```
 .
 ├── procurement_manager_agent
 │   ├── procurement_manager_agent
 │   │   ├── __init__.py
-│   │   ├── agent.py -> core code
-│   │   ├── constants.py -> configs
-│   │   ├── system_instructions.py -> core code
-│   │   ├── test.py -> agent engine deployment testing
-│   │   ├── tools.py -> core code
-│   │   └── utils.py -> core code
-│   ├── miscellaneous
-│   │   ├── enhancements.md
-│   │   └── sample_prompts.md
+│   │   ├── .agent_engine_config.json -> for any configs not supported by ADK command line
+│   │   ├── agent.py -> core component
+│   │   ├── constants.py -> loaded from .env entries
+│   │   ├── .env -> needs configuration from you
+│   │   ├── system_instructions.py -> core component
+│   │   ├── test.py -> test agent engine deployment
+│   │   ├── tools.py -> core component
+│   │   └── utils.py -> core component
 │   └── requirements.txt
-
 ```
 
+## 4. Agent tooling overview
+
+The agent has 4 tools as shown below. Study the code to understand what each has to offer.
+
+![README](../04-images/capstone_M23_AT_01.png)  
 <br><br>
 
-### 3.2. Study these specific code/config files
-
-Open each of the files and review the code files.
+![README](../04-images/capstone_M23_AT_02.png)  
+<br><br>
 
 <hr>
 
-## 4. Run the agent locally
+## 5. Agent grounding overview
 
-### 4.1. Set up a Python virtual environment in VS code / your IDE's terminal
+Browse Cloud Storage bucket to see the grounding file that has the metadata. [We covered this in Module 20.](https://github.com/GoogleCloudPlatform/retail-data-to-ai-workshop/blob/ADK-MCP-Primer/03-lab-manuals/Module_20_Capstone_Setup.md#16-about-the-bigquery-metadata-persisted-to-gcs-for-agentic-grounding)
+
+
+<hr>
+
+## 6. Agent instructions overview
+
+Review the [agent instructions](../02-code-assets/capstone-retail-solution/procurement_manager_agent/procurement_manager_agent/system_instructions.py).
+
+<hr>
+
+## 7. Prep for running agent locally
+
+### 7.1. Set up a Python virtual environment in VS code / your IDE's terminal
 
 Run the below in your terminal-
 ```
@@ -189,65 +201,92 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-### 4.2. Install the Python dependencies
+### 7.2. Install the Python dependencies
 
-Navigate to the procurement_manager_agent folder that has the requirements.txt and run the install from VS code terminal-
-`pip install -r requirements.txt`
+You dont need any incremental dependencies.
 
-### 4.3. Update the env file 
 
-Modify the env file to reflect your GCP project ID, project number and location by updating the following with your details and saving the file-
+### 7.3. Update the env file 
 
+Run the below in the terminal:
 ```
-GOOGLE_CLOUD_PROJECT="<YOUR_PROJECT_ID>"
-GOOGLE_CLOUD_LOCATION="us-central1"
-GOOGLE_CLOUD_PROJECT_NUMBER="<YOUR_PROJECT_NUMBER>"
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+PROJECT_NBR=`gcloud projects describe $PROJECT_ID | grep projectNumber | cut -d':' -f2 |  tr -d "'" | xargs`
+LOCATION="us-central1"
 
-GOOGLE_GENAI_USE_VERTEXAI="True"
-GOOGLE_CLOUD_AGENT_ENGINE_ENABLE_TELEMETRY=true
-OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
+cd ~/retail-data-to-ai-workshop/02-code-assets/capstone-retail-solution
 
-GEMINI_MODEL="gemini-2.5-pro"
-
-BQ_DATASETS_IN_SCOPE="capstone_ds"
-BQ_METADATA_BUCKET="capstone_stage_<YOUR_PROJECT_NUMBER>"
-BQ_METADATA_FILE="metadata/captone_database_metadata_grounding.md"
-
-PROCUREMENT_MANAGER_AGENT_SERVICE_ACCOUNT_FQN="procurement-manager-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
-
-AGENT_DEPLOYMENT_BUCKET="agent-deployment-bucket-<YOUR_PROJECT_NUMBER>"
-DEPLOYED_AGENT_RESOURCE_URI="projects/<YOUR_PROJECT_NUMBER>/locations/us-central1/reasoningEngines/<THIS_WILL_COME_LATER>"
+sed -i s/'LOCATION'/$LOCATION/g procurement_manager_agent/procurement_manager_agent/.env
+sed -i s/'PROJECT_ID'/$PROJECT_ID/g procurement_manager_agent/procurement_manager_agent/.env
+sed -i s/'PROJECT_NBR'/$PROJECT_NBR/g procurement_manager_agent/procurement_manager_agent/.env
+sed -i s/'PROJECT_ID'/$PROJECT_ID/g procurement_manager_agent/procurement_manager_agent/.agent_engine_config.json
 ```
 
+<hr>
 
-<br><br>
+## 8. Run `adk web` and test the agent locally/cloud shell
 
-
-### 4.4. Launch a terminal in VS Code/your IDE and authenticate
-
-Follow instructions in section 1.
-
-### 4.5. Run adk web
+### 8.1. Launch `adk web`
 
 In the terminal navigate to the top level procurement_manager_agent directory and run the command below.<br>
-(e.g. from author - `/Users/akhanolkar/github/rscw-agent-solution/procurement_manager_agent`)
 
 ```
 adk web
 ```
 
+### 8.2. Try out a few prompts
 
+See the screenshots below and try out a few prompts.
 
-### 4.6. Try out a few prompts
+![README](../04-images/capstone_M23_AT_03.png)  
+<br><br>
 
-The code base includes sample prompts, you can grab a few and try out. The code base includes several tried and tested prompts under the miscellaneous directory, in the "sample_prompts" file.
+![README](../04-images/capstone_M23_AT_04.png)  
+<br><br>
 
+![README](../04-images/capstone_M23_AT_05.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_06.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_07.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_08.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_09.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_10.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_11.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_12.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_13.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_14.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_15.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_16.png)  
+<br><br>
+
+Now that we have a solid prototype of an agent, lets deploy to Agent Engine.
 
 <hr>
 
-## 5. Deploy & test the Procurement Manager Agent on Agent Engine
+## 9. Deploy & test the procurement manager Agent on Agent Engine
 
-### 5.1. Deploy the agent to Agent Engine
+### 9.1. Deploy the agent to Agent Engine
 
 Run this from within the top level procurement_manager_agent folder, from CLI. This will automatically read in any configs in agent_engine_config.json
 ```
@@ -258,8 +297,8 @@ AGENT_ENGINE_LOCATION="us-central1"
 adk deploy agent_engine \
 --project=$PROJECT_ID   \
 --region=$AGENT_ENGINE_LOCATION   \
---display_name="Procurement Manager"   \
---description="An agent that can generate purchase orders with suppliers, run a number of canned reports and answer adhoc natural language questions about data in the BQ dataset capstone_ds" \
+--display_name="procurement manager"   \
+--description="An agent that can generate inventory allocation plan, adjust allocation, run a number of canned reports and answer adhoc natural language questions about inventory data in the BQ dataset capstone_ds" \
 --staging_bucket=gs://agent-deployment-bucket-$PROJECT_NBR   \
 --env_file="./procurement_manager_agent/.env"   \
 --trace_to_cloud   \
@@ -267,22 +306,72 @@ adk deploy agent_engine \
 ```
 
 
-### 5.2. Review the deployment on the Cloud Console
 
-![README](../04-images/M23_5_2.png)   
+### 9.2. Review the deployment on the Cloud Console
+
+![README](../04-images/capstone_M23_AT_17.png)  
 <br><br>
 
-### 5.3. Test the agent deployed to Agent Engine from the playground tab
+### 9.3. The Reasoning Engine ID
 
-We will need to ensure the agent engine deployment works right, run a few prompts.
-
-
-![README](../04-images/M23_5_3.png)   
+![README](../04-images/capstone_M23_AT_18.png)  
 <br><br>
+
+
+### 9.4. The identity of the deployed agent 
+
+We are running the agent as a (custom) user managed service account.
+
+![README](../04-images/capstone_M23_AT_19.png)  
+<br><br>
+
+
+### 9.5. Recap the permissions we granted in previous sections
+
+The agent runs as the procurement manager service account on Agent Engine. Lets review the IAM permissions
+
+![README](../04-images/capstone_M23_AT_20.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_21.png)  
+<br><br>
+
+![README](../04-images/capstone_M23_AT_22.png)  
+<br><br>
+
+
+### 9.6. Retrieve the procurement manager Agent ID from the Agent Engine deployment
+
+We will need to test via Python..
+```
+AGENT_ENGINE_LOCATION="us-central1"
+PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
+procurement_manager_agent_ID=`curl -X GET   -H "Authorization: Bearer $(gcloud auth print-access-token)"   "https://$AGENT_ENGINE_LOCATION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$AGENT_ENGINE_LOCATION/reasoningEngines"  |  grep -3 Demand | grep name | cut -d'/' -f6 | cut -d'"' -f1`
+echo $procurement_manager_agent_ID
+```
+
+### 9.7. Update the .env file with the agent ID retrieved
+
+This is useful to test prorammatically with test.py in the codebase. Run the below in the terminal:
+```
+sed -i s/'TBD'/$procurement_manager_agent_ID/g ~/retail-data-to-ai-workshop/02-code-assets/capstone-retail-solution/procurement_manager_agent/procurement_manager_agent/.env
+```
+
+### 9.8. Test the  procurement manager Agent on Agent Engine in the "Playground"
+
+Navigate to the `Playground` tab and try out a few prompts.<br>
+Here are the prompts you can try out:
+1. Can you generate the inventory allocation plan?
+2. Can you run the 'Weeks of Supply' report?
 
 <hr>
 
-This concludes the module. Please proceed to the next module.
+This concludes the module. Please proceed to the [next module](Module_24_Procurement_Manager_Agent.md).
+
+
+
+
+
 
 
 
