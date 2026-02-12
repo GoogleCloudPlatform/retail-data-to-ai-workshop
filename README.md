@@ -65,11 +65,11 @@ L200 - L300
 
 ## Technical Stack
 
-
+The products and technologies showcased are detailed [here](TECHNICAL_STACK.md)
 
 <hr>
 
-## Learning Modules
+## [Optional] Learning Modules
 
 | Module # | Focus  |
 | -- | :-- | 
@@ -86,10 +86,18 @@ L200 - L300
 |   8. | [**Generate content with SQL with Generative AI functions in BigQuery**](03-lab-manuals/Module-08-GenAI-Functions-In-BQ.md) <br>Using Generative AI functions in BigQuery - we will generate product descriptions and user manuals. We will learn to do keyword extraction, play with knobs for te same, then do sentiment analysis of product reviews   | 
 |   9. | [**Embedding generation and vector search in BigQuery with just SQL**](03-lab-manuals/Module-09-Embedding-Gen-And-Vector-Search-In-BQ.md) <br> We will generate product images based on descriptions. We will then generate embeddings for the product description and images and learn to do text-to-text search as well as text-to-image search - all from within BigQuery with SQL  | 
 | 10a. | [**Apache Iceberg Lakehouse in BigQuery with managed Iceberg tables**](https://github.com/anagha-google/retail-supply-chain-workshop/blob/main/03-lab-manuals/Module-10a-Apache-Iceberg-Lakehouse.md) <br> We will learn to create an Apache Iceberg lakehouse with BigQuey managed Iceberg tables, and learn to run DML operations on Iceberg with BigQuery SQL. We will also query these tables with Apache Spark on Dataproc Servereless to fetch the freshest data.  | 
-|  11. | **Primer on Custom Agent Development on GCP with a data QnA chat application** (coming soon)   | 
-|  12. | **Multi-agent, autonomous agent solution with best of breed Google Cloud agentic stack for preventing retail stockouts** (coming soon)   | 
+
 
 <hr>
+
+## Capstone - Autonomous Multi-agent Retail Supply Chain Solution
+
+In the capstone modules you will use some of the learnings from the modules above, and stand up a minimum viable multi-agent, autonomous retail supply chain agent solution with the best of breed Google Cloud services.
+
+
+
+
+
 
 
 
