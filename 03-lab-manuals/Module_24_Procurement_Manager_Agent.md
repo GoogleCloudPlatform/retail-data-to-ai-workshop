@@ -287,7 +287,7 @@ Now that we have a solid prototype of an agent, lets deploy to Agent Engine.
 
 <hr>
 
-## 9. Deploy & test the procurement manager Agent on Agent Engine
+## 9. Deploy & test the Procurement Manager Agent on Agent Engine
 
 ### 9.1. Deploy the agent to Agent Engine
 
