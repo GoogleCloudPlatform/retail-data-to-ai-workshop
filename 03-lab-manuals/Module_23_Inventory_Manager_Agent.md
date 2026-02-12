@@ -365,26 +365,9 @@ sed -i s/'TBD'/$inventory_manager_agent_ID/g ~/retail-data-to-ai-workshop/02-cod
 ### 9.8. Test the  inventory manager Agent on Agent Engine in the "Playground"
 
 Navigate to the `Playground` tab and try out a few prompts.<br>
-
-Notice that the author ran into a permissions issue, fixed the permissions and reran successfully.
-
-![README](../04-images/capstone_M23_AT_23.png)  
-<br><br>
-
-![README](../04-images/capstone_M23_AT_24.png)  
-<br><br>
-
-![README](../04-images/capstone_M23_AT_25.png)  
-<br><br>
-
-![README](../04-images/capstone_M23_AT_26.png)  
-<br><br>
-
-Here are the prompts used by the author:
+Here are the prompts you can try out:
 1. Can you generate the inventory allocation plan?
 2. Can you run the 'Weeks of Supply' report?
-
-
 
 <hr>
 
