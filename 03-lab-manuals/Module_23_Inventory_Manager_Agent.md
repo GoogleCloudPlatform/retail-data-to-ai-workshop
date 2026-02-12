@@ -312,15 +312,14 @@ adk deploy agent_engine \
 
 
 
-
 ### 9.2. Review the deployment on the Cloud Console
 
-![README](../04-images/M21_5_2.png)   
+![README](../04-images/capstone_M23_AT_17.png)  
 <br><br>
 
 ### 9.3. The Reasoning Engine ID
 
-![README](../04-images/M21_5_3.png)   
+![README](../04-images/capstone_M23_AT_18.png)  
 <br><br>
 
 
@@ -328,7 +327,7 @@ adk deploy agent_engine \
 
 We are running the agent as a (custom) user managed service account.
 
-![README](../04-images/M21_5_4.png)   
+![README](../04-images/capstone_M23_AT_19.png)  
 <br><br>
 
 
@@ -336,19 +335,19 @@ We are running the agent as a (custom) user managed service account.
 
 The agent runs as the inventory manager service account on Agent Engine. Lets review the IAM permissions
 
-![README](../04-images/capstone_M22_AT_03.png)   
+![README](../04-images/capstone_M23_AT_20.png)  
 <br><br>
 
-![README](../04-images/capstone_M22_AT_04.png)   
+![README](../04-images/capstone_M23_AT_21.png)  
 <br><br>
 
-![README](../04-images/capstone_M22_AT_05.png)   
+![README](../04-images/capstone_M23_AT_22.png)  
 <br><br>
 
 
 ### 9.6. Retrieve the inventory manager Agent ID from the Agent Engine deployment
 
-We will need to register with Gemini Enterprise.
+We will need to test via Python..
 ```
 AGENT_ENGINE_LOCATION="us-central1"
 PROJECT_ID=`gcloud config list --format "value(core.project)" 2>/dev/null`
@@ -369,72 +368,21 @@ Navigate to the `Playground` tab and try out a few prompts.<br>
 
 Notice that the author ran into a permissions issue, fixed the permissions and reran successfully.
 
-![README](../04-images/M21_5_8_1.png)   
+![README](../04-images/capstone_M23_AT_23.png)  
 <br><br>
 
-![README](../04-images/M21_5_8_2.png)   
+![README](../04-images/capstone_M23_AT_24.png)  
 <br><br>
 
-![README](../04-images/M21_5_8_3.png)   
+![README](../04-images/capstone_M23_AT_25.png)  
 <br><br>
 
-![README](../04-images/M21_5_8_4.png)   
+![README](../04-images/capstone_M23_AT_26.png)  
 <br><br>
 
 Here are the prompts used by the author:
-1. Can you show me the demand forecast for omni_item_id 'LRDCS2603S' for '2026-02-02' for location_id 'CHI-IL-ST'?
-2. I see a demand SURGE. Can you adjust the forecast for this omni_item_id, for a SURGE?
-3. Can you show me the demand forecast for omni_item_id 'LRDCS2603S' for '2026-02-02' for location_id 'CHI-IL-ST' again?
-
-<hr>
-
-
-#### 5.5.2. Test via Python script
-
-1. Ensure you completed the .env update to reflect your deployed reasoningEngine agent ID from step 5.4
-
-2. Ensure you are at the right location
-
-```
-# Navigate so that you are at the top level directory of inventory_manager_agent
-~/retail-data-to-ai-workshop/capstone-retail-solution/inventory_manager_agent <- HERE
-```
-
-3. Execute script
-
-```
-python inventory_manager_agent/test.py 
-```
-
-4. Browse the output streamed
-
-Here is the author's output...<br>
-
-
-Question 1 (a read):
-
-![README](../04-images/M21_5_5_2_1.png)   
-<br><br>
-
-![README](../04-images/M21_5_5_2_2.png)   
-<br><br>
-
-![README](../04-images/M21_5_5_2_3.png)   
-<br><br>
-
-Question 2 (a stored procedure call that writes to database):
-
-![README](../04-images/M21_5_5_2_4.png)   
-<br><br>
-
-
-![README](../04-images/M21_5_5_2_5.png)   
-<br><br>
-
-Question 3 (a read):
-
-![README](../04-images/M21_5_5_2_6.png)   
-<br><br>
+1. Can you generate the inventory allocation plan?
+2. Can you run the 'Weeks of Supply' report?
 
 
 
