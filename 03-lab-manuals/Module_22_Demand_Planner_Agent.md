@@ -20,7 +20,7 @@ The agent can run the following reports:
 
 And has access to several others.<br><br>
 
-Screencast: [go/demand_planner_screencast](go/demand_planner_screencast)
+Screencast: [go/demand_planner_screencast](http://screencast/cast/NDU2NjY4NTc3NTI5ODU2MHxjMDNjNjM1OC00OQ)
 
 <hr>
 
