@@ -160,7 +160,7 @@ There are a number of stored procedures. Review the below-
 | 2. | capstone_ds.update_item_demand_forecast | Updates the latest demand forecast for a specific products for a SURGE or a SLUMP.  |
 
 ### 2.2. Data
-The captone setup module details all the tables in the BigQuery dataset. Some tables you may want to browse take a look at are:
+The captone setup module details all the tables in the BigQuery dataset. Some tables you may want to browse are:
 
 | # | Table  | Purpose  |
 | -- | :-- |  :--- |
