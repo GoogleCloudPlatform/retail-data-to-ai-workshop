@@ -51,7 +51,7 @@ LOW_STOCK_REPORT_SQL = "WITH RankedInventory AS (SELECT omni_item_id, quantity_o
 ON_HAND_INVENTORY_REPORT_SQL = "select * from capstone_ds.vw_on_hand_stock"
 ON_HAND_LOC_INVENTORY_REPORT_SQL = "select * from capstone_ds.vw_on_hand_loc_stock"
 OUT_OF_STOCK_REPORT_SQL = "SELECT pm.omni_item_id, pm.description, lm.location_name, sml.quantity_on_hand FROM `capstone_ds.stock_master_location` AS sml JOIN `capstone_ds.product_master` AS pm ON sml.omni_item_id = pm.omni_item_id JOIN `capstone_ds.location_master` AS lm ON sml.location_id = lm.location_id WHERE sml.quantity_on_hand = 0"
-PURCHASE_ORDER_STATUS_REPORT_SQL = "select * from capstone_ds.stock_purchase_orders_vw order by omni_item_id,order_date,order_status desc"
+PURCHASE_ORDER_STATUS_REPORT_SQL = "select * from capstone_ds.vw_stock_purchase_orders order by omni_item_id,order_date,order_status desc"
 REORDER_POINT_REPORT_SQL = "SELECT distinct pm.item_number,pm.omni_item_id, pm.description, sm.quantity_on_hand, sm.reorder_point FROM `capstone_ds.stock_master` AS sm JOIN `capstone_ds.product_master` AS pm ON (sm.omni_item_id = pm.omni_item_id and sm.item_number = pm.item_number) WHERE sm.quantity_on_hand <= sm.reorder_point and sm.stock_date=(select max(stock_date) from capstone_ds.stock_master)"
 STOCK_MOVEMENT_SUMMARY_REPORT_SQL = "select * from capstone_ds.vw_stock_movement_summary"
 STOCK_TRANSFER_FULFILLMENT_REPORT_SQL = "select * from capstone_ds.vw_stock_transfer_fulfill"
