@@ -124,19 +124,16 @@ There are a number of stored procedures. Review the below-
 
 | # | Stored Procedure  |  Purpose |
 | -- | :-- |  :-- |  
-| 1. | capstone_ds.generate_inventory_allocation_plan| Generates the inventory allocation plan that dictates stock in the store versus warehouse each day  |
-| 2. | capstone_ds.adjust_inventory_allocation | Updates inventory allocation across each store and the warehouse  |
+| 1. | capstone_ds.generate_stock_purchase_order| Generates stock purchase orders with suppliers  |
+
 
 ### 2.2. Data
 The captone setup module details all the tables in the BigQuery dataset. Some tables you may want to browse are:
 
 | # | Table  | Purpose  |
 | -- | :-- |  :--- |
-| 1. | stock_allocation_plan| This table stores planned stock allocations for items across different locations. It tracks the quantity of each item intended for a specific location. The data includes the date the allocation was planned. It also indicates whether the allocation plan is the most current one. This table supports analysis of stock distribution strategies. |
-| 2. | stock_master_location|This table tracks inventory levels across different locations. It provides a snapshot of stock quantities for various items. The data is recorded on a specific date. This allows for analysis of inventory distribution. It supports inventory management and supply chain optimization.|
-| 3. | stock_master | This table tracks inventory levels for various items. It provides a snapshot of stock quantities at specific points in time. The data allows for monitoring inventory and managing reorder points. It supports analysis of stock availability. |
-| 4. | stock_movement | This table tracks changes in stock levels. It records each instance of inventory adjustment. The table captures the date of the movement, the items affected, and the magnitude of the change. It also includes reference information for auditing purposes.|
-| 5. | stock_thresholds | This table stores calculated stock level thresholds for various items. It is used to monitor inventory levels across different locations. The table facilitates the determination of optimal stock levels. It supports the identification of items needing reordering. This data is essential for maintaining adequate stock and preventing shortages.|
+| 1. | stock_purchase_orders | This table stores details about stock purchase orders. It tracks orders placed with suppliers, including order dates and expected delivery dates. The table also records the total cost of each order and its current status. This data is used to manage and analyze the procurement process. |
+| 2. | stock_purchase_order_items |This table stores information about items included in stock purchase orders. It provides a breakdown of each purchase order. The table includes details on the quantity and price of each item ordered. This data is used to track and manage stock procurement.|
 
 ### 2.3. Report SQLs
 
