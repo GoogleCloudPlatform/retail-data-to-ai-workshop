@@ -110,7 +110,7 @@ To see what is coming, click [here](ROADMAP.md).
 
 ## Capstone - Autonomous Multi-agent Retail Supply Chain Solution
 
-In the capstone modules you will use some of the learnings from the modules above, and stand up a minimum viable multi-agent, autonomous retail supply chain agent solution with the best of breed Google Cloud services.
+In the capstone modules you will use some of the learnings from the modules above, and stand up a minimum viable autonomous multi-agent, retail supply chain agent solution with the best of breed Google Cloud services.
 
 ### Capstone Agents and their collaboration
 
